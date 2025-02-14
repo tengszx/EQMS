@@ -7,7 +7,7 @@
 
 3. Once you open it, click the Terminal in one of the button from the upper left side. then type the command :
 ```bash
-  git clone https://github.com/Argusxiii13/NRCPNet.git
+  git clone https://github.com/tengszx/EQ.git
 ```
 4. Wait for a while. Once its done, repeat the Step No.2, but access the folder NRCPNet.
 
