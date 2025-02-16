@@ -1,0 +1,55 @@
+.carousel-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Align items at the top */
+    padding: 20px;
+    background-color: white; /* Background color */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Shadow for the container */
+    border-radius: 10px; /* Rounded corners */
+    position: relative; /* For positioning */
+    width: 90%; /* Increased width for the container */
+    max-width: 100%; /* Max width for larger screens */
+    height: 400px; /* Increased height for the container */
+    margin: auto; /* Center the container */
+}
+
+.carousel-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Center items vertically */
+    flex-grow: 1; /* Allow content to grow */
+}
+
+.carousel-item {
+    margin: 20px 0;
+    text-align: center; /* Center the text */
+}
+
+.carousel-footer {
+    display: flex;
+    flex-direction: column; /* Stack dots and buttons */
+    align-items: center; /* Center footer content */
+    width: 100%; /* Make the footer take full width */
+}
+
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+    margin-top: auto; /* Push dots to the bottom */
+}
+
+.dot {
+    height: 12px;
+    width: 12px;
+    margin: 0 5px;
+    background-color: #bbb; /* Inactive dot color */
+    border-radius: 50%; /* Circle shape */
+    display: inline-block;
+    cursor: pointer;
+}
+
+.dot.active {
+    background-color: #717171; /* Active dot color */
+}
