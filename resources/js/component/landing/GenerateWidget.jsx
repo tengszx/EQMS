@@ -4,11 +4,14 @@ import { FilePlus } from 'lucide-react'; // Import the icon
 
 const GenerateWidget = () => {
     return (
-        <div className="generate-widget">
-            <h1 className="generate-title">
-                <FilePlus className="item-icon" /> {/* Place the icon here */}
-                Generate Reports
-            </h1>
+        <div className="widget"> {/* Changed class name to match the structure */}
+            <FilePlus className="widget-icon" /> {/* Use the icon for generating reports */}
+            <div className="widget-header">
+                <div className="widget-name">Generate Reports</div> {/* Title for the generate widget */}
+                <div className="widget-settings"> {/* Button for settings */}
+                    <button>⋮</button>
+                </div>
+            </div>
         </div>
     );
 };

@@ -22,7 +22,7 @@
     text-align: center;
 }
 
-/* Widget Title Styles - Keeping as requested but increasing size */
+/* Widget Title Styles */
 .widget-title {
     margin: 20px 0;
     color: rgb(37, 150, 190); /* Keep title color as requested */
@@ -36,7 +36,7 @@
 .widget-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px; /* Reduced gap between widgets */
+    gap: 15px; /* Reduced gap between widgets for a tighter layout */
     justify-items: center;
     align-items: start;
     width: 100%;
@@ -48,7 +48,8 @@
     background-color: #fff5eb;
     border-radius: 12px;
     padding: 30px;
-    width: 100%;
+    width: 100%; /* Full width for flexibility */
+    max-width: 300px; /* Optional: Set a max width for better layout */
     min-height: 120px;
     display: flex;
     align-items: center;
@@ -56,6 +57,7 @@
     position: relative;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s, box-shadow 0.2s;
+    margin: 10px auto; /* Centering the widget itself */
 }
 
 /* Change text color to black */
@@ -78,19 +80,15 @@
     right: 20px;
 }
 
-.widget-settings button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-    color: #666;
+/* Centering and Adjusting Spacing for Widgets 4 and 5 */
+.widget-grid > :nth-child(4) {
+    grid-column: 1; /* Keep in the first column */
+    justify-self: center; /* Center the widget */
 }
 
-/* Centering the second-row widgets */
-.widget-grid > :nth-child(4),
 .widget-grid > :nth-child(5) {
-    grid-column: span 1; /* Each takes one column */
-    justify-self: center; /* Center the widgets */
+    grid-column: 2; /* Move to the second column */
+    justify-self: center; /* Center the widget */
 }
 
 /* Responsive Design */

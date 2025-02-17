@@ -4,11 +4,14 @@ import { BookOpenText } from 'lucide-react'; // Import the icon
 
 const TrackWidget = () => {
     return (
-        <div className="track-widget">
-            <h1 className="track-title">
-                <BookOpenText className="item-icon" /> {/* Place the icon here */}
-                Track Revisions
-            </h1>
+        <div className="widget"> {/* Changed class name to match the structure */}
+            <BookOpenText className="widget-icon" /> {/* Use the icon for tracking revisions */}
+            <div className="widget-header">
+                <div className="widget-name">Track Revisions</div> {/* Title for the track widget */}
+                <div className="widget-settings"> {/* Button for settings */}
+                    <button>⋮</button>
+                </div>
+            </div>
         </div>
     );
 };

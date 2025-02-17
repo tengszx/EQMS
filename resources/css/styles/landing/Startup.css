@@ -4,7 +4,7 @@
     background-color: rgb(37, 150, 190); /* Updated background color */
     box-shadow: 0 2px 10px rgba(255, 255, 255, 0.5); /* White shadow with transparency */
     border-radius: 10px; /* Optional: Rounded corners */
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .main-title {

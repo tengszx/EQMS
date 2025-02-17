@@ -4,11 +4,14 @@ import { FileCog } from 'lucide-react'; // Import the icon
 
 const ProcessWidget = () => {
     return (
-        <div className="process-widget">
-            <h1 className="process-title">
-                <FileCog className="item-icon" /> {/* Place the icon here */}
-                Process Monitoring
-            </h1>
+        <div className="widget"> {/* Changed class name to match the DocumentWidget */}
+            <FileCog className="widget-icon" />
+            <div className="widget-header">
+                <div className="widget-name">Process Monitoring</div> {/* Corrected closing tag */}
+                <div className="widget-settings"> {/* Moved button inside the settings div */}
+                    <button>⋮</button>
+                </div>
+            </div>
         </div>
     );
 };
