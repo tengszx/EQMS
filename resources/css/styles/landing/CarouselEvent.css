@@ -2,8 +2,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* Align items at the top */
+    justify-content: flex-start; 
     padding: 20px;
+<<<<<<< Updated upstream
     background-color: white; /* Background color */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Shadow for the container */
     border-radius: 10px; /* Rounded corners */
@@ -12,44 +13,54 @@
     max-width: 100%; /* Max width for larger screens */
     height: 400px; /* Increased height for the container */
     margin: 50px; /* Center the container */
+=======
+    background-color: white; 
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
+    border-radius: 10px; 
+    position: relative; 
+    width: 95%; 
+    max-width: 100%; 
+    height: 400px; 
+    margin: auto; 
+>>>>>>> Stashed changes
 }
 
 .carousel-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* Center items vertically */
-    flex-grow: 1; /* Allow content to grow */
+    justify-content: center; 
+    flex-grow: 1; 
 }
 
 .carousel-item {
     margin: 20px 0;
-    text-align: center; /* Center the text */
+    text-align: center; 
 }
 
 .carousel-footer {
     display: flex;
-    flex-direction: column; /* Stack dots and buttons */
-    align-items: center; /* Center footer content */
-    width: 100%; /* Make the footer take full width */
+    flex-direction: column; 
+    align-items: center; 
+    width: 100%; 
 }
 
 .carousel-dots {
     display: flex;
     justify-content: center;
-    margin-top: auto; /* Push dots to the bottom */
+    margin-top: auto; 
 }
 
 .dot {
     height: 12px;
     width: 12px;
     margin: 0 5px;
-    background-color: #bbb; /* Inactive dot color */
-    border-radius: 50%; /* Circle shape */
+    background-color: #bbb; 
+    border-radius: 50%; 
     display: inline-block;
     cursor: pointer;
 }
 
 .dot.active {
-    background-color: #717171; /* Active dot color */
+    background-color: #717171; 
 }
