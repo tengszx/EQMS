@@ -11,7 +11,7 @@
     width: 90%; /* Increased width for the container */
     max-width: 100%; /* Max width for larger screens */
     height: 400px; /* Increased height for the container */
-    margin: auto; /* Center the container */
+    margin: 50px; /* Center the container */
 }
 
 .carousel-content {

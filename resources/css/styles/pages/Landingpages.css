@@ -1,0 +1,111 @@
+/* CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Widget Section Styles */
+.widget-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+    padding: 20px 40px;
+    background-color: #fff;
+}
+
+/* Title Container Styles */
+.widget-title-container {
+    margin-bottom: 40px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Widget Title Styles - Keeping as requested but increasing size */
+.widget-title {
+    margin: 20px 0;
+    color: rgb(37, 150, 190); /* Keep title color as requested */
+    text-align: center;
+    display: block;
+    font-size: 2.5em;
+    font-weight: 600;
+}
+
+/* Widget Grid Styles */
+.widget-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px; /* Reduced gap between widgets */
+    justify-items: center;
+    align-items: start;
+    width: 100%;
+    max-width: 1400px;
+}
+
+/* Individual Widget Styles */
+.widget {
+    background-color: #fff5eb;
+    border-radius: 12px;
+    padding: 30px;
+    width: 100%;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Change text color to black */
+.widget-name {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #000; /* Set to black */
+    margin-bottom: 4px;
+}
+
+.widget-description {
+    font-size: 0.9em;
+    color: #000; /* Set to black */
+}
+
+/* Settings Button Container */
+.widget-settings {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.widget-settings button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    color: #666;
+}
+
+/* Centering the second-row widgets */
+.widget-grid > :nth-child(4),
+.widget-grid > :nth-child(5) {
+    grid-column: span 1; /* Each takes one column */
+    justify-self: center; /* Center the widgets */
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .widget-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .widget-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .widget-section {
+        padding: 20px;
+    }
+}

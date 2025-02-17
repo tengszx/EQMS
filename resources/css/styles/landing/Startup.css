@@ -1,24 +1,28 @@
 .startup-container {
     text-align: center;
     padding: 50px;
-    background-color: white; /* Background color */
+    background-color: rgb(37, 150, 190); /* Updated background color */
     box-shadow: 0 2px 10px rgba(255, 255, 255, 0.5); /* White shadow with transparency */
     border-radius: 10px; /* Optional: Rounded corners */
+    margin-top: 10px;
 }
 
 .main-title {
     font-size: 3em; /* H1 size */
     margin: 0;
+    color: white; /* Set text color to white */
 }
 
 .sub-title {
     font-size: 1.5em; /* Smaller size for H2 */
     margin: 10px 0;
+    color: white; /* Set text color to white */
 }
 
 .footer-text {
     font-size: 0.9em; /* Smaller size for paragraph */
     margin: 10px 0;
+    color: white; /* Set text color to white */
 }
 
 .learn-more-button {
