@@ -10,7 +10,7 @@
     display: grid; /* Changed to grid */
     grid-template-columns: 1fr; /* Single column for the section */
     gap: 20px; /* Set gap to 20px */
-    margin-top: 40px;
+    margin-top: 10px;
     padding: 20px 40px;
     background-color: #fff;
     width: 100%; /* Ensure full width */
@@ -88,10 +88,11 @@
 .system-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* 2 columns maximum */
-    gap: 20px; /* Set space between items to 20px */
+    gap: 10px; /* Set space between items to 20px */
     justify-items: start; /* Align items to the left */
     margin-left: 50px;
     margin-right: 500px;
+    margin-top: 15px;
 }
 
 /* Responsive Design */
