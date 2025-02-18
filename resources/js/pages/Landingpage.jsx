@@ -12,6 +12,7 @@ import TrackWidget from '../component/landing/TrackWidget';
 import SystemMaintenance from '../component/landing/SystemMaintenance';
 import Updates from '../component/landing/Updates';
 import NewFeatures from '../component/landing/NewFeatures';
+import Calendar from '../component/landing/Calendar';
 import '../../css/styles/pages/Landingpages.css';
 
 const LandingPage = () => {
@@ -35,6 +36,7 @@ const LandingPage = () => {
             </div>
             <div className="system-container">
                 <SystemMaintenance />
+                <Calendar />
                 <Updates />
                 <NewFeatures />
             </div>

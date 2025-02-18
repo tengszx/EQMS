@@ -1,0 +1,50 @@
+.calendar-container {
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    width: 600px;  /* Increased from 500px */
+    height: 500px; /* Increased from 410px */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Keep all other styles exactly the same */
+.weekdays-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.75rem;
+    flex-grow: 1;
+}
+
+.day-button {
+    padding: 0.75rem;
+    text-align: center;
+    border-radius: 6px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid transparent;
+    font-size: 1.1rem;
+}
+
+.schedule-panel {
+    position: absolute;
+    left: -370px;
+    top: 0;
+    width: 350px;
+    height: 500px;
+    border: 2px solid #dee2e6;
+    border-radius: 12px;
+}
