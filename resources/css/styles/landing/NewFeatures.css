@@ -1,0 +1,42 @@
+.section-wrapper {
+    padding: 24px;
+    background-color: white;
+    width: fit-content;
+    margin-top: 20px; /* Added margin on top */
+}
+
+.features-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 400px;
+    padding: 30px;
+    border-radius: 12px;
+    background-color: white;
+    width: 400px;
+    border: 1px solid rgba(0, 0, 0, 0.2); /* Added a border for better visibility */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.features-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #1f2937;
+    margin: 0;
+}
+
+.feature-card {
+    width: 100%;
+    background-color: #f1f5f9;
+    border-radius: 16px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+}
+
+.card-text {
+    color: #4b5563;
+    font-size: 0.9375rem;
+    font-weight: 400;
+}

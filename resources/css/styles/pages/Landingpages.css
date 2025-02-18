@@ -7,57 +7,61 @@
 
 /* Widget Section Styles */
 .widget-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid; /* Changed to grid */
+    grid-template-columns: 1fr; /* Single column for the section */
+    gap: 20px; /* Set gap to 20px */
     margin-top: 40px;
     padding: 20px 40px;
     background-color: #fff;
+    width: 100%; /* Ensure full width */
+}
+
+/* Widget Grid Styles */
+.widget-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+    gap: 20px; /* Set gap to 20px */
+    justify-items: center; /* Center items */
+    align-items: start;
+    width: 100%;
+    max-width: 2000px;
+    /* Remove border and shadow */
+    /* border: 2px solid rgba(0, 0, 0, 0.4); Increased border size */
+    /* border-radius: 12px; Added border radius */
+    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); Added shadow */
+    padding: 20px; /* Padding inside the grid */
 }
 
 /* Title Container Styles */
 .widget-title-container {
-    margin-bottom: 40px;
+    margin-bottom: 10px;
     width: 100%;
     text-align: center;
 }
 
 /* Widget Title Styles */
 .widget-title {
-    margin: 20px 0;
+    margin: 0; /* Removed margin to reduce space */
     color: rgb(37, 150, 190); /* Keep title color as requested */
     text-align: center;
-    display: block;
     font-size: 2.5em;
     font-weight: 600;
-}
-
-/* Widget Grid Styles */
-.widget-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px; /* Reduced gap between widgets for a tighter layout */
-    justify-items: center;
-    align-items: start;
-    width: 100%;
-    max-width: 1400px;
 }
 
 /* Individual Widget Styles */
 .widget {
     background-color: #fff5eb;
     border-radius: 12px;
-    padding: 30px;
+    padding: 15px; /* Reduced padding for a tighter fit */
     width: 100%; /* Full width for flexibility */
     max-width: 300px; /* Optional: Set a max width for better layout */
     min-height: 120px;
     display: flex;
     align-items: center;
-    gap: 15px;
     position: relative;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s, box-shadow 0.2s;
-    margin: 10px auto; /* Centering the widget itself */
+    margin: 3px 0; /* Changed to only vertical margin */
 }
 
 /* Change text color to black */
@@ -80,27 +84,30 @@
     right: 20px;
 }
 
-/* Centering and Adjusting Spacing for Widgets 4 and 5 */
-.widget-grid > :nth-child(4) {
-    grid-column: 1; /* Keep in the first column */
-    justify-self: center; /* Center the widget */
-}
-
-.widget-grid > :nth-child(5) {
-    grid-column: 2; /* Move to the second column */
-    justify-self: center; /* Center the widget */
+/* System Container Styles */
+.system-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns maximum */
+    gap: 20px; /* Set space between items to 20px */
+    justify-items: start; /* Align items to the left */
+    margin-left: 50px;
+    margin-right: 500px;
 }
 
 /* Responsive Design */
 @media (max-width: 1200px) {
     .widget-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr); /* Change to 2 columns on medium screens */
+    }
+
+    .system-container {
+        grid-template-columns: 1fr; /* Stack items on smaller screens */
     }
 }
 
 @media (max-width: 768px) {
     .widget-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* Change to single column on small screens */
     }
     
     .widget-section {

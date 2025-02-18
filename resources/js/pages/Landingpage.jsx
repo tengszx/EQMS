@@ -1,3 +1,4 @@
+// LandingPage.jsx
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import Header from '../../js/component/landing/Header';
@@ -8,6 +9,9 @@ import ReportingWidget from '../component/landing/ReportingWidget';
 import ProcessWidget from '../component/landing/ProcessWidget';
 import GenerateWidget from '../component/landing/GenerateWidget';
 import TrackWidget from '../component/landing/TrackWidget';
+import SystemMaintenance from '../component/landing/SystemMaintenance';
+import Updates from '../component/landing/Updates';
+import NewFeatures from '../component/landing/NewFeatures';
 import '../../css/styles/pages/Landingpages.css';
 
 const LandingPage = () => {
@@ -19,16 +23,20 @@ const LandingPage = () => {
                 <CarouselEvent /> 
             </div>
             <div className="widget-section">
-                <div className="widget-title-container">
-                    <h2 className="widget-title">Overview and Features</h2>
-                </div>
+            <h2 className="widget-title">Overview and Features</h2>
                 <div className="widget-grid">
+                    
                     <DocumentWidget /> 
                     <ReportingWidget />
                     <ProcessWidget />
                     <GenerateWidget />
                     <TrackWidget />
                 </div>
+            </div>
+            <div className="system-container">
+                <SystemMaintenance />
+                <Updates />
+                <NewFeatures />
             </div>
         </div>
     );
