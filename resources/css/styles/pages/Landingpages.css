@@ -7,29 +7,25 @@
 
 /* Widget Section Styles */
 .widget-section {
-    display: grid; /* Changed to grid */
-    grid-template-columns: 1fr; /* Single column for the section */
-    gap: 20px; /* Set gap to 20px */
+    display: grid; 
+    grid-template-columns: 1fr; 
+    gap: 20px; 
     margin-top: 10px;
     padding: 20px 40px;
     background-color: #fff;
-    width: 100%; /* Ensure full width */
+    width: 100%; 
 }
 
 /* Widget Grid Styles */
 .widget-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columns */
-    gap: 20px; /* Set gap to 20px */
-    justify-items: center; /* Center items */
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 20px; 
+    justify-items: center; 
     align-items: start;
     width: 100%;
     max-width: 2000px;
-    /* Remove border and shadow */
-    /* border: 2px solid rgba(0, 0, 0, 0.4); Increased border size */
-    /* border-radius: 12px; Added border radius */
-    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); Added shadow */
-    padding: 20px; /* Padding inside the grid */
+    padding: 20px; 
 }
 
 /* Title Container Styles */
@@ -41,8 +37,8 @@
 
 /* Widget Title Styles */
 .widget-title {
-    margin: 0; /* Removed margin to reduce space */
-    color: rgb(37, 150, 190); /* Keep title color as requested */
+    margin: 0; 
+    color: rgb(37, 150, 190); 
     text-align: center;
     font-size: 2.5em;
     font-weight: 600;
@@ -52,29 +48,29 @@
 .widget {
     background-color: #fff5eb;
     border-radius: 12px;
-    padding: 15px; /* Reduced padding for a tighter fit */
-    width: 100%; /* Full width for flexibility */
-    max-width: 300px; /* Optional: Set a max width for better layout */
+    padding: 15px; 
+    width: 100%; 
+    max-width: 300px; 
     min-height: 120px;
     display: flex;
     align-items: center;
     position: relative;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s, box-shadow 0.2s;
-    margin: 3px 0; /* Changed to only vertical margin */
+    margin: 3px 0; 
 }
 
 /* Change text color to black */
 .widget-name {
     font-size: 1.2em;
     font-weight: 600;
-    color: #000; /* Set to black */
+    color: #000; 
     margin-bottom: 4px;
 }
 
 .widget-description {
     font-size: 0.9em;
-    color: #000; /* Set to black */
+    color: #000; 
 }
 
 /* Settings Button Container */
@@ -86,32 +82,39 @@
 
 /* System Container Styles */
 .system-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 columns maximum */
-    gap: 10px; /* Set space between items to 20px */
-    justify-items: start; /* Align items to the left */
+    display: flex; /* Use flexbox for alignment */
+    justify-content: space-between; /* Space between left and right containers */
     margin-left: 50px;
-    margin-right: 500px;
+    margin-right: 50px; 
     margin-top: 15px;
+}
+
+.system-left {
+    flex: 1; /* Take up remaining space on the left */
+    margin-right: 20px; /* Space between left and right sections */
+}
+
+.system-right {
+    width: 600px; /* Fixed width for the calendar container */
 }
 
 /* Responsive Design */
 @media (max-width: 1200px) {
     .widget-grid {
-        grid-template-columns: repeat(2, 1fr); /* Change to 2 columns on medium screens */
+        grid-template-columns: repeat(2, 1fr); 
     }
 
     .system-container {
-        grid-template-columns: 1fr; /* Stack items on smaller screens */
+        flex-direction: column; /* Stack items on smaller screens */
     }
 }
 
 @media (max-width: 768px) {
     .widget-grid {
-        grid-template-columns: 1fr; /* Change to single column on small screens */
+        grid-template-columns: 1fr; 
     }
     
     .widget-section {
         padding: 20px;
     }
-}
+}   

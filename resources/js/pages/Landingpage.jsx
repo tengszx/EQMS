@@ -24,9 +24,8 @@ const LandingPage = () => {
                 <CarouselEvent /> 
             </div>
             <div className="widget-section">
-            <h2 className="widget-title">Overview and Features</h2>
+                <h2 className="widget-title">Overview and Features</h2>
                 <div className="widget-grid">
-                    
                     <DocumentWidget /> 
                     <ReportingWidget />
                     <ProcessWidget />
@@ -35,10 +34,14 @@ const LandingPage = () => {
                 </div>
             </div>
             <div className="system-container">
-                <SystemMaintenance />
-                <Calendar />
-                <Updates />
-                <NewFeatures />
+                <div className="system-left">
+                    <SystemMaintenance />
+                    <NewFeatures />  {/* NewFeatures is now next to SystemMaintenance */}
+                    <Updates />
+                </div>
+                <div className="system-right">
+                    <Calendar />
+                </div>
             </div>
         </div>
     );
