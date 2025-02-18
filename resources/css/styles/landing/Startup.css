@@ -1,14 +1,17 @@
 .startup-container {
     text-align: center;
-    padding: 50px;
-    background-color: rgb(37, 150, 190); /* Updated background color */
-    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.5); /* White shadow with transparency */
-    border-radius: 10px; /* Optional: Rounded corners */
-    margin-top: 5px;
+    padding: 80px; /* Increased padding */
+    width: 100%; /* Makes container take up 90% of parent width */
+    max-width: 2000px; /* Maximum width container can grow to */
+    min-height: 700px; /* Minimum height of container */
+    background-color: rgb(37, 150, 190);
+    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    margin: 5px auto; /* Changed margin to center container horizontally */
 }
 
 .main-title {
-    font-size: 3em; /* H1 size */
+    font-size: 4em; /* H1 size */
     margin: 0;
     color: white; /* Set text color to white */
 }
