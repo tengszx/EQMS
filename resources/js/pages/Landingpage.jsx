@@ -13,7 +13,8 @@ import SystemMaintenance from '../component/landing/SystemMaintenance';
 import Updates from '../component/landing/Updates';
 import NewFeatures from '../component/landing/NewFeatures';
 import Calendar from '../component/landing/Calendar';
-import '../../css/styles/pages/Landingpages.css';
+import Footer from '../component/landing/Footerlanding';
+import '../../css/styles/pages/Landingpage.css';
 
 const LandingPage = () => {
     return (
@@ -43,6 +44,7 @@ const LandingPage = () => {
                     <Calendar />
                 </div>
             </div>
+            <Footer /> {/* Add the Footer component here */}
         </div>
     );
 };

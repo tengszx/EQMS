@@ -96,6 +96,7 @@
 
 .system-right {
     width: 600px; /* Fixed width for the calendar container */
+    margin-left: 80px;
 }
 
 /* Responsive Design */
