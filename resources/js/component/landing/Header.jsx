@@ -24,6 +24,19 @@ const LPHeader = () => {
 
     return (
         <header className={`header ${isVisible ? 'visible' : 'hidden'}`}>
+            <style type="text/css">
+                {`
+                    @font-face {
+                        font-family: "Helvetica";
+                        src: url("https://candyfonts.com/wp-data/2018/10/26/11538/HELR45W.ttf") format("woff"),
+                             url("https://candyfonts.com/wp-data/2018/10/26/11538/HELR45W.ttf") format("opentype"),
+                             url("https://candyfonts.com/wp-data/2018/10/26/11538/HELR45W.ttf") format("truetype");
+                    }
+                    .header {
+                        font-family: "Helvetica", sans-serif; /* Use Helvetica */
+                    }
+                `}
+            </style>
             <div className="header-container">
                 <div className="left-container">
                     <div className="logo-container">
