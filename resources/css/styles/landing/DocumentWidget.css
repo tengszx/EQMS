@@ -8,7 +8,14 @@
     gap: 15px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s, box-shadow 0.2s;
-    margin-left: 1000px;
+    margin-left: 1000px; /* Adjust this as needed */
+}
+
+/* New hover effect */
+.widget:hover {
+    transform: translateY(-2px); /* Slightly raise the widget */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Increased shadow on hover */
+    border: 2px solid #F76680; /* Optional border color when hovered */
 }
 
 .widget-icon {

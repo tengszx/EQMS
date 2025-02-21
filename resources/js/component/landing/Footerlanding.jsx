@@ -43,7 +43,7 @@ const Footer = () => {
             <p className="company-description">
             The National Research Council of the Philippines (NRCP) promotes and supports 
             fundamental or basic research for the continuing total improvement of the research capability of 
-            individual scientists or group of scientists; provides advice on problems and issues of national interest; promotes scientific and technologica
+            individual scientists or group of scientists; provides advice on problems and issues of national interest; promotes scientific and technological
             </p>
             <div className="social-links">
               <a 

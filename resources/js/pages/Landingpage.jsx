@@ -1,4 +1,3 @@
-// LandingPage.jsx
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import Header from '../../js/component/landing/Header';
@@ -9,6 +8,7 @@ import ReportingWidget from '../component/landing/ReportingWidget';
 import ProcessWidget from '../component/landing/ProcessWidget';
 import GenerateWidget from '../component/landing/GenerateWidget';
 import TrackWidget from '../component/landing/TrackWidget';
+import QuickAccessSection from '../component/landing/QuickAccessSection'; // Importing QuickAccessSection
 import SystemMaintenance from '../component/landing/SystemMaintenance';
 import Updates from '../component/landing/Updates';
 import NewFeatures from '../component/landing/NewFeatures';
@@ -34,17 +34,20 @@ const LandingPage = () => {
                     <TrackWidget />
                 </div>
             </div>
+            <div className="quick-access-wrapper">
+                <QuickAccessSection /> {/* Use the imported QuickAccessSection */}
+            </div>
             <div className="system-container">
                 <div className="system-left">
                     <SystemMaintenance />
-                    <NewFeatures />  {/* NewFeatures is now next to SystemMaintenance */}
+                    <NewFeatures />
                     <Updates />
                 </div>
                 <div className="system-right">
                     <Calendar />
                 </div>
             </div>
-            <Footer /> {/* Add the Footer component here */}
+            <Footer />
         </div>
     );
 };

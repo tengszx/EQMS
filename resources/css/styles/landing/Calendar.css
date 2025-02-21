@@ -2,32 +2,33 @@
     display: flex;
     gap: 1rem;
     position: relative;
-    width: fit-content;
+    width: fit-content; /* Keeps the wrapper's width tight around its content */
 }
 
 .calendar-container {
-    padding: 2rem;
+    padding: 0.5rem; /* Reduced padding for a more compact look */
     background-color: #f9f9f9;
     border: 1px solid #dee2e6;
     border-radius: 8px;
-    width: 400px;
-    height: 400px;
+    width: 400px; /* Decreased width */
+    height: 400px; /* Decreased height */
     display: flex;
     flex-direction: column;
     margin-bottom: 5px;
-
+    margin-right: 20px; /* Added right margin to prevent exceeding */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adjusted box shadow */
 }
 
 .calendar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem; /* Reduced margin for a tighter layout */
 }
 
 .icon {
-    width: 24px;
-    height: 24px;
+    width: 20px; /* Slightly smaller icon size */
+    height: 20px;
     cursor: pointer;
     color: #007bff;
 }
@@ -35,26 +36,26 @@
 .weekdays-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
+    gap: 0.3rem; /* Reduced gap for a tighter layout */
+    margin-bottom: 0.3rem; /* Reduced margin */
 }
 
 .weekday {
     text-align: center;
     font-weight: 500;
     color: #666;
-    padding: 0.5rem;
+    padding: 0.3rem; /* Reduced padding */
 }
 
 .days-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 0.5rem;
+    gap: 0.3rem; /* Reduced gap */
     flex-grow: 1;
 }
 
 .day-button {
-    padding: 0.5rem;
+    padding: 0.2rem; /* Further reduced padding */
     text-align: center;
     border-radius: 4px;
     background-color: #fff;
@@ -65,6 +66,9 @@
     align-items: center;
     justify-content: center;
     border: 1px solid transparent;
+    font-size: 0.65em; /* Reduced font size for smaller buttons */
+    max-width: 40px; /* Set a max width to prevent overflow */
+    max-height: 40px; /* Set a max height to prevent overflow */
 }
 
 .day-button:hover:not(.empty) {
@@ -88,10 +92,10 @@
 
 .schedule-panel {
     position: absolute;
-    left: -320px; /* Positioned right after the calendar */
+    left: -280px; /* Adjusted position for better fit */
     top: 0;
-    width: 300px;
-    height: 450px;
+    width: 250px; /* Adjusted width */
+    height: 400px; /* Adjusted height */
     background-color: white;
     border-radius: 8px;
     border: 1px solid #dee2e6;
@@ -111,13 +115,13 @@
 }
 
 .schedule-header {
-    padding: 1rem;
+    padding: 0.5rem; /* Reduced padding */
     border-bottom: 1px solid #dee2e6;
     background-color: #f8f9fa;
 }
 
 .schedule-content {
-    padding: 1rem;
+    padding: 0.5rem; /* Reduced padding */
     overflow-y: auto;
     flex-grow: 1;
 }
@@ -125,10 +129,10 @@
 .no-schedule {
     color: #6c757d;
     text-align: center;
-    margin-top: 2rem;
+    margin-top: 1rem; /* Reduced margin */
 }
 
 /* Optional: Add a subtle box shadow when the panel is visible */
 .schedule-panel.visible {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
 }
