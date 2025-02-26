@@ -8,6 +8,6 @@
 <body>
     <div id="dashboard-root"></div>
 @viteReactRefresh
-@vite('resources/js/pages/dashboard.jsx')
+@vite('resources/js/pages/Dashboard.jsx')
 </body>
 </html>

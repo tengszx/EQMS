@@ -1,0 +1,112 @@
+.admin-sidebar {
+    background: #1e293b;
+    width: 45px; /* Collapsed width */
+    height: 96vh; /* Full height */
+    padding: 20px;
+    position: fixed; /* Fix the sidebar to the left */
+    left: 0;
+    top: 0;
+    transition: width 0.3s ease; /* Animation for width change */
+    z-index: 1000;
+    overflow: hidden; /* Prevents overflow when collapsed */
+}
+
+.admin-sidebar.sidebar-expanded {
+    width: 260px; /* Expanded width */
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.sidebar-title {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    transition: opacity 0.3s ease; /* Animation for opacity */
+    white-space: nowrap;
+    margin: 0;
+}
+
+.menu-list {
+    margin-top: 30px;
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.menu-item {
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 5px;
+    transition: all 0.2s ease;
+}
+
+.menu-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.menu-item.active {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.menu-content {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    gap: 15px;
+}
+
+.menu-icon {
+    color: #cbd5e1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+}
+
+.menu-title {
+    color: #cbd5e1;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+/* Dropdown Styles */
+.dropdown-list {
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 0 0;
+    background: #2c3e50; /* Background color for dropdown */
+    border-radius: 8px;
+}
+
+.dropdown-item {
+    padding: 10px 15px;
+    color: #cbd5e1;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .admin-sidebar {
+        width: 45px; /* Collapsed width */
+    }
+
+    .admin-sidebar.sidebar-expanded {
+        width: 260px; /* Expanded width */
+    }
+}
