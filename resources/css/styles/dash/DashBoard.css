@@ -7,23 +7,29 @@
   background: #f1f5f9;
 }
 
-.admin-main-content {
-  width: calc(100% - 260px); /* Width minus the sidebar width */
-  height: 100%; /* Full height */
-  margin-top: 50px; /* Margin from the top */
-  margin-right: 10px; /* Adjusted right margin */
-  padding: 30px;
-  transition: margin-left 0.3s ease;
-  background-color: #ffffff; /* Ensure background color is set */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 100%;
+/* New container to hold both header and main content */
+.admin-container {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 260px);
   margin-left: 85px;
+  transition: margin-left 0.3s ease, width 0.3s ease;
 }
 
-.admin-main-content.collapsed {
-  width: calc(100% - 45px); /* Width minus collapsed sidebar */
-  margin-left: 45px; /* Adjust for collapsed sidebar */
-  margin-right: 15px; /* Adjusted right margin */
+.admin-container.collapsed {
+  width: calc(100% - 45px);
+  margin-left: 45px;
+}
+
+.admin-main-content {
+  height: 50%;
+  margin-top: 20px;
+  margin-right: 10px;
+  padding: 30px;
+  background-color: #D3D3D3;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  width: 107%; /* Changed to 100% to ensure proper alignment */
 }
 
 .sidebar-toggle {
@@ -45,22 +51,31 @@
 }
 
 .main-content {
-  width: 100%; /* Full width of the container */
-  height: calc(100% - 50px); /* Full height minus top margin */
-  border-radius: 8px;
-  padding: 20px;
+  width: 100%; /* Adjusted to 100% for proper fitting */
+  height: calc(100% - 50px);
 }
 
-h2 {
-  color: #1e293b;
-  margin-bottom: 20px;
+/* Removed h2 styles since it's no longer used in the Dashboard */
+
+/* Added styles for Headerboard */
+.dashboard-header {
+  margin-top: 50px; /* Space from the top */
+  padding: 0 30px; /* Match padding with main content */
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .admin-container {
+    margin-left: 45px;
+    width: calc(100% - 45px);
+  }
+  
   .admin-main-content {
-      margin-left: 45px; /* Adjust for collapsed sidebar */
-      width: calc(100% - 45px); /* Adjust for collapsed sidebar */
-      margin-right: 15px; /* Adjusted right margin for smaller screens */
+    margin-right: 15px;
+    padding: 20px;
+  }
+  
+  .dashboard-header {
+    padding: 0 20px;
   }
 }

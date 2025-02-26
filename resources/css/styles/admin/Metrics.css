@@ -1,0 +1,101 @@
+/* DashboardMetrics.css */
+.dashboard-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    padding-top: 120px;
+}
+
+.metrics-row {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    justify-content: center; /* Center the cards */
+}
+
+.metric-card {
+    display: flex;
+    align-items: center;
+    padding: 35px; /* Increased padding for larger cards */
+    background-color: #0f172a; /* Dark blue background */
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    flex: 1; /* Allow cards to grow equally */
+    min-width: 0;
+    max-width: 450px; /* Increased max width for larger cards */
+    margin: 0 10px; /* Add margin for spacing */
+   
+}
+
+.metric-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.metric-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px; /* Size for the icon */
+    height: 60px; /* Size for the icon */
+    border-radius: 50%;
+    margin-right: 20px; /* Margin for spacing */
+    background-color: rgba(138, 75, 175, 0.3); /* Purple background */
+}
+
+.documents .metric-icon,
+.cases .metric-icon {
+    background-color: rgba(138, 75, 175, 0.3); /* Purple for documents and cases */
+}
+
+.metric-content {
+    flex: 1;
+}
+
+.metric-content h3 {
+    margin: 0 0 5px 0;
+    font-size: 20px; /* Increased size for better visibility */
+    font-weight: 500;
+}
+
+.metric-value {
+    margin: 0;
+    font-size: 24px; /* Increased size for better visibility */
+    font-weight: 600;
+}
+
+/* Padding for the main content */
+.admin-main-content {
+    padding-top: 40px; /* Added padding to move the cards down */
+}
+
+/* Training Compliance Gauge */
+.training-compliance {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+
+/* Audits and Regulatory Cards */
+.audits, .regulatory {
+    justify-content: center;
+    text-align: center;
+    padding: 15px 20px;
+    flex: 1; /* Ensure they take equal space */
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .metrics-row {
+        flex-direction: column;
+    }
+    
+    .metric-card {
+        width: 100%;
+    }
+}
