@@ -3,7 +3,8 @@ import { ArrowRight, ArrowLeft } from 'lucide-react';
 import '../../css/styles/dash/Dashboard.css'; 
 import AdminSidebar from '../component/admin/AdminSidebar'; 
 import Headerboard from '../component/admin/Headerboard';
-import Metrics from '../component/admin/Metrics'; // Import the metrics component
+import Metrics from '../component/admin/Metrics'; 
+import DocumentControl from '../component/admin/Documentcontrol';
 import { createRoot } from 'react-dom/client';
 
 const Dashboard = () => {
@@ -18,11 +19,22 @@ const Dashboard = () => {
         setActiveMenu(menu);
     };
     
+    // Render content based on active menu
+    const renderContent = () => {
+        switch(activeMenu) {
+            case "Dashboard":
+                return <Metrics />;
+            case "Document Control":
+                return <DocumentControl />;
+            // Add other cases as needed
+            default:
+                return <Metrics />;
+        }
+    };
+    
     return (
         <div className="admin-root-container">
             <AdminSidebar 
-                isExpanded={sidebarOpen} 
-                onToggle={toggleSidebar} 
                 activeMenu={activeMenu}
                 onMenuSelect={handleMenuSelect}
             />
@@ -33,7 +45,7 @@ const Dashboard = () => {
                 <Headerboard /> {/* Header is outside main-content */}
                 <div className="admin-main-content">
                     <div className="main-content">
-                        <Metrics /> {/* Add the metrics component here */}
+                        {renderContent()} {/* Render content based on activeMenu */}
                     </div>
                 </div>
             </div>

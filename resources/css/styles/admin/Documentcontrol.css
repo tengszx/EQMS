@@ -1,0 +1,163 @@
+/* DocumentControl.css */
+.document-control-container {
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    position: relative;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-sizing: border-box;
+    overflow: hidden;
+    margin-left: 0; /* Reset any left margin */
+    display: flex;
+    flex-direction: column;
+}
+
+.document-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 0 5px;
+}
+
+.document-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.filter-container {
+    display: flex;
+    align-items: center;
+}
+
+.filter-input {
+    padding: 8px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 180px;
+    outline: none;
+}
+
+.document-table {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 400px; /* Add a minimum height to maintain consistent size */
+}
+
+.table-body {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 350px; /* Set minimum height for table body */
+}
+
+.table-header {
+    display: flex;
+    background-color: #f7f9fc;
+    padding: 10px 16px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.table-row {
+    display: flex;
+    padding: 10px 16px;
+    border-bottom: 1px solid #e0e0e0;
+    background-color: white;
+    align-items: center;
+    transition: background-color 0.2s ease;
+}
+
+.table-row.selected {
+    background-color: #e7effd;
+}
+
+.table-row:hover {
+    background-color: #f5f8ff;
+}
+
+.folder-col, .name-col, .version-col, .role-col {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.folder-col {
+    width: 25%;
+    display: flex;
+    align-items: center;
+}
+
+.folder-icon {
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.name-col {
+    width: 30%;
+}
+
+.version-col {
+    width: 25%;
+}
+
+.role-col {
+    width: 20%;
+}
+
+.upload-button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+.upload-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #4d7dfc;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(77, 125, 252, 0.3);
+    transition: all 0.2s ease;
+}
+
+.upload-button:hover {
+    background-color: #3a6ae0;
+    box-shadow: 0 4px 12px rgba(77, 125, 252, 0.4);
+}
+
+.upload-button span {
+    margin-left: 8px;
+    font-weight: 500;
+}
+
+/* Add or modify these styles in your DocumentControl.css file */
+.no-files-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    color: #666;
+    font-weight: 500;
+    font-size: 15px;
+    background-color: white;
+}

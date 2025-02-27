@@ -5,8 +5,8 @@ import '../../../css/styles/admin/Headerboard.css';
 const Headerboard = () => {
   const [showLogout, setShowLogout] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [logoutTimeout, setLogoutTimeout] = useState(null);
-  const [notificationTimeout, setNotificationTimeout] = useState(null);
+  const logoutTimeout = null;
+  const notificationTimeout = null;
 
   const handleMouseEnterLogout = () => {
     if (logoutTimeout) clearTimeout(logoutTimeout);
@@ -17,7 +17,7 @@ const Headerboard = () => {
     const timeout = setTimeout(() => {
       setShowLogout(false);
     }, 2000); // 2 seconds timeout
-    setLogoutTimeout(timeout);
+    logoutTimeout(timeout);
   };
 
   const handleMouseEnterNotifications = () => {
@@ -29,14 +29,14 @@ const Headerboard = () => {
     const timeout = setTimeout(() => {
       setShowNotifications(false);
     }, 2000); // 2 seconds timeout
-    setNotificationTimeout(timeout);
+    notificationTimeout(timeout);
   };
 
   return (
     <div className="header-container">
       <div className="dashboard-header">
         <div className="header-left">
-          {/* Removed the Main Board heading */}
+          <h1 className="dashboard-title">Dashboard</h1> {/* Added Dashboard title */}
         </div>
         <div className="header-right">
           <div className="search-container">
@@ -60,7 +60,7 @@ const Headerboard = () => {
                onMouseLeave={handleMouseLeaveLogout}>
             <img src="/images/profile.png" alt="Profile" className="profile-image" />
             <div 
-              className={`notification-dropdown logout-dropdown ${showLogout ? 'visible' : ''}`} // Changed class
+              className={`notification-dropdown logout-dropdown ${showLogout ? 'visible' : ''}`}
               onMouseEnter={handleMouseEnterLogout} 
               onMouseLeave={handleMouseLeaveLogout}
             >

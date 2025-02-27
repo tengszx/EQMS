@@ -2,19 +2,17 @@
 .header-container {
     background: linear-gradient(to right, #add8e6, #f5f5dc);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 5px 5px;
+    padding: 20px 2px; /* Increased top padding for visibility */
     border-radius: 8px;
-    width: 113%;
-    margin-top: -50px;
-    margin-bottom: -5px;
+    width: 110%; /* Set to 100% */
+    margin: 0; /* Removed margin to avoid overflow */       
 }
 
 .dashboard-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0;
-    background-color: transparent;
+    padding: 0 20px; /* Maintain horizontal padding */
     width: 100%;
     box-sizing: border-box;
 }
@@ -29,6 +27,7 @@
     position: relative;
     display: flex;
     align-items: center;
+    margin-right: 15px; 
 }
 
 .search-icon {
@@ -79,16 +78,15 @@
 
 .notification-dropdown {
     position: absolute;
-    left: -150px; /* Adjusted to move slightly right */
-    transform: translateX(0); /* Centering is removed */
-    background-color: rgba(255, 255, 255, 0.7); /* Transparent background */
+    left: -150px; 
+    background-color: rgba(255, 255, 255, 0.7); 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
     padding: 10px;
     margin-top: 5px;
     display: flex;
     flex-direction: column;
-    width: 250px; /* Kept the same width */
+    width: 250px; 
 }
 
 .notification-item {
@@ -97,7 +95,7 @@
 }
 
 .notification-item:hover {
-    background-color: rgba(0, 0, 0, 0.1); /* Highlight on hover */
+    background-color: rgba(0, 0, 0, 0.1); 
 }
 
 .profile-container {
@@ -115,19 +113,19 @@
 
 .logout-dropdown {
     position: absolute;
-    left: -120px; /* Adjusted to move slightly to the right */
-    background-color: rgba(255, 255, 255, 0.7); /* Transparent background */
+    left: -120px; 
+    background-color: rgba(255, 255, 255, 0.7); 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
-    padding: 8px; /* Adjusted padding */
+    padding: 8px; 
     margin-top: 5px;
-    display: none; /* Initially hidden */
+    display: none; 
     align-items: center;
-    width: 180px; /* Adjusted width for a more compact size */
+    width: 180px; 
 }
 
 .logout-dropdown.visible {
-    display: flex; /* Show when visible */
+    display: flex; 
 }
 
 .logout-icon {
