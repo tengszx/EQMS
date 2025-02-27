@@ -4,7 +4,7 @@
     flex-direction: column;
     gap: 20px;
     width: 100%;
-    padding-top: 120px;
+    padding-top: 0px;
 }
 
 .metrics-row {
@@ -27,7 +27,6 @@
     min-width: 0;
     max-width: 450px; /* Increased max width for larger cards */
     margin: 0 10px; /* Add margin for spacing */
-   
 }
 
 .metric-card:hover {
@@ -43,12 +42,16 @@
     height: 60px; /* Size for the icon */
     border-radius: 50%;
     margin-right: 20px; /* Margin for spacing */
-    background-color: rgba(138, 75, 175, 0.3); /* Purple background */
+    background-color: rgba(173, 216, 230, 0.3); /* Light blue background */
+    color: #1E90FF; /* Set a light blue color for the icon itself */
 }
 
+/* Override icon color for specific cases if needed */
+.users .metric-icon,
 .documents .metric-icon,
 .cases .metric-icon {
-    background-color: rgba(138, 75, 175, 0.3); /* Purple for documents and cases */
+    background-color: rgba(173, 216, 230, 0.3); /* Light blue background */
+    color: #1E90FF; /* Light blue icon color */
 }
 
 .metric-content {

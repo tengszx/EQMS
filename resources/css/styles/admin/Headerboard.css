@@ -1,29 +1,28 @@
 /* Headerboard.css */
 .header-container {
-    background-color: #ffffff; /* Background color for the header container */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
-    padding: 5px 20px; /* Reduced padding for height adjustment */
-    border-radius: 8px; /* Rounded corners for the container */
-    width: 108%; /* Ensure width is 100% */
-    margin-top: 6px;
+    background: linear-gradient(to right, #add8e6, #f5f5dc);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 5px 5px;
+    border-radius: 8px;
+    width: 113%;
+    margin-top: -50px;
     margin-bottom: -5px;
 }
 
 .dashboard-header {
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Center items vertically */
-    padding: 0; /* Removed padding for the header to reduce height */
-    background-color: transparent; /* Keep this transparent if needed */
-    width: 100%; /* Ensure it takes full width */
+    align-items: center;
+    padding: 0;
+    background-color: transparent;
+    width: 100%;
     box-sizing: border-box;
 }
-
 
 .header-right {
     display: flex;
     align-items: center;
-    gap: 15px; /* Adjusted gap for better spacing */
+    gap: 15px;
 }
 
 .search-container {
@@ -35,18 +34,18 @@
 .search-icon {
     position: absolute;
     left: 10px;
-    color: #64748b;
+    color: rgba(100, 116, 139, 0.7);
 }
 
 .search-input {
-    padding: 8px 8px 8px 35px; /* Keep padding as is for input */
-    border: 1px solid #e2e8f0;
+    padding: 8px 8px 8px 35px;
+    border: 1px solid rgba(226, 232, 240, 0.5);
     border-radius: 20px;
-    width: 250px; /* Fixed width for search input */
+    width: 250px;
     font-size: 14px;
     outline: none;
     transition: border-color 0.2s;
-    background-color: #f8fafc;
+    background-color: rgba(248, 250, 252, 0.8);
 }
 
 .search-input:focus {
@@ -78,8 +77,32 @@
     justify-content: center;
 }
 
+.notification-dropdown {
+    position: absolute;
+    left: -150px; /* Adjusted to move slightly right */
+    transform: translateX(0); /* Centering is removed */
+    background-color: rgba(255, 255, 255, 0.7); /* Transparent background */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 10px;
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    width: 250px; /* Kept the same width */
+}
+
+.notification-item {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.notification-item:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* Highlight on hover */
+}
+
 .profile-container {
     cursor: pointer;
+    position: relative;
 }
 
 .profile-image {
@@ -90,13 +113,34 @@
     border: 2px solid #e2e8f0;
 }
 
+.logout-dropdown {
+    position: absolute;
+    left: -120px; /* Adjusted to move slightly to the right */
+    background-color: rgba(255, 255, 255, 0.7); /* Transparent background */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 8px; /* Adjusted padding */
+    margin-top: 5px;
+    display: none; /* Initially hidden */
+    align-items: center;
+    width: 180px; /* Adjusted width for a more compact size */
+}
+
+.logout-dropdown.visible {
+    display: flex; /* Show when visible */
+}
+
+.logout-icon {
+    margin-right: 8px;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .search-input {
-        width: 180px; /* Adjust width for smaller screens */
+        width: 180px;
     }
     
     .header-right {
-        gap: 15px; /* Maintain spacing */
+        gap: 15px;
     }
 }

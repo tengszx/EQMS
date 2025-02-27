@@ -1,7 +1,6 @@
-
 // DashboardMetrics.jsx
 import React from 'react';
-import { Mail, Users, FileText, Calendar, CheckCircle } from 'lucide-react';
+import { Mail, Users, Hammer, MoveRight, NotebookText } from 'lucide-react';
 import '../../../css/styles/admin/Metrics.css';
 
 const DashboardMetrics = () => {
@@ -44,6 +43,9 @@ const DashboardMetrics = () => {
           className="metric-card compliance"
           onClick={() => handleCardClick('Training Compliance')}
         >
+          <div className="metric-icon">
+            <Hammer size={24} />
+          </div>
           <div className="metric-content training-compliance">
             <h3>Training Compliance</h3>
             <div className="gauge-container">
@@ -64,6 +66,9 @@ const DashboardMetrics = () => {
           className="metric-card audits"
           onClick={() => handleCardClick('Upcoming Audits')}
         >
+          <div className="metric-icon">
+            <MoveRight size={24} />
+          </div>
           <div className="metric-content">
             <h3>Upcoming Audits</h3>
             <p className="metric-value">3 Scheduled</p>
@@ -74,6 +79,9 @@ const DashboardMetrics = () => {
           className="metric-card regulatory"
           onClick={() => handleCardClick('Regulatory Compliance')}
         >
+          <div className="metric-icon">
+            <NotebookText size={24} />
+          </div>
           <div className="metric-content">
             <h3>Regulatory Compliance Status:</h3>
             <p className="metric-value">ISO 9001: Compliant</p>
