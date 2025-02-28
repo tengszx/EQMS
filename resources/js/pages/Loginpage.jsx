@@ -40,7 +40,7 @@ const LoginPage = () => {
         {/* Right side - Logo */}
         <div className="logo-container">
           <img 
-            src="/images/EQMS_LOGO-removebg.png" 
+            src="/images/NewEQMSLOGO.png" 
             alt="Logo" 
             className="logo"
           />

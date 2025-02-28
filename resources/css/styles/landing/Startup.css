@@ -1,3 +1,4 @@
+/* Keep your original styles */
 .startup-container {
     display: flex; /* Use flexbox for centering */
     flex-direction: column; /* Arrange children in a column */
@@ -17,6 +18,8 @@
     font-size: 4em; /* H1 size */
     margin: 0;
     color: darkblue; /* Set text color to dark blue */
+    text-align: center; /* Keep text centered */
+    width: 100%; /* Ensure full width */
 }
 
 .sub-title {
@@ -45,4 +48,39 @@
 .learn-more-button:hover {
     color: white; /* Change text color to white on hover */
     background-color: darkblue; /* Optional: Change background color on hover */
+}
+
+/* Add bubble effect styles */
+.bubble-letter {
+    transition: 0.35s font-weight, 0.35s color;
+    display: inline-block;
+    /* Add minimal letter spacing for cleaner look */
+    letter-spacing: -0.02em;
+}
+
+.bubble-letter:hover {
+    font-weight: 900;
+    color: rgb(0, 0, 128); /* Darker blue on hover */
+}
+
+/* Effect to the right */
+.bubble-letter:hover + .bubble-letter {
+    font-weight: 500;
+    color: rgb(65, 105, 225); /* Royal blue - medium effect */
+}
+
+.bubble-letter:hover + .bubble-letter + .bubble-letter {
+    font-weight: 300;
+    color: rgb(100, 149, 237); /* Cornflower blue - light effect */
+}
+
+/* Effect to the left - only use if browser supports :has() */
+.bubble-letter:has(+ .bubble-letter:hover) {
+    font-weight: 500;
+    color: rgb(65, 105, 225); /* Royal blue - medium effect */
+}
+
+.bubble-letter:has(+ .bubble-letter + .bubble-letter:hover) {
+    font-weight: 300;
+    color: rgb(100, 149, 237); /* Cornflower blue - light effect */
 }

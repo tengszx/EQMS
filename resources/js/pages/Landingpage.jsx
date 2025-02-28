@@ -8,7 +8,7 @@ import ReportingWidget from '../component/landing/ReportingWidget';
 import ProcessWidget from '../component/landing/ProcessWidget';
 import GenerateWidget from '../component/landing/GenerateWidget';
 import TrackWidget from '../component/landing/TrackWidget';
-import QuickAccessSection from '../component/landing/QuickAccessSection'; // Importing QuickAccessSection
+import QuickAccessSection from '../component/landing/QuickAccessSection'; 
 import SystemMaintenance from '../component/landing/SystemMaintenance';
 import Updates from '../component/landing/Updates';
 import NewFeatures from '../component/landing/NewFeatures';
@@ -35,7 +35,7 @@ const LandingPage = () => {
                 </div>
             </div>
             <div className="quick-access-wrapper">
-                <QuickAccessSection /> {/* Use the imported QuickAccessSection */}
+                <QuickAccessSection />
             </div>
             <div className="system-container">
                 <div className="system-left">

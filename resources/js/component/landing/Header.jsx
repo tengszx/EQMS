@@ -40,7 +40,7 @@ const LPHeader = () => {
             <div className="header-container">
                 <div className="left-container">
                     <div className="logo-container">
-                        <img src="/images/EQMS_LOGO.webp" alt="Logo" className="logo" />
+                        <img src="/images/NewEQMSLOGO.png" alt="Logo" className="logo" />
                     </div>
                 </div>
                 <div className="middle-container">

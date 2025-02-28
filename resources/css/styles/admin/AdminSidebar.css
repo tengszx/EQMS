@@ -1,5 +1,5 @@
 .admin-sidebar {
-    background: #1e293b;
+    background: #ffffff;
     width: 45px; /* Collapsed width */
     height: 96vh; /* Full height */
     padding: 20px;
@@ -22,18 +22,49 @@
 }
 
 .logo {
-    width: 40px;
-    height: 40px;
+    width: 60px; /* Increased width */
+    height: 60px; /* Increased height */
     object-fit: contain;
+    position: relative; /* Position relative for animation */
+    margin-left: -8px;
+}
+
+.logo-fall-animation {
+    animation: fall 0.5s forwards; /* Animation for falling */
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-100px); /* Start above the original position */
+    }
+    100% {
+        transform: translateY(0); /* End at the original position */
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px); /* Bounce up */
+    }
+    60% {
+        transform: translateY(-5px); /* Slight bounce */
+    }
 }
 
 .sidebar-title {
-    color: #fff;
+    color: #2c3e50; /* Navy blue */
     font-size: 20px;
     font-weight: 600;
-    transition: opacity 0.3s ease; /* Animation for opacity */
+    transition: transform 0.3s ease; /* Animation for scale */
     white-space: nowrap;
     margin: 0;
+}
+
+.admin-sidebar:hover .sidebar-title {
+    animation: bounce 0.6s; /* Apply bounce animation */
 }
 
 .menu-list {
@@ -51,7 +82,7 @@
 }
 
 .menu-item:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(128, 128, 128, 0.5); /* Gray with transparency on hover */
 }
 
 .menu-item.active {
@@ -66,15 +97,22 @@
 }
 
 .menu-icon {
-    color: #cbd5e1;
+    color: #2c3e50; /* Navy blue */
     display: flex;
     align-items: center;
     justify-content: center;
     min-width: 20px;
+    opacity: 1; /* Always visible */
+    transform: translateX(-10px); /* Start slightly to the left */
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth transition */
+}
+
+.admin-sidebar:hover .menu-icon {
+    transform: translateX(0); /* Slide to original position on hover */
 }
 
 .menu-title {
-    color: #cbd5e1;
+    color: #2c3e50; /* Navy blue */
     font-size: 14px;
     transition: all 0.3s ease;
     white-space: nowrap;
@@ -85,19 +123,19 @@
     list-style: none;
     padding: 0;
     margin: 5px 0 0 0;
-    background: #2c3e50; /* Background color for dropdown */
+    background: rgba(128, 128, 128, 0.8); /* Gray with transparency */
     border-radius: 8px;
 }
 
 .dropdown-item {
     padding: 10px 15px;
-    color: #cbd5e1;
+    color: #2c3e50; /* Navy blue */
     cursor: pointer;
     transition: background 0.2s ease;
 }
 
 .dropdown-item:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.2); /* Light background on hover */
 }
 
 /* Responsive Design */

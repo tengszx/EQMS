@@ -4,10 +4,10 @@ import {
     FolderCog, 
     FileText, 
     Calendar, 
-    FileSearch,  // CAPA icon
-    HardHat,     // Training Management icon
-    FileChartPie, // Report & Analytics icon
-    UserCog,     // User Management icon
+    FileSearch,  
+    HardHat,     
+    FileChartPie, 
+    UserCog,     
     Settings 
 } from 'lucide-react'; 
 import '../../../css/styles/admin/AdminSidebar.css';
@@ -21,10 +21,10 @@ const AdminSidebar = ({ activeMenu, onMenuSelect }) => {
         { title: "Document Control", icon: <FolderCog size={20} /> },
         { title: "Compliance & Standard", icon: <FileText size={20} /> },
         { title: "Audits & Inspection", icon: <Calendar size={20} /> },
-        { title: "CAPA", icon: <FileSearch size={20} /> },  // Added CAPA
-        { title: "Training Management", icon: <HardHat size={20} /> },  // Added Training Management
-        { title: "Report & Analytics", icon: <FileChartPie size={20} /> },  // Added Report & Analytics
-        { title: "User Management", icon: <UserCog size={20} /> },  // Added User Management
+        { title: "CAPA", icon: <FileSearch size={20} /> },
+        { title: "Training Management", icon: <HardHat size={20} /> },
+        { title: "Report & Analytics", icon: <FileChartPie size={20} /> },
+        { title: "User Management", icon: <UserCog size={20} /> },
         { title: "Settings", icon: <Settings size={20} /> },
     ];
 
@@ -38,8 +38,8 @@ const AdminSidebar = ({ activeMenu, onMenuSelect }) => {
             }}
         >
             <div className="sidebar-header">
-                <img src="/images/EQMS_LOGO-removebg.png" alt="Logo" className="logo" />
-                {isExpanded && <h1 className="sidebar-title">eQMS</h1>}
+                <img src="/images/NewEQMSLOGO.png" alt="Logo" className={`logo ${isExpanded ? 'logo-fall-animation' : ''}`} />
+                {isExpanded && <h1 className="sidebar-title">eQMS</h1>} {/* Directly set title here */}
             </div>
 
             <ul className="menu-list">
