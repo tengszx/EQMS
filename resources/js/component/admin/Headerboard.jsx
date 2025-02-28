@@ -36,7 +36,7 @@ const Headerboard = () => {
     <div className="header-container">
       <div className="dashboard-header">
         <div className="header-left">
-          <h1 className="dashboard-title">Dashboard</h1> {/* Added Dashboard title */}
+          {/* Dashboard title removed */}
         </div>
         <div className="header-right">
           <div className="search-container">

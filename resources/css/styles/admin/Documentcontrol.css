@@ -4,11 +4,10 @@
     height: 100%;
     padding: 15px;
     position: relative;
-    background-color: #f8f9fa;
+    background-color: #ffffff;
     border-radius: 8px;
     box-sizing: border-box;
     overflow: hidden;
-    margin-left: 0; /* Reset any left margin */
     display: flex;
     flex-direction: column;
 }
@@ -22,10 +21,14 @@
 }
 
 .document-header h2 {
-    font-size: 18px;
+    font-size: 24px; /* Increased font size */
     font-weight: 600;
     color: #333;
     margin: 0;
+    white-space: nowrap; /* Prevents text wrapping */
+    overflow: hidden; /* Hides overflow */
+    text-overflow: ellipsis; /* Adds ellipsis for overflow text */
+    max-width: calc(100% - 180px); /* Adjusts width based on filter input */
 }
 
 .filter-container {
@@ -51,13 +54,13 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    min-height: 400px; /* Add a minimum height to maintain consistent size */
+    min-height: 400px;
 }
 
 .table-body {
     flex: 1;
     overflow-y: auto;
-    min-height: 350px; /* Set minimum height for table body */
+    min-height: 350px;
 }
 
 .table-header {
@@ -118,24 +121,28 @@
     width: 20%;
 }
 
-.upload-button-container {
+.action-buttons-container {
     display: flex;
     justify-content: flex-end;
     margin-top: 16px;
+    gap: 12px;
 }
 
-.upload-button {
+.upload-button, .draft-button, .delete-button {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #4d7dfc;
-    color: white;
     border: none;
     border-radius: 50px;
     padding: 10px 16px;
     cursor: pointer;
-    box-shadow: 0 2px 10px rgba(77, 125, 252, 0.3);
     transition: all 0.2s ease;
+}
+
+.upload-button {
+    background-color: #4d7dfc;
+    color: white;
+    box-shadow: 0 2px 10px rgba(77, 125, 252, 0.3);
 }
 
 .upload-button:hover {
@@ -143,12 +150,40 @@
     box-shadow: 0 4px 12px rgba(77, 125, 252, 0.4);
 }
 
-.upload-button span {
+.draft-button {
+    background-color: #6c757d;
+    color: white;
+    box-shadow: 0 2px 10px rgba(108, 117, 125, 0.3);
+}
+
+.draft-button:hover {
+    background-color: #5a6268;
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.4);
+}
+
+.delete-button {
+    background-color: #dc3545;
+    color: white;
+    box-shadow: 0 2px 10px rgba(220, 53, 69, 0.3);
+}
+
+.delete-button:hover {
+    background-color: #c82333;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+}
+
+.delete-button.disabled {
+    background-color: #e9ecef;
+    color: #adb5bd;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+.upload-button span, .draft-button span, .delete-button span {
     margin-left: 8px;
     font-weight: 500;
 }
 
-/* Add or modify these styles in your DocumentControl.css file */
 .no-files-message {
     display: flex;
     align-items: center;
@@ -160,4 +195,209 @@
     font-weight: 500;
     font-size: 15px;
     background-color: white;
+}
+
+/* Modal styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-container {
+    background-color: white;
+    border-radius: 8px;
+    width: 500px;
+    max-width: 90vw;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #666;
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.close-button:hover {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.modal-body {
+    padding: 20px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px 20px;
+    border-top: 1px solid #e0e0e0;
+    gap: 10px;
+}
+
+.primary-button, .secondary-button {
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.primary-button {
+    background-color: #4d7dfc;
+    color: white;
+}
+
+.primary-button:hover {
+    background-color: #3a6ae0;
+}
+
+.secondary-button {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.secondary-button:hover {
+    background-color: #d0d0d0;
+}
+
+/* Draft list styling */
+.draft-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.draft-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+}
+
+.draft-info {
+    flex: 1;
+}
+
+.draft-name {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.draft-details {
+    font-size: 12px;
+    color: #666;
+    display: flex;
+    gap: 10px;
+}
+
+.draft-actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.draft-actions button {
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.draft-delete-button:hover {
+    background-color: #f5c2c7;
+}
+
+.edit-button {
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.edit-button:hover {
+    background-color: #e0e0e0;
+}
+
+.upload-draft-button {
+    background-color: #4d7dfc;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.upload-draft-button:hover {
+    background-color: #3a6ae0;
+}
+
+.no-drafts-message {
+    text-align: center;
+    padding: 20px;
+    color: #666;
 }

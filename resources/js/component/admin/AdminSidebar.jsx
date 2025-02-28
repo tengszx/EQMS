@@ -4,7 +4,10 @@ import {
     FolderCog, 
     FileText, 
     Calendar, 
-    Bell, 
+    FileSearch,  // CAPA icon
+    HardHat,     // Training Management icon
+    FileChartPie, // Report & Analytics icon
+    UserCog,     // User Management icon
     Settings 
 } from 'lucide-react'; 
 import '../../../css/styles/admin/AdminSidebar.css';
@@ -18,7 +21,10 @@ const AdminSidebar = ({ activeMenu, onMenuSelect }) => {
         { title: "Document Control", icon: <FolderCog size={20} /> },
         { title: "Compliance & Standard", icon: <FileText size={20} /> },
         { title: "Audits & Inspection", icon: <Calendar size={20} /> },
-        { title: "Notification", icon: <Bell size={20} /> },
+        { title: "CAPA", icon: <FileSearch size={20} /> },  // Added CAPA
+        { title: "Training Management", icon: <HardHat size={20} /> },  // Added Training Management
+        { title: "Report & Analytics", icon: <FileChartPie size={20} /> },  // Added Report & Analytics
+        { title: "User Management", icon: <UserCog size={20} /> },  // Added User Management
         { title: "Settings", icon: <Settings size={20} /> },
     ];
 
