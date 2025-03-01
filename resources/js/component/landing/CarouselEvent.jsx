@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { motion, useMotionValue, useTransform, useAnimation } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { motion, useMotionValue } from "framer-motion";
 import '../../../css/styles/landing/CarouselEvent.css';
 
-const carouselItems = [
-    { id: 1, text: "Event 1: Description of the first event." },
-    { id: 2, text: "Event 2: Description of the second event." },
-    { id: 3, text: "Event 3: Description of the third event." },
-    { id: 4, text: "Event 4: Description of the fourth event." },
-    { id: 5, text: "Event 5: Description of the fifth event." },
+const imgs = [
+  "/images/image1.png",
+  "/images/image2.png",
+  "/images/image3.png",
+  "/images/image4.png",
+  "/images/image5.png",
+  "/images/image6.png",
+  "/images/image7.png",
 ];
 
-// Animation constants
 const ONE_SECOND = 1000;
-const AUTO_DELAY = ONE_SECOND * 5;
+const AUTO_DELAY = ONE_SECOND * 10;
 const DRAG_BUFFER = 50;
+
 const SPRING_OPTIONS = {
   type: "spring",
   mass: 3,
@@ -21,145 +23,114 @@ const SPRING_OPTIONS = {
   damping: 50,
 };
 
-const CarouselEvent = () => {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const controls = useAnimation();
-    const dragX = useMotionValue(0);
-    const [isDragging, setIsDragging] = useState(false);
-    
-    // Update position when currentIndex changes
-    useEffect(() => {
-        controls.start({
-            x: -currentIndex * 100 + "%",
-            transition: SPRING_OPTIONS
+export const CarouselEvent = () => {
+  const [imgIndex, setImgIndex] = useState(0);
+  const dragX = useMotionValue(0);
+
+  useEffect(() => {
+    const intervalRef = setInterval(() => {
+      const x = dragX.get();
+
+      if (x === 0) {
+        setImgIndex((pv) => {
+          if (pv === imgs.length - 1) {
+            return 0;
+          }
+          return pv + 1;
         });
-    }, [currentIndex, controls]);
+      }
+    }, AUTO_DELAY);
 
-    // Auto-advance timer
-    useEffect(() => {
-        const interval = setInterval(() => {
-            if (!isDragging) {
-                setCurrentIndex((prevIndex) => (prevIndex + 1) % carouselItems.length);
-            }
-        }, AUTO_DELAY);
+    return () => clearInterval(intervalRef);
+  }, [dragX]);
 
-        return () => clearInterval(interval);
-    }, [isDragging]);
+  const onDragEnd = () => {
+    const x = dragX.get();
 
-    const handlePrevious = () => {
-        setCurrentIndex((prevIndex) => 
-            prevIndex === 0 ? carouselItems.length - 1 : prevIndex - 1
+    if (x <= -DRAG_BUFFER && imgIndex < imgs.length - 1) {
+      setImgIndex((pv) => pv + 1);
+    } else if (x >= DRAG_BUFFER && imgIndex > 0) {
+      setImgIndex((pv) => pv - 1);
+    }
+  };
+
+  return (
+    <div className="carousel-container relative overflow-hidden bg-neutral-950 py-8">
+      <motion.div
+        drag="x"
+        dragConstraints={{
+          left: 0,
+          right: 0,
+        }}
+        style={{
+          x: dragX,
+        }}
+        animate={{
+          translateX: `-${imgIndex * 100}%`,
+        }}
+        transition={SPRING_OPTIONS}
+        onDragEnd={onDragEnd}
+        className="flex cursor-grab items-center active:cursor-grabbing"
+      >
+        <Images imgIndex={imgIndex} />
+      </motion.div>
+
+      <Dots imgIndex={imgIndex} setImgIndex={setImgIndex} />
+      <GradientEdges />
+    </div>
+  );
+};
+
+const Images = ({ imgIndex }) => {
+  return (
+    <>
+      {imgs.map((imgSrc, idx) => {
+        return (
+          <motion.div
+            key={idx}
+            style={{
+              backgroundImage: `url(${imgSrc})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              height: '100%', // Set to 100% to fill the container
+            }}
+            animate={{
+              scale: imgIndex === idx ? 0.95 : 0.85,
+            }}
+            transition={SPRING_OPTIONS}
+            className="aspect-video w-screen shrink-0 rounded-xl bg-neutral-800 object-cover"
+          />
         );
-    };
+      })}
+    </>
+  );
+};
 
-    const handleNext = () => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % carouselItems.length);
-    };
-    
-    const onDragStart = () => {
-        setIsDragging(true);
-        controls.set({ x: -currentIndex * 100 + "%" });
-    };
-    
-    const onDragEnd = (event, info) => {
-        setIsDragging(false);
-        const { offset, velocity } = info;
-        
-        // Determine direction based on drag distance and velocity
-        if (offset.x < -DRAG_BUFFER || (velocity.x < -500)) {
-            if (currentIndex < carouselItems.length - 1) {
-                handleNext();
-            } else {
-                // Snap back to current position
-                controls.start({
-                    x: -currentIndex * 100 + "%",
-                    transition: SPRING_OPTIONS
-                });
-            }
-        } else if (offset.x > DRAG_BUFFER || (velocity.x > 500)) {
-            if (currentIndex > 0) {
-                handlePrevious();
-            } else {
-                // Snap back to current position
-                controls.start({
-                    x: -currentIndex * 100 + "%",
-                    transition: SPRING_OPTIONS
-                });
-            }
-        } else {
-            // Not enough drag, snap back
-            controls.start({
-                x: -currentIndex * 100 + "%",
-                transition: SPRING_OPTIONS
-            });
-        }
-    };
+const Dots = ({ imgIndex, setImgIndex }) => {
+  return (
+    <div className="mt-4 flex w-full justify-center gap-2">
+      {imgs.map((_, idx) => {
+        return (
+          <button
+            key={idx}
+            onClick={() => setImgIndex(idx)}
+            className={`h-3 w-3 rounded-full transition-colors ${
+              idx === imgIndex ? "bg-neutral-50" : "bg-neutral-500"
+            }`}
+          />
+        );
+      })}
+    </div>
+  );
+};
 
-    return (
-        <div className="carousel-container">
-            <div 
-                className="carousel-click-zone left"
-                onClick={handlePrevious}
-                role="button"
-                aria-label="Previous slide"
-            >
-                <div className="click-zone-arrow left">‹</div>
-            </div>
-
-            <div 
-                className="carousel-click-zone right"
-                onClick={handleNext}
-                role="button"
-                aria-label="Next slide"
-            >
-                <div className="click-zone-arrow right">›</div>
-            </div>
-
-            <div className="carousel-content">
-                <motion.div
-                    drag="x"
-                    dragConstraints={{ left: 0, right: 0 }}
-                    dragElastic={0.1}
-                    animate={controls}
-                    style={{ width: `${carouselItems.length * 100}%` }}
-                    onDragStart={onDragStart}
-                    onDragEnd={onDragEnd}
-                    className="carousel-items-container"
-                >
-                    {carouselItems.map((item, idx) => (
-                        <motion.div
-                            key={item.id}
-                            animate={{
-                                scale: currentIndex === idx ? 0.95 : 0.85,
-                            }}
-                            transition={SPRING_OPTIONS}
-                            className="carousel-item"
-                            style={{ width: `${100 / carouselItems.length}%` }}
-                        >
-                            <p>{item.text}</p>
-                        </motion.div>
-                    ))}
-                </motion.div>
-            </div>
-
-            <div className="carousel-footer">
-                <div className="carousel-dots">
-                    {carouselItems.map((item, index) => (
-                        <span 
-                            key={item.id} 
-                            className={`dot ${index === currentIndex ? 'active' : ''}`} 
-                            onClick={() => setCurrentIndex(index)}
-                            role="button"
-                            aria-label={`Go to slide ${index + 1}`}
-                        ></span>
-                    ))}
-                </div>
-            </div>
-            
-            <div className="gradient-edge left"></div>
-            <div className="gradient-edge right"></div>
-        </div>
-    );
+const GradientEdges = () => {
+  return (
+    <>
+      <div className="pointer-events-none absolute bottom-0 left-0 top-0 w-[10vw] max-w-[100px] bg-gradient-to-r from-neutral-950/50 to-neutral-950/0" />
+      <div className="pointer-events-none absolute bottom-0 right-0 top-0 w-[10vw] max-w-[100px] bg-gradient-to-l from-neutral-950/50 to-neutral-950/0" />
+    </>
+  );
 };
 
 export default CarouselEvent;
