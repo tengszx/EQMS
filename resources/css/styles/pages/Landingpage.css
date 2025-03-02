@@ -80,13 +80,6 @@
 }
 
 /* Quick Access Section Styles */
-.quick-access-wrapper {
-    padding: 4rem 1rem;
-    background-color: #f8fafc;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-    transition: transform 0.5s ease-in-out; /* Smooth transition for the tumble effect */
-}
 
 .quick-access-wrapper.tumble {
     animation: tumble 0.5s forwards; /* Apply tumble animation */
@@ -105,10 +98,10 @@
 }
 
 .quick-access-container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
+    width: 101%;
+    max-width: 100%;
+    margin: 0px auto;
+    padding: 30px;
 }
 
 .quick-access-header {
@@ -119,7 +112,7 @@
 .quick-access-header h2 {
     font-size: 2rem;
     font-weight: bold;
-    color: #333;
+    color: #ffffff;
 }
 
 .actions-grid {
@@ -170,7 +163,5 @@
         padding: 20px;
     }
 
-    .quick-access-wrapper {
-        padding: 2rem 1rem;
-    }
+    
 }
