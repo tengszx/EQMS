@@ -157,15 +157,7 @@
 }
 
 /* Quick Access Wrapper Styles */
-.quick-access-wrapper {
-    padding: 4rem 1rem; /* Keep the existing padding */
-    background-color: #fff; /* Set background color to white */
-    margin-top: 2rem; /* Keep the existing margin */
-    margin-bottom: 2rem; /* Keep the existing margin */
-    transition: transform 0.5s ease-in-out; /* Smooth transition for the tumble effect */
-    box-shadow: none; /* Ensure no shadow */
-    border: none; /* Ensure no border */
-}
+
 
 /* Responsive Design */
 @media (max-width: 100%) {
