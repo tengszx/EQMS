@@ -1,53 +1,50 @@
 .widget {
-    background-color: #fff5eb;
-    border-radius: 12px;
-    padding: 20px;
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 0;
     width: 100%;
-    min-height: 80px;
-    display: flex;
-    gap: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s, box-shadow 0.2s;
-    margin-left: 1000px; /* Adjust this as needed */
+    height: 100%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    position: relative;
 }
 
-/* New hover effect */
 .widget:hover {
-    transform: translateY(-2px); /* Slightly raise the widget */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Increased shadow on hover */
-    border: 2px solid #F76680; /* Optional border color when hovered */
+    transform: skew(-10deg, -10deg);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
-.widget-icon {
-    width: 32px;
-    height: 32px;
-    color: #666;
+.widget-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px;
+}
+
+.logo {
+    width: 100%;
+    height: auto;
+    max-height: 180px;
+    object-fit: contain;
+    margin-bottom: 15px;
+    border-radius: 50px;
 }
 
 .widget-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-grow: 1;
+    flex-direction: column;
+    margin-top: auto;
 }
 
 .widget-name {
     font-size: 1.2em;
     font-weight: 600;
     color: #333;
+    margin-bottom: 8px;
 }
 
-.widget-settings button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 8px;
+.widget-text {
+    font-size: 0.9em;
     color: #666;
-    font-size: 24px;
-    font-weight: bold;
-    padding-top: 50%;
-}
-
-.widget-settings button:hover {
-    color: #333;
 }

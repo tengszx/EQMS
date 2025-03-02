@@ -1,4 +1,3 @@
-// Header.jsx
 import React, { useEffect, useState } from 'react';
 import '../../../css/styles/landing/Header.css';
 
@@ -40,7 +39,7 @@ const LPHeader = () => {
             <div className="header-container">
                 <div className="left-container">
                     <div className="logo-container">
-                        <img src="/images/NewEQMSLOGO.png" alt="Logo" className="logo" />
+                        <img src="/images/NewEQMSLOGO.png" alt="Logo" className="logoheader" />
                     </div>
                 </div>
                 <div className="middle-container">

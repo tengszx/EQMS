@@ -1,5 +1,6 @@
 .carousel-container {
-    max-width: 100%; /* Reduced from 800px to percentage for better responsiveness */
+    width: 100%; /* Reduced from 800px to percentage for better responsiveness */
+    height: 50%;
     margin: 0 auto;
     overflow: hidden;
     border-radius: 12px; /* Added rounded corners to match reference image */

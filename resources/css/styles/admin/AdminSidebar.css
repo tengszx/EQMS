@@ -1,5 +1,6 @@
 .admin-sidebar {
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+    backdrop-filter: blur(10px); /* Blurs the background */
     width: 45px; /* Collapsed width */
     height: 96vh; /* Full height */
     padding: 20px;
@@ -82,7 +83,7 @@
 }
 
 .menu-item:hover {
-    background: rgba(128, 128, 128, 0.5); /* Gray with transparency on hover */
+    background: rgba(100, 99, 168, 0.3); /* Light background with transparency on hover */
 }
 
 .menu-item.active {
@@ -123,7 +124,7 @@
     list-style: none;
     padding: 0;
     margin: 5px 0 0 0;
-    background: rgba(128, 128, 128, 0.8); /* Gray with transparency */
+    background: rgba(255, 255, 255, 0.8); /* Lighter background for dropdown */
     border-radius: 8px;
 }
 

@@ -20,22 +20,22 @@ const LandingPage = () => {
     return (
         <div className="app">
             <Header />
-            <div className="main-content">
+            <div className="main-content scroll-container">
                 <Startup />
                 <CarouselEvent /> 
-            </div>
-            <div className="widget-section">
-                <h2 className="widget-title">Overview and Features</h2>
-                <div className="widget-grid">
-                    <DocumentWidget /> 
-                    <ReportingWidget />
-                    <ProcessWidget />
-                    <GenerateWidget />
-                    <TrackWidget />
+                <div className="widget-section">
+                    <h2 className="widget-title">Overview and Features</h2>
+                    <div className="widget-grid">
+                        <DocumentWidget /> 
+                        <ReportingWidget />
+                        <ProcessWidget />
+                        <GenerateWidget />
+                        <TrackWidget />
+                    </div>
                 </div>
-            </div>
-            <div className="quick-access-wrapper">
-                <QuickAccessSection />
+                <div className="quick-access-wrapper">
+                    <QuickAccessSection />
+                </div>
             </div>
             <div className="system-container">
                 <div className="system-left">

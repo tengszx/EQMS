@@ -1,10 +1,12 @@
 /* Loginpage.css */
+
 .login-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255, 255, 255, 0.8); /* Set to transparent */
+  background-color: rgba(255, 255, 255, 0.1); /* More transparent for glass effect */
+  backdrop-filter: blur(10px); /* Frosted glass effect */
   padding: 1rem;
 }
 
@@ -25,10 +27,11 @@
   align-items: center;
 }
 
+/* Update the form-box for glass effect */
 .form-box {
   width: 100%;
-  background-color: white;
-  border: 1px solid #e5e7eb;
+  background: rgba(255, 255, 255, 0.3); /* Semi-transparent background for glass effect */
+  border: 1px solid rgba(255, 255, 255, 0.5); /* Lighter border */
   border-radius: 8px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
               0 2px 4px -1px rgba(0, 0, 0, 0.06),
