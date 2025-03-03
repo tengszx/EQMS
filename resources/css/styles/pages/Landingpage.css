@@ -56,8 +56,18 @@
     align-items: center;
     position: relative;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: box-shadow 0.2s; /* Only box-shadow transition */
     margin: 3px 0; 
+}
+
+.widget:hover {
+    /* No transform applied */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Optional shadow effect */
+}
+
+.widget.active {
+    /* No transform applied */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Optional shadow effect */
 }
 
 .widget-name {
@@ -80,7 +90,6 @@
 }
 
 /* Quick Access Section Styles */
-
 .quick-access-wrapper.tumble {
     animation: tumble 0.5s forwards; /* Apply tumble animation */
 }
@@ -162,6 +171,4 @@
     .widget-section {
         padding: 20px;
     }
-
-    
 }

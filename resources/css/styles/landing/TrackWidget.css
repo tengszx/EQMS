@@ -11,7 +11,7 @@
 }
 
 .widget:hover {
-    transform: skew(-10deg, -10deg);
+    transform: scale(0.8);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 

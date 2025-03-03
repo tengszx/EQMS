@@ -1,18 +1,21 @@
+/* DocumentWidget.css */
 .widget {
-    background-color: #fff;
-    border-radius: 16px;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    overflow: hidden;
+    background-color: #fff5eb;
+    border-radius: 12px;
+    padding: 15px; 
+    width: 100%; 
+    max-width: 300px; 
+    min-height: 120px;
+    display: flex;
+    align-items: center;
     position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.2s; /* Only box-shadow transition */
+    margin: 3px 0; 
 }
 
 .widget:hover {
-    transform: skew(-10deg, -10deg);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Optional shadow effect */
 }
 
 .widget-content {
@@ -47,4 +50,17 @@
 .widget-text {
     font-size: 0.9em;
     color: #666;
+}
+
+/* Remove any active transformations */
+.widget.active {
+    /* No transform applied */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Optional shadow effect */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .widget {
+        max-width: 100%; /* Ensure full width on smaller screens */
+    }
 }

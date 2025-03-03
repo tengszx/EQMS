@@ -5,13 +5,14 @@
     width: 100%;
     height: 100%;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: box-shadow 0.3s ease; /* Removed transform transition */
     overflow: hidden;
     position: relative;
 }
 
+/* Remove the skew transformation on hover */
 .widget:hover {
-    transform: skew(-10deg, -10deg);
+    /* No transform property */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 

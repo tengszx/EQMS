@@ -23,8 +23,7 @@
         "lucide-react": "^0.475.0",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
-        "react-particles": "^2.12.2",
-        "react-tsparticles": "^2.9.3",
+        "react-tsparticles": "^2.12.2",
         "rect": "^1.2.1",
         "tsparticles": "^2.9.3"
     }
