@@ -1,15 +1,17 @@
+// GenerateWidget.jsx
 import React from 'react';
 import '../../../css/styles/landing/GenerateWidget.css';
-import { FilePlus } from 'lucide-react'; // Import the icon
 
 const GenerateWidget = () => {
     return (
-        <div className="widget"> {/* Changed class name to match the structure */}
-            <FilePlus className="widget-icon" /> {/* Use the icon for generating reports */}
-            <div className="widget-header">
-                <div className="widget-name">Generate Reports</div> {/* Title for the generate widget */}
-                <div className="widget-settings"> {/* Button for settings */}
-                    <button>⋮</button>
+        <div className="widget">
+            <div className="widget-content">
+                <img src="/images/generatereport.png" alt="Generate Report" className="logo" />
+                <div className="widget-header">
+                    <div className="widget-name">Generate Report</div>
+                    <div className="widget-text">
+                    The process of analyzing data to generate insights and actionable reports that help organizations make informed decisions based on historical and real-time information.
+                    </div>
                 </div>
             </div>
         </div>

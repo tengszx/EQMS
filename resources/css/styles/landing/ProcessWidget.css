@@ -1,44 +1,50 @@
 .widget {
-    background-color: #fff5eb; /* Same background color as DocumentWidget */
-    border-radius: 12px; /* Rounded corners */
-    padding: 20px; /* Reduced padding for consistency */
-    width: 100%; /* Full width */
-    min-height: 80px; /* Minimum height */
-    display: flex; /* Flexbox layout */
-    gap: 15px; /* Gap between elements */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Subtle shadow */
-    transition: transform 0.2s, box-shadow 0.2s; /* Transition effects */
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    position: relative;
 }
 
-.widget-icon {
-    width: 32px; /* Consistent icon size */
-    height: 32px;
-    color: #666; /* Icon color */
+.widget:hover {
+    transform: skew(-10deg, -10deg);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.widget-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px;
+}
+
+.logo {
+    width: 100%;
+    height: auto;
+    max-height: 180px;
+    object-fit: contain;
+    margin-bottom: 15px;
+    border-radius: 50px;
 }
 
 .widget-header {
-    display: flex; /* Flexbox for header layout */
-    justify-content: space-between; /* Space between name and settings */
-    align-items: center; /* Center align items */
-    flex-grow: 1; /* Allow header to grow */
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
 }
 
 .widget-name {
-    font-size: 1.2em; /* Font size for the name */
-    font-weight: 600; /* Bold weight */
-    color: #333; /* Dark text color */
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
 }
 
-.widget-settings button {
-    background: none; /* No background */
-    border: none; /* No border */
-    cursor: pointer; /* Pointer cursor */
-    padding: 8px; /* Padding around the button */
-    color: #666; /* Button text color */
-    font-size: 24px; /* Font size for the button */
-    font-weight: bold; /* Bold font weight */
-}
-
-.widget-settings button:hover {
-    color: #333; /* Darker color on hover */
+.widget-text {
+    font-size: 0.9em;
+    color: #666;
 }

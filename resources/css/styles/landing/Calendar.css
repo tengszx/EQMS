@@ -18,6 +18,7 @@
     margin-right: 20px; /* Added right margin to prevent exceeding */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adjusted box shadow */
     margin-top: 30px;
+    margin-left: 20px;
 }
 
 .calendar-header {
@@ -107,6 +108,7 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    margin-left: 40px;
 }
 
 .schedule-panel.visible {

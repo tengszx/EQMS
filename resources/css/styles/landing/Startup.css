@@ -1,86 +1,127 @@
-/* Keep your original styles */
+/* Startup.css */
 .startup-container {
-    display: flex; /* Use flexbox for centering */
-    flex-direction: column; /* Arrange children in a column */
-    justify-content: center; /* Center content vertically */
-    align-items: center; /* Center content horizontally */
-    padding: 80px; /* Keep padding */
-    width: 100%; /* Makes container take up 100% of parent width */
-    max-width: 2000px; /* Maximum width container can grow to */
-    min-height: 700px; /* Minimum height of container */
-    background-color: white; /* Changed background color to white */
-    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.5);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 80px;
+    width: 101%;
+    height: 100%;
+    max-width: 2000px;
+    min-height: 825px;
     border-radius: 10px;
-    margin: 5px auto; /* Center container horizontally */
+    margin: 5px auto;
+    overflow: hidden;
+    z-index: 1;
+    margin-top: -70px;
+    margin-left: -13px;
+    margin-right: -20px;
+    margin-bottom: 90px;
+}
+
+/* Particles container - ensure it covers the entire container */
+.particles-container {
+    position: absolute !important;
+    width: 100% !important;
+    height: 100% !important;
+    top: 0 !important;
+    left: 0 !important;
+    z-index: 0 !important; /* Keeps particles behind the content */
+    pointer-events: none; /* Allow interactions with elements below */
+}
+
+/* Content wrapper with text enhancement for readability */
+.content-wrapper {
+    position: relative;
+    z-index: 2; /* Ensures content stays above particles */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    background-color: transparent;
+    /* Text enhancement for readability */
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.5); /* Subtle text shadow for better contrast */
 }
 
 .main-title {
-    font-size: 4em; /* H1 size */
+    font-size: 4em;
     margin: 0;
-    color: darkblue; /* Set text color to dark blue */
-    text-align: center; /* Keep text centered */
-    width: 100%; /* Ensure full width */
+    color: darkblue;
+    text-align: center;
+    width: 100%;
+    font-weight: 600; /* Slightly bolder for better readability */
 }
 
 .sub-title {
-    font-size: 1.5em; /* Smaller size for H2 */
+    font-size: 1.5em;
     margin: 10px 0;
-    color: darkblue; /* Set text color to dark blue */
+    color: darkblue;
+    font-weight: 500; /* Medium weight for better readability */
+    background-color: rgba(255, 255, 255, 0.3); /* Very subtle background for text */
+    padding: 5px 15px;
+    border-radius: 20px;
 }
 
 .footer-text {
-    font-size: 0.9em; /* Smaller size for paragraph */
+    font-size: 0.9em;
     margin: 10px 0;
-    color: darkblue; /* Set text color to dark blue */
+    color: darkblue;
+    font-weight: 500; /* Medium weight for better readability */
+    background-color: rgba(255, 255, 255, 0.3); /* Very subtle background for text */
+    padding: 3px 10px;
+    border-radius: 15px;
 }
 
 .learn-more-button {
-    padding: 10px 20px;
+    padding: 10px 25px;
     font-size: 1em;
-    color: black; /* Original button text color */
-    background-color: transparent; /* Button background transparent */
-    border: none; /* Borderless button */
+    color: lightblue;
+    
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 20px; /* Add margin to create space above the button */
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    text-shadow: none; /* Remove text shadow from button */
 }
 
 .learn-more-button:hover {
-    color: white; /* Change text color to white on hover */
-    background-color: darkblue; /* Optional: Change background color on hover */
+    background-color: darkblue;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Add bubble effect styles */
+/* Bubble effect styles */
 .bubble-letter {
     transition: 0.35s font-weight, 0.35s color;
     display: inline-block;
-    /* Add minimal letter spacing for cleaner look */
     letter-spacing: -0.02em;
 }
 
 .bubble-letter:hover {
     font-weight: 900;
-    color: rgb(0, 0, 128); /* Darker blue on hover */
+    color: rgb(0, 0, 128);
 }
 
 /* Effect to the right */
 .bubble-letter:hover + .bubble-letter {
     font-weight: 500;
-    color: rgb(65, 105, 225); /* Royal blue - medium effect */
+    color: rgb(65, 105, 225);
 }
 
 .bubble-letter:hover + .bubble-letter + .bubble-letter {
     font-weight: 300;
-    color: rgb(100, 149, 237); /* Cornflower blue - light effect */
+    color: rgb(100, 149, 237);
 }
 
 /* Effect to the left - only use if browser supports :has() */
 .bubble-letter:has(+ .bubble-letter:hover) {
     font-weight: 500;
-    color: rgb(65, 105, 225); /* Royal blue - medium effect */
+    color: rgb(65, 105, 225);
 }
 
 .bubble-letter:has(+ .bubble-letter + .bubble-letter:hover) {
     font-weight: 300;
-    color: rgb(100, 149, 237); /* Cornflower blue - light effect */
+    color: rgb(100, 149, 237);
 }

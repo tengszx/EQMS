@@ -14,10 +14,11 @@
     border-radius: 12px;
     background-color: white;
     width: 400px;
-    margin-left: 140px;
+    margin-left: 600px;
     border: 1px solid rgba(0, 0, 0, 0.2); /* Added a border for better visibility */
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
                 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
     
 }
 

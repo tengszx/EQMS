@@ -1,11 +1,26 @@
 /* Loginpage.css */
+
 .login-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255, 255, 255, 0.8); /* Set to transparent */
+  background-color: rgba(255, 255, 255, 0.1); /* More transparent for glass effect */
+  backdrop-filter: blur(10px); /* Frosted glass effect */
   padding: 1rem;
+  position: relative; /* Required for absolute positioning of particles */
+  overflow: hidden; /* Prevent particles from causing scrollbars */
+}
+
+/* Particles container styling */
+.particles-container {
+  position: absolute !important;
+  width: 100% !important;
+  height: 100% !important;
+  top: 0 !important;
+  left: 0 !important;
+  z-index: 0 !important; /* Ensures particles are behind content */
+  pointer-events: none; /* Allow interactions with elements below */
 }
 
 .login-wrapper {
@@ -16,6 +31,8 @@
   align-items: center;
   gap: 4rem;
   padding: 2rem;
+  position: relative; /* Ensure wrapper is above particles */
+  z-index: 1;
 }
 
 .form-section {
@@ -25,15 +42,17 @@
   align-items: center;
 }
 
+/* Update the form-box for glass effect */
 .form-box {
   width: 100%;
-  background-color: white;
-  border: 1px solid #e5e7eb;
+  background: rgba(255, 255, 255, 0.5); /* Slightly more opaque for better readability */
+  border: 1px solid rgba(255, 255, 255, 0.7); /* Lighter border */
   border-radius: 8px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
               0 2px 4px -1px rgba(0, 0, 0, 0.06),
               0 0 10px rgba(0, 0, 0, 0.1); 
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(5px); /* Additional blur for better text readability */
 }
 
 .form-box:hover {
@@ -58,8 +77,9 @@
 
 .input-group label {
   font-size: 0.875rem;
-  font-weight: 500;
-  color: #374151;
+  font-weight: 600; /* Slightly bolder for better visibility */
+  color: #1a237e; /* Matching the button color for consistency */
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.5); /* Subtle text shadow for better readability */
 }
 
 .input-group input {
@@ -68,12 +88,13 @@
   border: 1px solid #D1D5DB;
   border-radius: 6px;
   transition: all 0.3s ease;
+  background-color: rgba(255, 255, 255, 0.9); /* Slightly opaque for consistent styling */
 }
 
 .input-group input:focus {
   outline: none;
-  border-color: #2563EB;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  border-color: #1a237e; /* Matching the button color */
+  box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.2);
 }
 
 .forgot-password {
@@ -82,13 +103,15 @@
 
 .forgot-password a {
   font-size: 0.875rem;
-  color: #2563EB;
+  color: #1a237e; /* Matching the button color */
   text-decoration: none;
   transition: color 0.3s ease;
+  font-weight: 500; /* Medium weight for better visibility */
 }
 
 .forgot-password a:hover {
-  color: #1E40AF;
+  color: #0d1442;
+  text-decoration: underline;
 }
 
 .login-button {
@@ -101,11 +124,25 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative; /* For hover effect */
+  overflow: hidden; /* For hover effect */
 }
 
 .login-button:hover {
   background-color: #0d1442;
   transform: scale(1.02);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Add subtle pulse effect to login button */
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(26, 35, 126, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(26, 35, 126, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(26, 35, 126, 0); }
+}
+
+.login-button:focus {
+  animation: pulse 2s infinite;
 }
 
 .logo-container {
@@ -113,7 +150,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  perspective: 1000px; /* Added perspective for 3D effect */
 }
 
 .logo {
@@ -148,5 +185,10 @@
 
   .logo {
       max-width: 300px;
+  }
+  
+  /* Adjust particles for mobile */
+  #tsparticles-login {
+    opacity: 0.3; /* More subtle on mobile for better performance and readability */
   }
 }

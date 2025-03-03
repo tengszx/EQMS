@@ -1,15 +1,17 @@
+// ProcessWidget.jsx
 import React from 'react';
 import '../../../css/styles/landing/ProcessWidget.css';
-import { FileCog } from 'lucide-react'; // Import the icon
 
 const ProcessWidget = () => {
     return (
-        <div className="widget"> {/* Changed class name to match the DocumentWidget */}
-            <FileCog className="widget-icon" />
-            <div className="widget-header">
-                <div className="widget-name">Process Monitoring</div> {/* Corrected closing tag */}
-                <div className="widget-settings"> {/* Moved button inside the settings div */}
-                    <button>⋮</button>
+        <div className="widget">
+            <div className="widget-content">
+                <img src="/images/processmonitoring.png" alt="Process Monitoring" className="logo" />
+                <div className="widget-header">
+                    <div className="widget-name">Process Monitoring</div>
+                    <div className="widget-text">
+                    he continuous observation and evaluation of processes to ensure they operate efficiently, meet predefined standards, and identify areas for improvement.
+                    </div>
                 </div>
             </div>
         </div>
