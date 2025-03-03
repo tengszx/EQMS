@@ -63,7 +63,7 @@
 }
 
 .input-group input {
-  width: 100%;
+  width: 93%;
   padding: 0.75rem;
   border: 1px solid #D1D5DB;
   border-radius: 6px;
@@ -113,20 +113,24 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  perspective: 1000px; /* Added perspective for 3D effect */
+  height: 100vh;
 }
 
 .logo {
   width: 100%;
-  max-width: 500px;
+  max-width: 500px; /* Adjust based on your logo size */
   height: auto;
   object-fit: contain;
-  transition: transform 0.6s ease; /* Smooth transition for turning */
-  transform-style: preserve-3d; /* Preserve 3D effect */
+  animation: spin 13s linear infinite; /* Apply the spin animation */
 }
 
-.logo:hover {
-  transform: rotateY(180deg); /* Turn the logo to show the back */
+@keyframes spin {
+  0% {
+      transform: rotate(0deg); /* Start at 0 degrees */
+  }
+  100% {
+      transform: rotate(360deg); /* End at 360 degrees */
+  }
 }
 
 /* Media Queries for Responsiveness */

@@ -27,11 +27,17 @@
     object-fit: contain;
     position: relative; /* Position relative for animation */
     margin-left: -8px;
+    animation: spin 13s linear infinite; /* Apply the spin animation */
 }
 
-.logo-fall-animation {
-    animation: fall 0.5s forwards; /* Animation for falling */
-}
+@keyframes spin {
+    0% {
+        transform: rotate(0deg); /* Start at 0 degrees */
+    }
+    100% {
+        transform: rotate(360deg); /* End at 360 degrees */
+    }
+  }
 
 @keyframes fall {
     0% {
