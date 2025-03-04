@@ -1,11 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Upload, FileText, Trash2, PlusCircle, FileUp, Eye, Save, Download } from 'lucide-react';
+import { Upload, FileText, Trash2, PlusCircle, Eye, Save, Download } from 'lucide-react';
 import '../../../css/styles/admin/DocumentControl.css';
-import '@react-pdf-viewer/core'
-import '@react-pdf-viewer/default-layout'
-
+import { Viewer, Worker } from '@react-pdf-viewer/core';
+import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
+import { zoomPlugin } from '@react-pdf-viewer/zoom';
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+import '@react-pdf-viewer/zoom/lib/styles/index.css';
 
 const DocumentControl = () => {
+  // Create plugin instances
+  const defaultLayoutPluginInstance = defaultLayoutPlugin();
+  const zoomPluginInstance = zoomPlugin();
+  const { ZoomIn, ZoomOut } = zoomPluginInstance;
+
   const [documents, setDocuments] = useState([
     {
       id: 1,
@@ -27,7 +35,17 @@ const DocumentControl = () => {
       endDate: "2022-11-03",
       references: []
     },
-  
+    {
+      id: 3,
+      folder: "Documents",
+      name: "sample_document.pdf",
+      version: "2021-11-05 14:30",
+      section: "User Guide",
+      startDate: "2021-11-05",
+      endDate: "2022-11-05",
+      references: [],
+      fileUrl: 'https://cors-anywhere.herokuapp.com/http://www.pdf995.com/samples/pdf.pdf' // Sample PDF URL
+    }
   ]);
 
   const [drafts, setDrafts] = useState([]);
@@ -53,9 +71,9 @@ const DocumentControl = () => {
   
   // PDF viewer state
   const [pdfFile, setPdfFile] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [numPages, setNumPages] = useState(null);
+  const [pageNumber, setPageNumber] = useState(1);
   const [scale, setScale] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
 
   const fileInputRef = useRef(null);
   const referenceFileInputRef = useRef(null);
@@ -89,8 +107,7 @@ const DocumentControl = () => {
     // If it's a PDF, set the PDF file for the viewer
     if (doc.name.toLowerCase().endsWith('.pdf') && doc.fileUrl) {
       setPdfFile(doc.fileUrl);
-      setCurrentPage(1);
-      setScale(1);
+      setPageNumber(1);
     } else {
       setPdfFile(null);
     }
@@ -222,14 +239,14 @@ const DocumentControl = () => {
 
   // PDF viewer controls
   const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
+    if (pageNumber < numPages) {
+      setPageNumber(pageNumber + 1);
     }
   };
 
   const handlePrevPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
+    if (pageNumber > 1) {
+      setPageNumber(pageNumber - 1);
     }
   };
 
@@ -251,13 +268,11 @@ const DocumentControl = () => {
 
   const isFormEmpty = !formData.fileName;
 
-  // Simulate loading PDF when viewing document
-  useEffect(() => {
-    if (showViewDocument && selectedDocument && selectedDocument.name.toLowerCase().endsWith('.pdf')) {
-      // For demo, we're setting a random number of pages
-      setTotalPages(5);
-    }
-  }, [showViewDocument, selectedDocument]);
+  // Function to handle document load success
+  const onDocumentLoadSuccess = ({ numPages }) => {
+    setNumPages(numPages);
+    setPageNumber(1);
+  };
 
   return (
     <div className="document-control-container">
@@ -509,7 +524,7 @@ const DocumentControl = () => {
         </div>
       )}
 
-      {/* Draft Form Modal - Keep as is */}
+      {/* Draft Form Modal */}
       {showDraftForm && (
         <div className="modal-overlay">
           <div className="modal-container">
@@ -641,17 +656,17 @@ const DocumentControl = () => {
                         <button 
                           className="pdf-nav-button" 
                           onClick={handlePrevPage}
-                          disabled={currentPage <= 1}
+                          disabled={pageNumber <= 1}
                         >
                           Previous
                         </button>
                         <span className="pdf-page-info">
-                          Page {currentPage} of {totalPages}
+                          Page {pageNumber} of {numPages || '--'}
                         </span>
                         <button 
                           className="pdf-nav-button" 
                           onClick={handleNextPage}
-                          disabled={currentPage >= totalPages}
+                          disabled={numPages === null || pageNumber >= numPages}
                         >
                           Next
                         </button>
@@ -670,18 +685,15 @@ const DocumentControl = () => {
                         <span>Download</span>
                       </button>
                     </div>
-                    <div className="pdf-document" style={{transform: `scale(${scale})`}}>
-                      {/* This would be replaced with a real PDF viewer component */}
-                      <img 
-                        src={selectedDocument.fileUrl} 
-                        alt="PDF Preview" 
-                        style={{
-                          width: '100%',
-                          maxHeight: '100%',
-                          objectFit: 'contain'
-                        }}
-                      />
-                      <div className="pdf-page-number">Page {currentPage}</div>
+                    <div className="pdf-document">
+                      <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.16.105/build/pdf.worker.min.js">
+                        <Viewer 
+                          fileUrl={selectedDocument.fileUrl}
+                          plugins={[defaultLayoutPluginInstance, zoomPluginInstance]}
+                          onDocumentLoad={onDocumentLoadSuccess}
+                          defaultScale={scale}
+                        />
+                      </Worker>
                     </div>
                   </div>
                 ) : (
