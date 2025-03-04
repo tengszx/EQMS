@@ -651,40 +651,6 @@ const DocumentControl = () => {
               <div className="pdf-viewer">
                 {selectedDocument.name.toLowerCase().endsWith('.pdf') && selectedDocument.fileUrl ? (
                   <div className="pdf-container">
-                    <div className="pdf-toolbar">
-                      <div className="pdf-navigation">
-                        <button 
-                          className="pdf-nav-button" 
-                          onClick={handlePrevPage}
-                          disabled={pageNumber <= 1}
-                        >
-                          Previous
-                        </button>
-                        <span className="pdf-page-info">
-                          Page {pageNumber} of {numPages || '--'}
-                        </span>
-                        <button 
-                          className="pdf-nav-button" 
-                          onClick={handleNextPage}
-                          disabled={numPages === null || pageNumber >= numPages}
-                        >
-                          Next
-                        </button>
-                      </div>
-                      <div className="pdf-zoom-controls">
-                        <button className="pdf-zoom-button" onClick={handleZoomOut}>
-                          -
-                        </button>
-                        <span className="pdf-zoom-info">{Math.round(scale * 100)}%</span>
-                        <button className="pdf-zoom-button" onClick={handleZoomIn}>
-                          +
-                        </button>
-                      </div>
-                      <button className="pdf-download-button">
-                        <Download size={16} />
-                        <span>Download</span>
-                      </button>
-                    </div>
                     <div className="pdf-document">
                       <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.16.105/build/pdf.worker.min.js">
                         <Viewer 

@@ -554,90 +554,6 @@
   margin-bottom: 20px;
 }
 
-.pdf-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 15px;
-  background-color: #f5f7fb;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.pdf-navigation {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.pdf-nav-button {
-  padding: 5px 10px;
-  border-radius: 4px;
-  background-color: white;
-  border: 1px solid #ddd;
-  cursor: pointer;
-  font-size: 13px;
-}
-
-.pdf-nav-button:hover:not(:disabled) {
-  background-color: #f0f0f0;
-}
-
-.pdf-nav-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.pdf-page-info {
-  font-size: 13px;
-}
-
-.pdf-zoom-controls {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.pdf-zoom-button {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background-color: white;
-  border: 1px solid #ddd;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  line-height: 1;
-}
-
-.pdf-zoom-button:hover {
-  background-color: #f0f0f0;
-}
-
-.pdf-zoom-info {
-  font-size: 13px;
-  min-width: 50px;
-  text-align: center;
-}
-
-.pdf-download-button {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 5px 10px;
-  background-color: white;
-  border: 1px solid #4d7dfc;
-  color: #4d7dfc;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 13px;
-}
-
-.pdf-download-button:hover {
-  background-color: #f0f7ff;
-}
-
 .pdf-document {
   height: 500px;
   overflow: auto;
@@ -714,22 +630,5 @@
   .details-row {
     flex-direction: column;
     gap: 10px;
-  }
-  
-  .pdf-toolbar {
-    flex-direction: column;
-    gap: 10px;
-    align-items: flex-start;
-  }
-  
-  .pdf-navigation, .pdf-zoom-controls {
-    width: 100%;
-    justify-content: space-between;
-  }
-  
-  .pdf-download-button {
-    width: 100%;
-    justify-content: center;
-    margin-top: 5px;
   }
 }
