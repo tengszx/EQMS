@@ -1,6 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Upload, FileText, Trash2, PlusCircle, FileUp, Eye, Save, Download } from 'lucide-react';
 import '../../../css/styles/admin/DocumentControl.css';
+import '@react-pdf-viewer/core'
+import '@react-pdf-viewer/default-layout'
+
 
 const DocumentControl = () => {
   const [documents, setDocuments] = useState([
@@ -9,7 +12,6 @@ const DocumentControl = () => {
       folder: "Documents",
       name: "companies_demo_export.xlsx",
       version: "2021-11-04 11:54",
-      role: "",
       section: "Quality Management",
       startDate: "2021-11-04",
       endDate: "2022-11-04",
@@ -20,46 +22,12 @@ const DocumentControl = () => {
       folder: "Download Center",
       name: "demo_image.jpg",
       version: "2021-11-03 22:00",
-      role: "",
       section: "Operation",
       startDate: "2021-11-03",
       endDate: "2022-11-03",
       references: []
     },
-    {
-      id: 3,
-      folder: "Report",
-      name: "sample_demo_export.xlsx",
-      version: "2021-11-02 11:09",
-      role: "",
-      section: "Support",
-      startDate: "2021-11-02",
-      endDate: "2022-11-02",
-      references: []
-    },
-    {
-      id: 4,
-      folder: "Other",
-      name: "visit_demo_export.xlsx",
-      version: "2021-10-31 17:24",
-      role: "",
-      section: "Planning",
-      startDate: "2021-10-31",
-      endDate: "2022-10-31",
-      references: []
-    },
-    {
-      id: 5,
-      folder: "Documents",
-      name: "sample_document.pdf",
-      version: "2021-12-01 10:30",
-      role: "",
-      section: "User Guide",
-      startDate: "2021-12-01",
-      endDate: "2022-12-01",
-      references: [],
-      fileUrl: "/api/placeholder/800/1000" // Placeholder for PDF file
-    }
+  
   ]);
 
   const [drafts, setDrafts] = useState([]);
@@ -212,7 +180,6 @@ const DocumentControl = () => {
         folder: "Documents",
         name: formData.fileName,
         version: formData.version,
-        role: formData.accessName,
         section: formData.section,
         startDate: formData.startDate,
         endDate: formData.endDate,
@@ -312,7 +279,6 @@ const DocumentControl = () => {
           <div className="folder-col">Folder</div>
           <div className="name-col">Name</div>
           <div className="version-col">Version</div>
-          <div className="role-col">Role</div>
           <div className="section-col">Section</div>
         </div>
         
@@ -335,7 +301,6 @@ const DocumentControl = () => {
                 </div>
                 <div className="name-col">{doc.name}</div>
                 <div className="version-col">{doc.version}</div>
-                <div className="role-col">{doc.role}</div>
                 <div className="section-col">{doc.section}</div>
               </div>
             ))
@@ -591,7 +556,6 @@ const DocumentControl = () => {
                             folder: "Documents",
                             name: draft.fileName,
                             version: draft.version,
-                            role: draft.accessName,
                             section: draft.section,
                             startDate: draft.startDate,
                             endDate: draft.endDate,
