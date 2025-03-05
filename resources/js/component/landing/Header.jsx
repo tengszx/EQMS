@@ -14,6 +14,10 @@ const LPHeader = () => {
         lastScrollY = window.scrollY; // Update last scroll position
     };
 
+    const handleLoginClick =() => {
+        window.location.href = '/login';
+    }
+
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
         return () => {
@@ -48,7 +52,7 @@ const LPHeader = () => {
                     <a href="/resources" className="link">Resources</a>
                     <a href="/help" className="link">Help</a>
                     <a href="/contact" className="link">Contact Us</a>
-                    <button className="login-button">Login</button>
+                    <button className="login-button" onClick={handleLoginClick}>Login</button>
                 </div>
             </div>
         </header>
