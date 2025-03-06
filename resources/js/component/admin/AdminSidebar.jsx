@@ -19,8 +19,9 @@ const AdminSidebar = ({ activeMenu, onMenuSelect }) => {
     const menuItems = [
         { title: "Dashboard", icon: <House size={20} /> },
         { title: "Document Control", icon: <FolderCog size={20} /> },
+        { title: "Calendar", icon: <Calendar size={20} /> }, // Correct Calendar usage
         { title: "Compliance & Standard", icon: <FileText size={20} /> },
-        { title: "Audits & Inspection", icon: <Calendar size={20} /> },
+        { title: "Audits & Inspection", icon: <Calendar size={20} /> }, // Use Calendar for Audits & Inspection
         { title: "CAPA", icon: <FileSearch size={20} /> },
         { title: "Training Management", icon: <HardHat size={20} /> },
         { title: "Report & Analytics", icon: <FileChartPie size={20} /> },
@@ -39,7 +40,7 @@ const AdminSidebar = ({ activeMenu, onMenuSelect }) => {
         >
             <div className="sidebar-header">
                 <img src="/images/NewEQMSLOGO.png" alt="Logo" className={`logo ${isExpanded ? 'logo-fall-animation' : ''}`} />
-                {isExpanded && <h1 className="sidebar-title">eQMS</h1>} {/* Directly set title here */}
+                {isExpanded && <h1 className="sidebar-title">eQMS</h1>}
             </div>
 
             <ul className="menu-list">

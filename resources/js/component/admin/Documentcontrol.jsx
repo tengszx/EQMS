@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Upload, FileText, Trash2, PlusCircle, Eye, Save, Download } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Upload, FileText, Trash2, PlusCircle, Eye, Save } from 'lucide-react';
 import '../../../css/styles/admin/DocumentControl.css';
 import { Viewer, Worker } from '@react-pdf-viewer/core';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
@@ -12,42 +12,8 @@ const DocumentControl = () => {
   // Create plugin instances
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
   const zoomPluginInstance = zoomPlugin();
-  const { ZoomIn, ZoomOut } = zoomPluginInstance;
 
-  const [documents, setDocuments] = useState([
-    {
-      id: 1,
-      folder: "Documents",
-      name: "companies_demo_export.xlsx",
-      version: "2021-11-04 11:54",
-      section: "Quality Management",
-      startDate: "2021-11-04",
-      endDate: "2022-11-04",
-      references: []
-    },
-    {
-      id: 2,
-      folder: "Download Center",
-      name: "demo_image.jpg",
-      version: "2021-11-03 22:00",
-      section: "Operation",
-      startDate: "2021-11-03",
-      endDate: "2022-11-03",
-      references: []
-    },
-    {
-      id: 3,
-      folder: "Documents",
-      name: "sample_document.pdf",
-      version: "2021-11-05 14:30",
-      section: "User Guide",
-      startDate: "2021-11-05",
-      endDate: "2022-11-05",
-      references: [],
-      fileUrl: 'https://cors-anywhere.herokuapp.com/http://www.pdf995.com/samples/pdf.pdf' // Sample PDF URL
-    }
-  ]);
-
+  const [documents, setDocuments] = useState([]);
   const [drafts, setDrafts] = useState([]);
   const [filter, setFilter] = useState("");
   const [selectedId, setSelectedId] = useState(null);
@@ -66,14 +32,18 @@ const DocumentControl = () => {
     revisionNumber: "",
     pageNumber: "",
     references: [],
-    fileUrl: null
+    fileUrl: null,
+    folder: ""
   });
   
   // PDF viewer state
-  const [pdfFile, setPdfFile] = useState(null);
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [scale, setScale] = useState(1);
+  const [showAddFolderModal, setShowAddFolderModal] = useState(false);
+  const [folderName, setFolderName] = useState('');
+  const [showFolderFilesModal, setShowFolderFilesModal] = useState(false);
+  const [selectedFolder, setSelectedFolder] = useState(null);
 
   const fileInputRef = useRef(null);
   const referenceFileInputRef = useRef(null);
@@ -103,14 +73,13 @@ const DocumentControl = () => {
   };
 
   const handleDocumentDoubleClick = (doc) => {
+    setSelectedFolder(doc.folder);
+    setShowFolderFilesModal(true);
+  };
+
+  const handleFileSelected = (doc) => {
     setSelectedDocument(doc);
-    // If it's a PDF, set the PDF file for the viewer
-    if (doc.name.toLowerCase().endsWith('.pdf') && doc.fileUrl) {
-      setPdfFile(doc.fileUrl);
-      setPageNumber(1);
-    } else {
-      setPdfFile(null);
-    }
+    setShowFolderFilesModal(false);
     setShowViewDocument(true);
   };
 
@@ -126,7 +95,8 @@ const DocumentControl = () => {
       revisionNumber: "",
       pageNumber: "",
       references: [],
-      fileUrl: null
+      fileUrl: null,
+      folder: ""
     });
     setShowUploadForm(true);
   };
@@ -189,12 +159,20 @@ const DocumentControl = () => {
   // Handle both Save and Save as Draft actions
   const handleFormSubmit = (isDraft) => {
     if (isDraft) {
+      // Save as draft
       setDrafts([...drafts, { ...formData, id: Date.now() }]);
       setShowUploadForm(false);
     } else {
+      // Check if folder is selected
+      if (!formData.folder) {
+        alert("Please select a folder");
+        return;
+      }
+      
+      // Create a new document with the selected folder
       const newDocument = {
-        id: documents.length + 1,
-        folder: "Documents",
+        id: Date.now(),
+        folder: formData.folder,
         name: formData.fileName,
         version: formData.version,
         section: formData.section,
@@ -210,7 +188,8 @@ const DocumentControl = () => {
       setDocuments([...documents, newDocument]);
       setShowUploadForm(false);
     }
-    
+
+    // Reset form data
     setFormData({
       fileName: "",
       version: "",
@@ -222,7 +201,8 @@ const DocumentControl = () => {
       revisionNumber: "",
       pageNumber: "",
       references: [],
-      fileUrl: null
+      fileUrl: null,
+      folder: ""
     });
   };
 
@@ -237,7 +217,6 @@ const DocumentControl = () => {
     setDrafts(drafts.filter(draft => draft.id !== draftId));
   };
 
-  // PDF viewer controls
   const handleNextPage = () => {
     if (pageNumber < numPages) {
       setPageNumber(pageNumber + 1);
@@ -260,18 +239,68 @@ const DocumentControl = () => {
     }
   };
 
+  // Get unique folders to avoid duplicates in dropdown
+  const getUniqueFolders = () => {
+    const folderSet = new Set();
+    documents.forEach(doc => {
+      if (doc.folder) {
+        folderSet.add(doc.folder);
+      }
+    });
+    return Array.from(folderSet);
+  };
+
   const filteredDocuments = documents.filter(doc => 
     doc.name.toLowerCase().includes(filter.toLowerCase()) ||
     doc.folder.toLowerCase().includes(filter.toLowerCase()) ||
     (doc.section && doc.section.toLowerCase().includes(filter.toLowerCase()))
   );
 
+  // Get list of unique folders for dropdown
+  const uniqueFolders = getUniqueFolders();
+  
   const isFormEmpty = !formData.fileName;
 
   // Function to handle document load success
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
     setPageNumber(1);
+  };
+
+  const handleAddFolderClick = () => {
+    setShowAddFolderModal(true);
+  };
+
+  const handleAddFolderSubmit = () => {
+    // Check if folder already exists
+    if (uniqueFolders.includes(folderName)) {
+      alert("Folder already exists");
+      return;
+    }
+    
+    const newFolder = {
+      id: Date.now(),
+      folder: folderName,
+      name: '',
+      version: '',
+      section: '',
+      startDate: '',
+      endDate: '',
+      references: []
+    };
+    setDocuments([...documents, newFolder]);
+    setShowAddFolderModal(false);
+    setFolderName('');
+  };
+
+  const handleFolderClick = (folder) => {
+    setSelectedFolder(folder);
+    setShowFolderFilesModal(true);
+  };
+
+  const handleBackToFolderFiles = () => {
+    setShowViewDocument(false);
+    setShowFolderFilesModal(true);
   };
 
   return (
@@ -292,19 +321,20 @@ const DocumentControl = () => {
       <div className="document-table">
         <div className="table-header">
           <div className="folder-col">Folder</div>
-          <div className="name-col">Name</div>
-          <div className="version-col">Version</div>
-          <div className="section-col">Section</div>
         </div>
         
         <div className="table-body">
           {filteredDocuments.length > 0 ? (
-            filteredDocuments.map((doc) => (
+            // Group documents by folder and display each folder only once
+            uniqueFolders.map((folderName) => (
               <div 
-                key={doc.id} 
-                className={`table-row ${doc.id === selectedId ? 'selected' : ''}`}
-                onClick={() => handleRowClick(doc.id)}
-                onDoubleClick={() => handleDocumentDoubleClick(doc)}
+                key={folderName} 
+                className={`table-row ${documents.find(doc => doc.folder === folderName && doc.id === selectedId) ? 'selected' : ''}`}
+                onClick={() => {
+                  const doc = documents.find(doc => doc.folder === folderName);
+                  if (doc) handleRowClick(doc.id);
+                }}
+                onDoubleClick={() => handleFolderClick(folderName)}
               >
                 <div className="folder-col">
                   <div className="folder-icon">
@@ -312,11 +342,8 @@ const DocumentControl = () => {
                       <path d="M1.5 2.5H6.5L8 4H14.5V13.5H1.5V2.5Z" fill="#4d7dfc" />
                     </svg>
                   </div>
-                  <span>{doc.folder}</span>
+                  <span onClick={() => handleFolderClick(folderName)}>{folderName}</span>
                 </div>
-                <div className="name-col">{doc.name}</div>
-                <div className="version-col">{doc.version}</div>
-                <div className="section-col">{doc.section}</div>
               </div>
             ))
           ) : (
@@ -347,6 +374,10 @@ const DocumentControl = () => {
         <button className="upload-button" onClick={handleUploadClick}>
           <Upload size={16} />
           <span>Upload</span>
+        </button>
+        <button className="add-folder-button" onClick={handleAddFolderClick}>
+          <PlusCircle size={16} />
+          <span>Add Folder</span>
         </button>
       </div>
 
@@ -389,6 +420,19 @@ const DocumentControl = () => {
 
               <div className="form-row">
                 <div className="form-group">
+                  <label>Folder</label>
+                  <select 
+                    name="folder" 
+                    value={formData.folder}
+                    onChange={handleFormChange}
+                  >
+                    <option value="">Select a folder</option>
+                    {uniqueFolders.map(folder => (
+                      <option key={folder} value={folder}>{folder}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group">
                   <label>Subject</label>
                   <input 
                     type="text" 
@@ -397,6 +441,9 @@ const DocumentControl = () => {
                     onChange={handleFormChange}
                   />
                 </div>
+              </div>
+
+              <div className="form-row">
                 <div className="form-group">
                   <label>Section *</label>
                   <select 
@@ -410,9 +457,6 @@ const DocumentControl = () => {
                     ))}
                   </select>
                 </div>
-              </div>
-
-              <div className="form-row">
                 <div className="form-group">
                   <label>Document Code</label>
                   <input 
@@ -567,8 +611,8 @@ const DocumentControl = () => {
                         className="upload-draft-button"
                         onClick={() => {
                           const newDocument = {
-                            id: documents.length + 1,
-                            folder: "Documents",
+                            id: Date.now(),
+                            folder: draft.folder,
                             name: draft.fileName,
                             version: draft.version,
                             section: draft.section,
@@ -609,13 +653,94 @@ const DocumentControl = () => {
         </div>
       )}
 
+      {/* Add Folder Modal */}
+      {showAddFolderModal && (
+        <div className="modal-overlay">
+          <div className="modal-container">
+            <div className="modal-header">
+              <h3>Add Folder</h3>
+              <button className="close-button" onClick={() => setShowAddFolderModal(false)}>×</button>
+            </div>
+            <div className="modal-body">
+              <div className="form-group">
+                <label>Folder Name</label>
+                <input 
+                  type="text" 
+                  value={folderName}
+                  onChange={(e) => setFolderName(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button 
+                className="save-button" 
+                onClick={handleAddFolderSubmit}
+              >
+                SAVE
+              </button>
+              <button 
+                className="secondary-button" 
+                onClick={() => setShowAddFolderModal(false)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Folder Files Modal */}
+      {showFolderFilesModal && selectedFolder && (
+        <div className="modal-overlay">
+          <div className="modal-container folder-files-modal">
+            <div className="modal-header">
+              <h3>Files in {selectedFolder}</h3>
+              <button className="close-button" onClick={() => setShowFolderFilesModal(false)}>×</button>
+            </div>
+            <div className="modal-body">
+              <div className="folder-files-table">
+                <div className="table-header">
+                  <div className="name-col">Name</div>
+                  <div className="version-col">Version</div>
+                  <div className="section-col">Section</div>
+                  <div className="revision-number-col">Revision Number</div>
+                  <div className="subject-col">Subject</div>
+                  <div className="element-name-col">Element Name</div>
+                  <div className="document-code-col">Document Code</div>
+                </div>
+                <div className="table-body">
+                  {documents.filter(doc => doc.folder === selectedFolder && doc.name).map((doc) => (
+                    <div key={doc.id} className="table-row" onClick={() => handleFileSelected(doc)}>
+                      <div className="name-col">{doc.name}</div>
+                      <div className="version-col">{doc.version}</div>
+                      <div className="section-col">{doc.section}</div>
+                      <div className="revision-number-col">{doc.revisionNumber}</div>
+                      <div className="subject-col">{doc.accessName}</div>
+                      <div className="element-name-col">{doc.version}</div>
+                      <div className="document-code-col">{doc.documentCode}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer">
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Enhanced Document View Modal with PDF Viewer */}
       {showViewDocument && selectedDocument && (
         <div className="modal-overlay">
           <div className="modal-container view-document-modal">
             <div className="modal-header">
               <h3>{selectedDocument.name}</h3>
-              <button className="close-button" onClick={() => setShowViewDocument(false)}>×</button>
+              <button 
+                className="back-button"
+                onClick={handleBackToFolderFiles}
+              >
+                Back
+              </button>
             </div>
             <div className="modal-body">
               <div className="document-details">

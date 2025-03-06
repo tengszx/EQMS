@@ -5,6 +5,7 @@ import AdminSidebar from '../component/admin/AdminSidebar';
 import Headerboard from '../component/admin/Headerboard';
 import Metrics from '../component/admin/Metrics'; 
 import DocumentControl from '../component/admin/Documentcontrol';
+import CalendarDashboard from '../component/admin/CalendarDashboard'; // Import the new component
 import { createRoot } from 'react-dom/client';
 
 const Dashboard = () => {
@@ -26,6 +27,10 @@ const Dashboard = () => {
                 return <Metrics />;
             case "Document Control":
                 return <DocumentControl />;
+            case "Calendar":
+                return <CalendarDashboard />;  // Add this case for Calendar
+            case "Audits & Inspection":
+                return <CalendarDashboard />;  // You can also use it here since it uses Calendar icon
             // Add other cases as needed
             default:
                 return <Metrics />;
