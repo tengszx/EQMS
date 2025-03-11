@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, useMotionTemplate, useMotionValue, animate } from "framer-motion";
+import { motion, useMotionValue, animate } from "framer-motion";
 import '../../../css/styles/landing/QuickAccessSection.css';
 
 const QuickAccessSection = () => {
@@ -17,8 +17,7 @@ const QuickAccessSection = () => {
     });
   }, [color]);
 
-  // Use motion template to create a dynamic background gradient
-  const backgroundImage = useMotionTemplate`radial-gradient(125% 125% at 50% 0%, #020617 50%, ${color})`;
+  const backgroundImage = `radial-gradient(125% 125% at 50% 0%, #020617 50%, ${color})`;
 
   const actions = [
     {

@@ -1,5 +1,5 @@
 .admin-sidebar {
-    background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+    background: rgba(3, 5, 91, 0.2); /* Semi-transparent dark blue */
     backdrop-filter: blur(10px); /* Blurs the background */
     width: 45px; /* Collapsed width */
     height: 96vh; /* Full height */
@@ -62,7 +62,6 @@
 }
 
 .sidebar-title {
-    color: #2c3e50; /* Navy blue */
     font-size: 20px;
     font-weight: 600;
     transition: transform 0.3s ease; /* Animation for scale */
@@ -89,7 +88,7 @@
 }
 
 .menu-item:hover {
-    background: rgba(100, 99, 168, 0.3); /* Light background with transparency on hover */
+    background: rgba(3, 5, 91, 0.3); /* Light background with transparency on hover */
 }
 
 .menu-item.active {
@@ -104,7 +103,6 @@
 }
 
 .menu-icon {
-    color: #2c3e50; /* Navy blue */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -119,7 +117,6 @@
 }
 
 .menu-title {
-    color: #2c3e50; /* Navy blue */
     font-size: 14px;
     transition: all 0.3s ease;
     white-space: nowrap;
@@ -136,13 +133,17 @@
 
 .dropdown-item {
     padding: 10px 15px;
-    color: #2c3e50; /* Navy blue */
     cursor: pointer;
     transition: background 0.2s ease;
 }
 
 .dropdown-item:hover {
     background: rgba(255, 255, 255, 0.2); /* Light background on hover */
+}
+
+.dropdown-item {
+    background-color: #03055B;
+    color: #FFFFFF;
 }
 
 /* Responsive Design */

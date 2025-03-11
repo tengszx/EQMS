@@ -23,10 +23,12 @@ const CalendarDashboard = () => {
   const [showForm, setShowForm] = useState(false);
   const [newEvent, setNewEvent] = useState({
     date: format(today, 'yyyy-MM-dd'),
-    startTime: '09:00',
-    endTime: '10:00',
+    startTime: '00:00',
+    endTime: '00:00',
     title: '',
-    description: ''
+    description: '',
+    to: '',
+    from: ''
   });
 
   const firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date());
@@ -66,16 +68,20 @@ const CalendarDashboard = () => {
   const saveEvent = () => {
     if (newEvent.title.trim() === '') return;
     
+    const eventToSave = {
+      ...newEvent
+    };
+    
     let updatedEvents;
     
     if (editingEventId) {
       // Update existing event
       updatedEvents = events.map(event => 
-        event.id === editingEventId ? { ...newEvent, id: editingEventId } : event
+        event.id === editingEventId ? { ...eventToSave, id: editingEventId } : event
       );
     } else {
       // Add new event
-      updatedEvents = [...events, { ...newEvent, id: Date.now() }];
+      updatedEvents = [...events, { ...eventToSave, id: Date.now() }];
     }
     
     setEvents(updatedEvents);
@@ -86,7 +92,9 @@ const CalendarDashboard = () => {
   const editEvent = (eventId) => {
     const eventToEdit = events.find(event => event.id === eventId);
     if (eventToEdit) {
-      setNewEvent(eventToEdit);
+      setNewEvent({
+        ...eventToEdit
+      });
       setEditingEventId(eventId);
       setShowForm(true);
     }
@@ -101,10 +109,12 @@ const CalendarDashboard = () => {
   const resetForm = () => {
     setNewEvent({
       date: format(selectedDay, 'yyyy-MM-dd'),
-      startTime: '09:00',
-      endTime: '10:00',
+      startTime: '00:00',
+      endTime: '00:00',
       title: '',
-      description: ''
+      description: '',
+      to: '',
+      from: ''
     });
     setEditingEventId(null);
     setShowForm(false);
@@ -130,6 +140,20 @@ const CalendarDashboard = () => {
     return events.filter(event => event.date === formattedDate);
   };
 
+  // Format for display in the date card
+  const formatDisplayDate = (date) => {
+    return format(new Date(date), 'd MMMM yyyy');
+  };
+
+  // Convert time to 12-hour format
+  const convertTo12HourFormat = (time) => {
+    const [hours, minutes] = time.split(':');
+    const hoursAsNumber = parseInt(hours);
+    const period = hoursAsNumber < 12 ? 'AM' : 'PM';
+    const hoursIn12HourFormat = hoursAsNumber % 12 === 0 ? 12 : hoursAsNumber % 12;
+    return `${hoursIn12HourFormat}:${minutes} ${period}`;
+  };
+
   return (
     <div className="calendar-dashboard">
       <div className="calendar-container">
@@ -142,13 +166,13 @@ const CalendarDashboard = () => {
         </div>
 
         <div className="weekday-header">
-          <div>MO</div>
-          <div>TU</div>
-          <div>WE</div>
-          <div>TH</div>
-          <div>FR</div>
-          <div>SA</div>
-          <div>SU</div>
+          <div>MON</div>
+          <div>TUE</div>
+          <div>WED</div>
+          <div>THU</div>
+          <div>FRI</div>
+          <div>SAT</div>
+          <div>SUN</div>
         </div>
 
         <div className="calendar-grid">
@@ -190,66 +214,86 @@ const CalendarDashboard = () => {
           </button>
         </h3>
 
-        {/* Inline event form */}
+        {/* New Event Form Design */}
         {showForm && (
-          <div className="event-form">
-            <div className="form-group">
-              <label>Date & Time</label>
-              <input
-                type="date"
-                name="date"
-                value={newEvent.date}
-                onChange={handleInputChange}
-                className="form-control"
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Purpose</label>
-              <input
-                type="text"
-                name="title"
-                value={newEvent.title}
-                onChange={handleInputChange}
-                placeholder="Enter event title"
-                className="form-control"
-              />
-            </div>
-
-            <div className="form-row">
-              <div className="form-group half">
-                <label>Start</label>
-                <input
-                  type="time"
-                  name="startTime"
-                  value={newEvent.startTime}
-                  onChange={handleInputChange}
-                  className="form-control"
-                />
+          <div className="event-form-container">
+            <div className="date-time-card">
+              <div className="date-time-header">
+                <span>Date & Time</span>
               </div>
-              <div className="form-group half">
-                <label>End</label>
-                <input
-                  type="time"
-                  name="endTime"
-                  value={newEvent.endTime}
-                  onChange={handleInputChange}
-                  className="form-control"
-                />
+              <div className="date-display">
+                <Calendar size={16} />
+                <span>{formatDisplayDate(newEvent.date)}</span>
+              </div>
+              <div className="time-display">
+                <Clock size={16} />
+                <span>
+                  <span className="start-time">{convertTo12HourFormat(newEvent.startTime)}</span>
+                  {" - "}
+                  <span className="end-time">{convertTo12HourFormat(newEvent.endTime)}</span>
+                </span>
               </div>
             </div>
-
-            <div className="form-group">
-              <label>Description</label>
+            
+            <div className="form-card">
+              <div className="form-field">
+                <label>Purpose</label>
+                <input
+                  type="text"
+                  name="title"
+                  value={newEvent.title}
+                  onChange={handleInputChange}
+                  placeholder=""
+                />
+              </div>
+              
+              <div className="form-row">
+                <div className="form-field half">
+                  <label>Start</label>
+                  <div className="time-input-container">
+                    <input
+                      type="time"
+                      name="startTime"
+                      value={newEvent.startTime}
+                      onChange={handleInputChange}
+                      className="time-input"
+                    />
+                  </div>
+                </div>
+                <div className="form-field half">
+                  <label>End</label>
+                  <div className="time-input-container">
+                    <input
+                      type="time"
+                      name="endTime"
+                      value={newEvent.endTime}
+                      onChange={handleInputChange}
+                      className="time-input"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="description-card">
+              <div className="description-header">Description</div>
               <textarea
                 name="description"
                 value={newEvent.description}
                 onChange={handleInputChange}
-                rows="3"
-                className="form-control"
+                rows="4"
               ></textarea>
             </div>
-
+            
+            {/* Hidden inputs for actual form submission */}
+            <input
+              type="date"
+              name="date"
+              value={newEvent.date}
+              onChange={handleInputChange}
+              hidden
+            />
+            
             <div className="form-actions">
               <button className="save-button" onClick={saveEvent}>
                 {editingEventId ? 'Update' : 'Save'}
@@ -266,7 +310,11 @@ const CalendarDashboard = () => {
                 <div className="event-content">
                   <div className="event-time">
                     <Clock size={14} />
-                    <span>{event.startTime} - {event.endTime}</span>
+                    <span>
+                      <span className="start-time-display">{convertTo12HourFormat(event.startTime)}</span>
+                      {" - "}
+                      <span className="end-time-display">{convertTo12HourFormat(event.endTime)}</span>
+                    </span>
                   </div>
                   <div className="event-title">{event.title}</div>
                   {event.description && (

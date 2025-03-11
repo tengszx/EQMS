@@ -4,7 +4,6 @@ import '../../css/styles/dash/Dashboard.css';
 import AdminSidebar from '../component/admin/AdminSidebar'; 
 import Headerboard from '../component/admin/Headerboard';
 import Metrics from '../component/admin/Metrics'; 
-import DocumentControl from '../component/admin/Documentcontrol';
 import CalendarDashboard from '../component/admin/CalendarDashboard'; // Import the new component
 import { createRoot } from 'react-dom/client';
 
