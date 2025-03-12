@@ -20,17 +20,6 @@
     margin-bottom: 90px;
 }
 
-/* Particles container - ensure it covers the entire container */
-.particles-container {
-    position: absolute !important;
-    width: 100% !important;
-    height: 100% !important;
-    top: 0 !important;
-    left: 0 !important;
-    z-index: 0 !important; /* Keeps particles behind the content */
-    pointer-events: none; /* Allow interactions with elements below */
-}
-
 /* Content wrapper with text enhancement for readability */
 .content-wrapper {
     position: relative;
@@ -76,8 +65,9 @@
 .learn-more-button {
     padding: 10px 25px;
     font-size: 1em;
-    color: lightblue;
-    
+    color: rgb(0, 123, 255); /* Updated text color */
+    background-color: transparent; /* Make background transparent */
+    border: none; /* Remove border */
     border-radius: 5px;
     cursor: pointer;
     margin-top: 20px;
