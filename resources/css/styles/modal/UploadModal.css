@@ -1,4 +1,3 @@
-/* UploadModal.css */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -10,18 +9,18 @@
     align-items: center;
     justify-content: center;
     z-index: 1000;
-}
-
-.upload-modal {
+  }
+  
+  .modal-container {
     background-color: white;
     border-radius: 8px;
     width: 500px;
     max-width: 90%;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     overflow: hidden;
-}
-
-.modal-header {
+  }
+  
+  .modal-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -29,15 +28,15 @@
     border-bottom: 1px solid #eee;
     background-color: #03055B;
     color: white;
-}
-
-.modal-header h2 {
+  }
+  
+  .modal-header h2 {
     margin: 0;
     font-size: 18px;
     font-weight: 500;
-}
-
-.close-btn {
+  }
+  
+  .close-button {
     background: none;
     border: none;
     color: white;
@@ -46,55 +45,57 @@
     align-items: center;
     justify-content: center;
     padding: 5px;
-}
-
-.upload-form {
+  }
+  
+  .upload-form {
     padding: 20px;
-}
-
-.form-group {
+    overflow-y: auto;
+    max-height: 400px;
+  }
+  
+  .form-group {
     margin-bottom: 20px;
-}
-
-.form-group label {
+  }
+  
+  .form-group label {
     display: block;
     margin-bottom: 8px;
     font-size: 14px;
     color: #333;
-}
-
-.form-group select,
-.form-group input[type="date"],
-.form-group input[type="text"] {
+  }
+  
+  .form-group select,
+  .form-group input[type="date"],
+  .form-group input[type="text"] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 14px;
     color: #333;
-}
-
-.file-upload {
+  }
+  
+  .file-upload {
     margin-bottom: 30px;
-}
-
-.file-input-container {
+  }
+  
+  .file-input-container {
     display: flex;
     align-items: center;
     gap: 10px;
     flex-wrap: wrap;
-}
-
-.file-input {
+  }
+  
+  .file-input {
     position: absolute;
     width: 0.1px;
     height: 0.1px;
     opacity: 0;
     overflow: hidden;
     z-index: -1;
-}
-
-.file-select-btn {
+  }
+  
+  .file-select-btn {
     display: flex;
     align-items: center;
     gap: 5px;
@@ -105,24 +106,27 @@
     font-size: 14px;
     color: #333;
     cursor: pointer;
-}
-
-.file-name {
+  }
+  
+  .file-name {
     font-size: 14px;
     color: #666;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 250px;
-}
-
-.form-actions {
+  }
+  
+  .form-actions {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
-}
-
-.draft-btn {
+    padding: 10px 20px;
+    background-color: #f9f9f9;
+    border-top: 1px solid #eee;
+  }
+  
+  .secondary-button {
     padding: 10px 15px;
     background-color: #f0f0f0;
     border: 1px solid #ddd;
@@ -130,9 +134,9 @@
     font-size: 14px;
     color: #333;
     cursor: pointer;
-}
-
-.save-btn {
+  }
+  
+  .primary-button {
     padding: 10px 20px;
     background-color: #03055B;
     color: white;
@@ -140,8 +144,9 @@
     border-radius: 4px;
     font-size: 14px;
     cursor: pointer;
-}
-
-.save-btn:hover {
+  }
+  
+  .primary-button:hover {
     background-color: #02043d;
-}
+  }
+  

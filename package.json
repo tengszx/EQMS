@@ -28,6 +28,7 @@
         "pdfjs-dist": "^2.16.105",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
+        "react-pdf": "^9.2.1",
         "react-tsparticles": "^2.12.2",
         "rect": "^1.2.1",
         "tsparticles": "^2.9.3"

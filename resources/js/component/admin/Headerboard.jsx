@@ -1,72 +1,135 @@
-import React, { useState } from 'react';
-import { Search, Bell, LogOut } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Search, Bell, User, Settings, LogOut } from 'lucide-react';
 import '../../../css/styles/admin/Headerboard.css';
 
-const Headerboard = () => {
-  const [showLogout, setShowLogout] = useState(false);
+const HeaderBoard = () => {
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
   const [showNotifications, setShowNotifications] = useState(false);
-  const logoutTimeout = null;
-  const notificationTimeout = null;
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  
+  const notificationRef = useRef(null);
+  const profileRef = useRef(null);
+  const searchRef = useRef(null);
+  
+  // Handle clicks outside the notification and profile menus
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+        setShowNotifications(false);
+      }
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setShowProfileMenu(false);
+      }
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setIsSearchFocused(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
-  const handleMouseEnterLogout = () => {
-    if (logoutTimeout) clearTimeout(logoutTimeout);
-    setShowLogout(true);
-  };
-
-  const handleMouseLeaveLogout = () => {
-    const timeout = setTimeout(() => {
-      setShowLogout(false);
-    }, 2000); // 2 seconds timeout
-    logoutTimeout(timeout);
-  };
-
-  const handleMouseEnterNotifications = () => {
-    if (notificationTimeout) clearTimeout(notificationTimeout);
-    setShowNotifications(true);
-  };
-
-  const handleMouseLeaveNotifications = () => {
-    const timeout = setTimeout(() => {
-      setShowNotifications(false);
-    }, 2000); // 2 seconds timeout
-    notificationTimeout(timeout);
-  };
+  // Sample notifications
+  const notifications = [
+    { id: 1, text: "New message received", time: "5 minutes ago", isRead: false },
+    { id: 2, text: "Your report is ready", time: "2 hours ago", isRead: true },
+    { id: 3, text: "System update completed", time: "Yesterday", isRead: true },
+  ];
 
   return (
-    <div className="header-container">
-      <div className="dashboard-header">
-        <div className="header-left">
-          {/* Dashboard title removed */}
+    <div className="header-board">
+      <div className="header-content">
+        <div className="logo">
+          {/* Your logo can go here */}
         </div>
-        <div className="header-right">
-          <div className="search-container">
-            <Search className="search-icon" size={20} />
-            <input type="text" placeholder="Search..." className="search-input" />
+        
+        <div className="right-icons">
+          <div 
+            ref={searchRef}
+            className={`search-container ${isSearchFocused || searchValue ? 'expanded' : ''}`}
+          >
+            <Search 
+              className="search-icon" 
+              size={20} 
+            />
+            <input
+              type="text"
+              placeholder="Search..."
+              className="search-input"
+              onFocus={() => setIsSearchFocused(true)}
+              onBlur={() => {
+                if (!searchValue) {
+                  setIsSearchFocused(false);
+                }
+              }}
+              onChange={(e) => setSearchValue(e.target.value)}
+              value={searchValue}
+            />
           </div>
-          <div className="notification-container"
-               onMouseEnter={handleMouseEnterNotifications}
-               onMouseLeave={handleMouseLeaveNotifications}>
-            <Bell className="notification-icon" size={20} />
-            <span className="notification-badge">2</span>
+          
+          <div className="notification-container" ref={notificationRef}>
+            <div className="icon-wrapper" onClick={() => setShowNotifications(!showNotifications)}>
+              <Bell size={20} />
+              {notifications.some(n => !n.isRead) && <span className="notification-badge"></span>}
+            </div>
+            
             {showNotifications && (
               <div className="notification-dropdown">
-                <div className="notification-item">Seen</div>
-                <div className="notification-item">Not Seen</div>
+                <div className="notification-header">
+                  <h3>Notifications</h3>
+                  <button className="mark-all-read">Mark all as read</button>
+                </div>
+                <div className="notification-list">
+                  {notifications.length > 0 ? (
+                    notifications.map(notification => (
+                      <div key={notification.id} className={`notification-item ${notification.isRead ? 'read' : 'unread'}`}>
+                        <p className="notification-text">{notification.text}</p>
+                        <span className="notification-time">{notification.time}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="no-notifications">No notifications</p>
+                  )}
+                </div>
               </div>
             )}
           </div>
-          <div className="profile-container"
-               onMouseEnter={handleMouseEnterLogout}
-               onMouseLeave={handleMouseLeaveLogout}>
-            <img src="/images/profile.png" alt="Profile" className="profile-image" />
-            <div 
-              className={`notification-dropdown logout-dropdown ${showLogout ? 'visible' : ''}`}
-              onMouseEnter={handleMouseEnterLogout} 
-              onMouseLeave={handleMouseLeaveLogout}
-            >
-              <LogOut className="logout-icon" size={16} />
-              <span className="logout-text">Logout</span>
+          
+          <div className="profile-container" ref={profileRef}>
+            <div className="profile-icon" onClick={() => setShowProfileMenu(!showProfileMenu)}>
+              <User size={20} />
             </div>
+            
+            {showProfileMenu && (
+              <div className="profile-dropdown">
+                <div className="profile-header">
+                  <div className="profile-avatar">
+                    <User size={40} />
+                  </div>
+                  <div className="profile-info">
+                    <h3>Admin User</h3>
+                    <p>admin@example.com</p>
+                  </div>
+                </div>
+                <div className="profile-menu">
+                  <div className="menu-item">
+                    <User size={16} />
+                    <span>Profile</span>
+                  </div>
+                  <div className="menu-item">
+                    <Settings size={16} />
+                    <span>Settings</span>
+                  </div>
+                  <div className="menu-item logout">
+                    <LogOut size={16} />
+                    <span>Logout</span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -74,4 +137,4 @@ const Headerboard = () => {
   );
 };
 
-export default Headerboard;
+export default HeaderBoard;

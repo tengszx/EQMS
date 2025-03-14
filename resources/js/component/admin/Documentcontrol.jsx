@@ -3,6 +3,7 @@ import { PlusCircle } from 'lucide-react';
 import '../../../css/styles/admin/DocumentControl.css';
 import UploadModal from '../../../js/modal/UploadModal';
 import DraftModal from '../../../js/modal/DraftModal';
+import { Document, Page } from 'react-pdf';
 
 const DocumentControl = () => {
   const [selectedManual, setSelectedManual] = useState('');
@@ -111,6 +112,8 @@ const DocumentControl = () => {
     })));
   };
 
+  const [pdfFile, setPdfFile] = useState(null);
+
   return (
     <div className="document-control-container">
       {/* Manual Selection and Buttons */}
@@ -185,18 +188,22 @@ const DocumentControl = () => {
 
             {/* PDF Viewer */}
             <div className="pdf-viewer">
-              <div className="pdf-placeholder">
-                PDF
-              </div>
-              <div className="page-navigation">
-                <button onClick={prevPage} className="nav-button">
-                  ◀
-                </button>
-                <span>Page Number</span>
-                <button onClick={nextPage} className="nav-button">
-                  ▶
-                </button>
-              </div>
+              {pdfFile && (
+                <Document file={pdfFile}>
+                  <Page pageNumber={currentPage} />
+                </Document>
+              )}
+            </div>
+
+            {/* Page Navigation */}
+            <div className="page-navigation">
+              <button onClick={prevPage} className="nav-button">
+                ◀
+              </button>
+              <span>Page {currentPage}</span>
+              <button onClick={nextPage} className="nav-button">
+                ▶
+              </button>
             </div>
 
             {/* Previous Versions Section */}
@@ -270,6 +277,7 @@ const DocumentControl = () => {
           onClose={toggleUploadModal} 
           categories={manualCategories['Quality Manual']}
           subcategories={subcategories}
+          setPdfFile={setPdfFile}
         />
       )}
 

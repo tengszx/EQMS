@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 
-const UploadModal = ({ onClose, categories, subcategories }) => {
+const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
   const [formData, setFormData] = useState({
     section: '',
     subject: '',
@@ -35,6 +35,7 @@ const UploadModal = ({ onClose, categories, subcategories }) => {
     e.preventDefault();
     // Process form submission logic would go here
     console.log('Submitting:', formData);
+    setPdfFile(formData.file);
     onClose();
   };
   
@@ -57,7 +58,7 @@ const UploadModal = ({ onClose, categories, subcategories }) => {
           </button>
         </div>
         
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="upload-form">
           <div className="form-group">
             <label className="form-label">Section</label>
             <select 
