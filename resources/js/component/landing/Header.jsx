@@ -14,7 +14,7 @@ const LPHeader = () => {
         lastScrollY = window.scrollY; // Update last scroll position
     };
 
-    const handleLoginClick =() => {
+    const handleLoginClick = () => {
         window.location.href = '/login';
     }
 
@@ -43,7 +43,7 @@ const LPHeader = () => {
             <div className="header-container">
                 <div className="left-container">
                     <div className="logo-container">
-                        <img src="/images/NewEQMSLOGO.png" alt="Logo" className="logoheader" />
+                        <img src="/images/EQMS_LOGO-removebg-preview.png" alt="Logo" className="logoheader" />
                     </div>
                 </div>
                 <div className="middle-container">

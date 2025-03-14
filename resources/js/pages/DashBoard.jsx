@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { ArrowRight, ArrowLeft } from 'lucide-react'; 
 import '../../css/styles/dash/Dashboard.css'; 
 import AdminSidebar from '../component/admin/AdminSidebar'; 
-import Headerboard from '../component/admin/Headerboard';
+import Headerboard from '../component/admin/Headerboard'; // Ensure this path is correct
 import Metrics from '../component/admin/Metrics'; 
-import CalendarDashboard from '../component/admin/CalendarDashboard'; // Import the new component
+import DocumentControl from '../component/admin/Documentcontrol'; // Ensure this path is correct
+import CalendarDashboard from '../component/admin/CalendarDashboard'; 
 import { createRoot } from 'react-dom/client';
 
 const Dashboard = () => {
@@ -27,9 +28,9 @@ const Dashboard = () => {
             case "Document Control":
                 return <DocumentControl />;
             case "Calendar":
-                return <CalendarDashboard />;  // Add this case for Calendar
+                return <CalendarDashboard />;
             case "Audits & Inspection":
-                return <CalendarDashboard />;  // You can also use it here since it uses Calendar icon
+                return <CalendarDashboard />;
             // Add other cases as needed
             default:
                 return <Metrics />;
@@ -46,7 +47,7 @@ const Dashboard = () => {
                 <button className="sidebar-toggle" onClick={toggleSidebar}>
                     {sidebarOpen ? <ArrowLeft className="toggle-icon" /> : <ArrowRight className="toggle-icon" />}
                 </button>
-                <Headerboard /> {/* Header is outside main-content */}
+                <Headerboard /> {/* Ensure this component is defined and imported correctly */}
                 <div className="admin-main-content">
                     <div className="main-content">
                         {renderContent()} {/* Render content based on activeMenu */}

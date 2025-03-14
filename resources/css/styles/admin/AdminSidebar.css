@@ -1,6 +1,5 @@
 .admin-sidebar {
-    background: rgba(3, 5, 91, 0.2); /* Semi-transparent dark blue */
-    backdrop-filter: blur(10px); /* Blurs the background */
+    background: linear-gradient(to right, #add8e6, #f5f5dc); /* Gradient background */
     width: 45px; /* Collapsed width */
     height: 96vh; /* Full height */
     padding: 20px;
@@ -26,39 +25,8 @@
     width: 60px; /* Increased width */
     height: 60px; /* Increased height */
     object-fit: contain;
-    position: relative; /* Position relative for animation */
+    position: relative; /* Position relative for layout */
     margin-left: -8px;
-    animation: spin 13s linear infinite; /* Apply the spin animation */
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg); /* Start at 0 degrees */
-    }
-    100% {
-        transform: rotate(360deg); /* End at 360 degrees */
-    }
-  }
-
-@keyframes fall {
-    0% {
-        transform: translateY(-100px); /* Start above the original position */
-    }
-    100% {
-        transform: translateY(0); /* End at the original position */
-    }
-}
-
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
-    }
-    40% {
-        transform: translateY(-10px); /* Bounce up */
-    }
-    60% {
-        transform: translateY(-5px); /* Slight bounce */
-    }
 }
 
 .sidebar-title {
@@ -88,7 +56,7 @@
 }
 
 .menu-item:hover {
-    background: rgba(3, 5, 91, 0.3); /* Light background with transparency on hover */
+    background: rgba(173, 216, 230, 0.5); /* Light blue background on hover */
 }
 
 .menu-item.active {
@@ -108,12 +76,7 @@
     justify-content: center;
     min-width: 20px;
     opacity: 1; /* Always visible */
-    transform: translateX(-10px); /* Start slightly to the left */
-    transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth transition */
-}
-
-.admin-sidebar:hover .menu-icon {
-    transform: translateX(0); /* Slide to original position on hover */
+    transition: opacity 0.3s ease; /* Smooth transition */
 }
 
 .menu-title {

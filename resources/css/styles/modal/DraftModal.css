@@ -1,0 +1,124 @@
+/* DraftModal.css */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.draft-modal {
+    background-color: white;
+    border-radius: 8px;
+    width: 800px;
+    max-width: 90%;
+    max-height: 80vh;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    background-color: #03055B;
+    color: white;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+
+.drafts-container {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.no-drafts {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+}
+
+.drafts-table {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.drafts-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.drafts-table th,
+.drafts-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.drafts-table th {
+    background-color: #03055B;
+    color: white;
+    font-weight: normal;
+}
+
+.drafts-table tr:hover {
+    background-color: #f9f9f9;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+}
+
+.edit-btn {
+    color: #0066cc;
+}
+
+.delete-btn {
+    color: #cc0000;
+}
+
+.publish-btn {
+    color: #009933;
+}
+
+.action-btn:hover {
+    background-color: #e0e0e0;
+}
