@@ -443,4 +443,8 @@
   .draft-button:hover {
     background-color: #e5e5e5;
   }
+  .upload-button:hover, .draft-button:hover, .add-button:hover {
+    background-color: #040879;
+  
+  }  
   

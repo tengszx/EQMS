@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 
-const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
+const UploadModal = ({ onClose, categories, subcategories, setPdfFile, isAddMode = false, currentSection = '', currentSubject = '' }) => {
   const [formData, setFormData] = useState({
     section: '',
     subject: '',
@@ -9,6 +9,17 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
     effectiveDate: '',
   });
   
+  // Initialize form data with current section and subject if in add mode
+  useEffect(() => {
+    if (isAddMode && currentSection && currentSubject) {
+      setFormData(prev => ({
+        ...prev,
+        section: currentSection,
+        subject: currentSubject
+      }));
+    }
+  }, [isAddMode, currentSection, currentSubject]);
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     
@@ -33,10 +44,17 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Process form submission logic would go here
-    console.log('Submitting:', formData);
-    setPdfFile(formData.file);
-    onClose();
+    
+    if (formData.file) {
+      // Process form submission logic would go here
+      console.log('Submitting:', formData);
+      
+      // Set the PDF file in the parent component
+      setPdfFile(formData.file);
+      onClose();
+    } else {
+      alert('Please select a PDF file');
+    }
   };
   
   const handleSaveAsDraft = () => {
@@ -52,7 +70,7 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
     <div className="modal-overlay">
       <div className="modal-container">
         <div className="modal-header">
-          <h2 className="modal-title">Upload Document</h2>
+          <h2 className="modal-title">{isAddMode ? 'Add Document Pages' : 'Upload Document'}</h2>
           <button className="close-button" onClick={onClose}>
             <X size={24} />
           </button>
@@ -67,6 +85,7 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
               value={formData.section}
               onChange={handleChange}
               required
+              disabled={isAddMode}
             >
               <option value="">Select Section</option>
               {categories.map((category, index) => (
@@ -85,7 +104,7 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
               value={formData.subject}
               onChange={handleChange}
               required
-              disabled={!formData.section}
+              disabled={!formData.section || isAddMode}
             >
               <option value="">Select Subject</option>
               {availableSubjects && availableSubjects.map((subject, index) => (
@@ -97,7 +116,7 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
           </div>
           
           <div className="form-group">
-            <label className="form-label">Document File (PDF)</label>
+            <label className="form-label">{isAddMode ? 'Additional Pages (PDF)' : 'Document File (PDF)'}</label>
             <input 
               type="file" 
               name="file" 
@@ -106,6 +125,11 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
               onChange={handleChange}
               required
             />
+            {formData.file && (
+              <div className="file-info">
+                Selected file: {formData.file.name} ({Math.round(formData.file.size / 1024)} KB)
+              </div>
+            )}
           </div>
           
           <div className="form-group">
@@ -132,7 +156,7 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
               type="submit" 
               className="primary-button"
             >
-              Upload
+              {isAddMode ? 'Add Pages' : 'Upload'}
             </button>
           </div>
         </form>
