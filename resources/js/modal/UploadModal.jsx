@@ -1,28 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { X } from 'lucide-react';
 
-const UploadModal = ({ onClose, categories, subcategories, setPdfFile, isAddMode = false, currentSection = '', currentSubject = '' }) => {
+const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
   const [formData, setFormData] = useState({
     section: '',
     subject: '',
     file: null,
     effectiveDate: '',
   });
-  
-  // Initialize form data with current section and subject if in add mode
-  useEffect(() => {
-    if (isAddMode && currentSection && currentSubject) {
-      setFormData(prev => ({
-        ...prev,
-        section: currentSection,
-        subject: currentSubject
-      }));
-    }
-  }, [isAddMode, currentSection, currentSubject]);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    
+
     if (name === 'file' && files) {
       setFormData({
         ...formData,
@@ -41,14 +30,14 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile, isAddMode
       });
     }
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (formData.file) {
       // Process form submission logic would go here
       console.log('Submitting:', formData);
-      
+
       // Set the PDF file in the parent component
       setPdfFile(formData.file);
       onClose();
@@ -56,7 +45,7 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile, isAddMode
       alert('Please select a PDF file');
     }
   };
-  
+
   const handleSaveAsDraft = () => {
     // Logic to save as draft would go here
     console.log('Saving as draft:', formData);
@@ -65,17 +54,17 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile, isAddMode
 
   // Get available subjects based on selected section
   const availableSubjects = formData.section ? subcategories[formData.section] : [];
-  
+
   return (
     <div className="modal-overlay">
       <div className="modal-container">
         <div className="modal-header">
-          <h2 className="modal-title">{isAddMode ? 'Add Document Pages' : 'Upload Document'}</h2>
+          <h2 className="modal-title">Upload Document</h2>
           <button className="close-button" onClick={onClose}>
             <X size={24} />
           </button>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="upload-form">
           <div className="form-group">
             <label className="form-label">Section</label>
@@ -85,7 +74,6 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile, isAddMode
               value={formData.section}
               onChange={handleChange}
               required
-              disabled={isAddMode}
             >
               <option value="">Select Section</option>
               {categories.map((category, index) => (
@@ -95,7 +83,7 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile, isAddMode
               ))}
             </select>
           </div>
-          
+
           <div className="form-group">
             <label className="form-label">Subject</label>
             <select 
@@ -104,7 +92,7 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile, isAddMode
               value={formData.subject}
               onChange={handleChange}
               required
-              disabled={!formData.section || isAddMode}
+              disabled={!formData.section}
             >
               <option value="">Select Subject</option>
               {availableSubjects && availableSubjects.map((subject, index) => (
@@ -114,9 +102,9 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile, isAddMode
               ))}
             </select>
           </div>
-          
+
           <div className="form-group">
-            <label className="form-label">{isAddMode ? 'Additional Pages (PDF)' : 'Document File (PDF)'}</label>
+            <label className="form-label">Document File (PDF)</label>
             <input 
               type="file" 
               name="file" 
@@ -131,7 +119,7 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile, isAddMode
               </div>
             )}
           </div>
-          
+
           <div className="form-group">
             <label className="form-label">Effective Date</label>
             <input 
@@ -143,7 +131,7 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile, isAddMode
               required
             />
           </div>
-          
+
           <div className="form-actions">
             <button 
               type="button" 
@@ -156,7 +144,7 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile, isAddMode
               type="submit" 
               className="primary-button"
             >
-              {isAddMode ? 'Add Pages' : 'Upload'}
+              Upload
             </button>
           </div>
         </form>

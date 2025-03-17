@@ -3,10 +3,12 @@ import { PlusCircle } from 'lucide-react';
 import '../../../css/styles/admin/DocumentControl.css';
 import UploadModal from '../../../js/modal/UploadModal';
 import DraftModal from '../../../js/modal/DraftModal';
-import { pdfjs, Document, Page } from 'react-pdf';
+import { Document, Page } from 'react-pdf';
 
-// Initialize pdfjs worker using the matching version (2.16.105)
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js`;
+// Import the specific version of pdf.js that matches react-pdf
+import { pdfjs } from 'react-pdf';
+// Set the worker source to the correct version
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 const DocumentControl = () => {
   const [selectedManual, setSelectedManual] = useState('');
@@ -14,11 +16,11 @@ const DocumentControl = () => {
   const [selectedSubcategory, setSelectedSubcategory] = useState('');
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showDraftModal, setShowDraftModal] = useState(false);
-  const [showAddModal, setShowAddModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [numPages, setNumPages] = useState(null);
   const [pdfFile, setPdfFile] = useState(null);
-  const [pdfLoadError, setPdfLoadError] = useState(null);
+  const [scale, setScale] = useState(0.8); // Start with smaller scale
+  const [pdfDimensions, setPdfDimensions] = useState({ width: 0, height: 0 });
   const [documentInfo, setDocumentInfo] = useState({
     documentCode: '01-001-2025',
     revisionNumber: '3',
@@ -28,9 +30,9 @@ const DocumentControl = () => {
 
   // Mock revisions for preview
   const [revisions, setRevisions] = useState([
-    { id: 1, section: 'Foreword', revision: 'Initial number 1', date: 'Jan 24, 2025', selected: true },
-    { id: 2, section: 'Foreword', revision: 'Initial number 2', date: 'Jan 24, 2025', selected: false },
-    { id: 3, section: 'Foreword', revision: 'Initial number 3', date: 'Jan 24, 2025', selected: false }
+    { id: 1, subject: 'Foreword', revision: 'Page 1', date: 'Jan 24, 2025', selected: true },
+    { id: 2, subject: 'Foreword', revision: 'Page 2', date: 'Jan 24, 2025', selected: false },
+    { id: 3, subject: 'Foreword', revision: 'Page 3', date: 'Jan 24, 2025', selected: false }
   ]);
 
   // Manual categories data structure
@@ -81,10 +83,18 @@ const DocumentControl = () => {
     ]
   };
 
+  // Function to handle page load success and get dimensions
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
-    setPdfLoadError(null);
+    // Reset scale whenever a new document loads
+    setScale(0.8);
   }
+
+  // Handle when the page renders to get its dimensions
+  const onPageLoadSuccess = (page) => {
+    const { width, height } = page;
+    setPdfDimensions({ width, height });
+  };
 
   const handleManualChange = (e) => {
     setSelectedManual(e.target.value);
@@ -109,16 +119,24 @@ const DocumentControl = () => {
     setCurrentPage(prev => Math.max(prev - 1, 1));
   };
 
+  const zoomIn = () => {
+    setScale(prevScale => Math.min(prevScale + 0.1, 1.5));
+  };
+
+  const zoomOut = () => {
+    setScale(prevScale => Math.max(prevScale - 0.1, 0.5));
+  };
+
+  const resetZoom = () => {
+    setScale(0.8); // Reset to default scale
+  };
+
   const toggleUploadModal = () => {
     setShowUploadModal(!showUploadModal);
   };
 
   const toggleDraftModal = () => {
     setShowDraftModal(!showDraftModal);
-  };
-
-  const toggleAddModal = () => {
-    setShowAddModal(!showAddModal);
   };
 
   const handleRevisionSelect = (id) => {
@@ -128,33 +146,65 @@ const DocumentControl = () => {
     })));
   };
 
+  // File reader approach 
   const handleSetPdfFile = (file) => {
     if (file) {
-      setPdfFile(URL.createObjectURL(file));
-      setCurrentPage(1);
-      setPdfLoadError(null);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setPdfFile(e.target.result);
+        setCurrentPage(1);
+        setScale(0.8); // Reset zoom when loading a new file
+      };
+      reader.readAsArrayBuffer(file);
     }
   };
 
-  const handleAddPdfFile = (file) => {
+  const [addedFiles, setAddedFiles] = useState([]);
+  const [references, setReferences] = useState([]);
+  const [showAddReferenceModal, setShowAddReferenceModal] = useState(false);
+  const [newReference, setNewReference] = useState('');
+  const [isAddingFile, setIsAddingFile] = useState(false);
+  const [startPage, setStartPage] = useState(1);
+  const [endPage, setEndPage] = useState(1);
+
+  const handleAddFile = () => {
+    setIsAddingFile(true);
+    toggleUploadModal();
+  };
+
+  const handleAddReference = () => {
+    setShowAddReferenceModal(true);
+  };
+
+  const handleSaveReference = () => {
+    setReferences([...references, newReference]);
+    setNewReference('');
+    setShowAddReferenceModal(false);
+  };
+
+  const handleAddFileToPdf = (file) => {
     if (file) {
-      // In a real implementation, you would merge PDF files here
-      // For now, we'll just replace the current PDF with the new one
-      setPdfFile(URL.createObjectURL(file));
-      setCurrentPage(1);
-      setPdfLoadError(null);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const newPdfFile = e.target.result;
+        const newNumPages = numPages + (endPage - startPage + 1);
+        setNumPages(newNumPages);
+        setPdfFile(newPdfFile);
+        setCurrentPage(1);
+        setScale(0.8); // Reset zoom when loading a new file
+        setIsAddingFile(false);
+        const newRevision = {
+          id: revisions.length + 1,
+          subject: selectedSubcategory,
+          revision: `Pages ${startPage} to ${endPage}`,
+          date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+          selected: true
+        };
+        setRevisions([...revisions, newRevision]);
+      };
+      reader.readAsArrayBuffer(file);
     }
   };
-
-  const handlePdfLoadError = (error) => {
-    console.error('Error loading PDF:', error);
-    setPdfLoadError(`Failed to load PDF: ${error.message}`);
-  };
-
-  // Reset PDF errors when changing sections
-  useEffect(() => {
-    setPdfLoadError(null);
-  }, [selectedCategory, selectedSubcategory]);
 
   return (
     <div className="document-control-container">
@@ -172,11 +222,9 @@ const DocumentControl = () => {
         </div>
 
         <div className="document-control-buttons">
-          {pdfFile && (
-            <button className="add-button" onClick={toggleAddModal}>
-              Add
-            </button>
-          )}
+          <button className="add-button" onClick={handleAddFile}>
+            Add
+          </button>
           <button className="upload-button" onClick={toggleUploadModal}>
             Upload
           </button>
@@ -196,6 +244,7 @@ const DocumentControl = () => {
                 key={index} 
                 className={`category-button ${selectedCategory === category ? 'active' : ''}`}
                 onClick={() => handleCategoryClick(category)}
+                disabled={isAddingFile}
               >
                 {category}
               </button>
@@ -211,6 +260,7 @@ const DocumentControl = () => {
                 key={index} 
                 className={`subcategory-button ${selectedSubcategory === subcategory ? 'active' : ''}`}
                 onClick={() => handleSubcategoryClick(subcategory)}
+                disabled={isAddingFile}
               >
                 {subcategory}
               </button>
@@ -233,56 +283,59 @@ const DocumentControl = () => {
               </div>
             </div>
 
-            {/* PDF Viewer */}
-            <div className="pdf-viewer">
-              {pdfFile ? (
-                <Document 
-                  file={pdfFile} 
-                  onLoadSuccess={onDocumentLoadSuccess}
-                  onLoadError={handlePdfLoadError}
-                  options={{
-                    cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@2.16.105/cmaps/',
-                    cMapPacked: true,
-                  }}
-                >
-                  {pdfLoadError ? (
-                    <div className="pdf-error">
-                      <p>{pdfLoadError}</p>
-                      <p>Please try uploading the document again or contact support.</p>
-                    </div>
-                  ) : (
+            {/* PDF Viewer Container */}
+            <div className="pdf-container">
+              {/* PDF Viewer */}
+              <div className="pdf-viewer">
+                {pdfFile ? (
+                  <Document 
+                    file={pdfFile} 
+                    onLoadSuccess={onDocumentLoadSuccess}
+                    onLoadError={(error) => console.error('Error loading PDF:', error)}
+                    className="pdf-document"
+                  >
                     <Page 
                       pageNumber={currentPage}
                       renderTextLayer={false}
                       renderAnnotationLayer={false}
-                      scale={1.2}
+                      scale={scale}
+                      onLoadSuccess={onPageLoadSuccess}
+                      className="pdf-page"
                     />
-                  )}
-                </Document>
-              ) : (
-                <div className="pdf-placeholder">
-                  <p>No document selected. Please upload a PDF document.</p>
-                </div>
-              )}
-            </div>
+                  </Document>
+                ) : (
+                  <div className="pdf-placeholder">
+                    <p>No document selected. Please upload a PDF document.</p>
+                  </div>
+                )}
+              </div>
 
-            {/* Page Navigation */}
-            <div className="page-navigation">
-              <button 
-                onClick={prevPage} 
-                className="nav-button"
-                disabled={currentPage <= 1 || !pdfFile || pdfLoadError}
-              >
-                ◀
-              </button>
-              <span>Page {currentPage} of {numPages || 1}</span>
-              <button 
-                onClick={nextPage} 
-                className="nav-button"
-                disabled={!numPages || currentPage >= numPages || !pdfFile || pdfLoadError}
-              >
-                ▶
-              </button>
+              {/* Zoom Controls */}
+              <div className="zoom-controls">
+                <button onClick={zoomOut} className="zoom-button" title="Zoom Out">-</button>
+                <span>{Math.round(scale * 100)}%</span>
+                <button onClick={zoomIn} className="zoom-button" title="Zoom In">+</button>
+                <button onClick={resetZoom} className="reset-zoom-button" title="Reset Zoom">Reset</button>
+              </div>
+
+              {/* Page Navigation */}
+              <div className="page-navigation">
+                <button 
+                  onClick={prevPage} 
+                  className="nav-button"
+                  disabled={currentPage <= 1}
+                >
+                  ◀
+                </button>
+                <span>Page {currentPage} of {numPages || 1}</span>
+                <button 
+                  onClick={nextPage} 
+                  className="nav-button"
+                  disabled={!numPages || currentPage >= numPages}
+                >
+                  ▶
+                </button>
+              </div>
             </div>
 
             {/* Previous Versions Section */}
@@ -301,7 +354,7 @@ const DocumentControl = () => {
                       onChange={() => handleRevisionSelect(revision.id)}
                     />
                     <div className="revision-details">
-                      <div className="revision-section">{revision.section}</div>
+                      <div className="revision-subject">{revision.subject}</div>
                       <div className="revision-text">{revision.revision}</div>
                       <div className="revision-date">{revision.date}</div>
                     </div>
@@ -314,13 +367,11 @@ const DocumentControl = () => {
             <div className="references-section">
               <h3 className="section-title">References:</h3>
               <ul className="reference-list">
-                <li className="reference-item">• Reference 1</li>
-                <li className="reference-item">• Reference 2</li>
-                <li className="reference-item">• Reference 3</li>
-                <li className="reference-item">• Reference 4</li>
+                {references.map((reference, index) => (
+                  <li key={index} className="reference-item">• {reference}</li>
+                ))}
               </ul>
-              <button className="add-reference-button">
-                <PlusCircle size={16} />
+              <button className="add-reference-button" onClick={handleAddReference}>
                 Add Reference
               </button>
             </div>
@@ -359,20 +410,12 @@ const DocumentControl = () => {
           onClose={toggleUploadModal} 
           categories={manualCategories['Quality Manual']}
           subcategories={subcategories}
-          setPdfFile={handleSetPdfFile}
-        />
-      )}
-
-      {/* Add Modal */}
-      {showAddModal && (
-        <UploadModal 
-          onClose={toggleAddModal} 
-          categories={manualCategories['Quality Manual']}
-          subcategories={subcategories}
-          setPdfFile={handleAddPdfFile}
-          isAddMode={true}
-          currentSection={selectedCategory}
-          currentSubject={selectedSubcategory}
+          setPdfFile={isAddingFile ? handleAddFileToPdf : handleSetPdfFile}
+          startPage={startPage}
+          setStartPage={setStartPage}
+          endPage={endPage}
+          setEndPage={setEndPage}
+          isAddingFile={isAddingFile}
         />
       )}
 
@@ -381,6 +424,31 @@ const DocumentControl = () => {
         <DraftModal 
           onClose={toggleDraftModal}
         />
+      )}
+
+      {/* Add Reference Modal */}
+      {showAddReferenceModal && (
+        <div className="modal-overlay">
+          <div className="modal-container">
+            <div className="modal-header">
+              <h3 className="modal-title">Add Reference</h3>
+              <button className="close-button" onClick={() => setShowAddReferenceModal(false)}>×</button>
+            </div>
+            <div className="form-group">
+              <label className="form-label">Reference Link:</label>
+              <input 
+                type="text" 
+                value={newReference} 
+                onChange={(e) => setNewReference(e.target.value)} 
+                className="form-control"
+              />
+            </div>
+            <div className="form-actions">
+              <button className="primary-button" onClick={handleSaveReference}>Save</button>
+              <button className="secondary-button" onClick={() => setShowAddReferenceModal(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
