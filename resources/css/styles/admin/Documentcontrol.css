@@ -1,3 +1,4 @@
+/* Main Container */
 .document-control-container {
   display: flex;
   flex-direction: column;
@@ -5,8 +6,10 @@
   padding: 20px;
   gap: 20px;
   background-color: #ffffff;
+  font-family: Arial, sans-serif;
 }
 
+/* Manual Selection Area */
 .manual-selection-container {
   display: flex;
   justify-content: space-between;
@@ -23,8 +26,10 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: white;
+  font-size: 14px;
 }
 
+/* Control Buttons */
 .document-control-buttons {
   display: flex;
   gap: 10px;
@@ -38,12 +43,14 @@
   border-radius: 4px;
   cursor: pointer;
   font-weight: 500;
+  transition: background-color 0.2s;
 }
 
 .upload-button:hover, .draft-button:hover, .add-button:hover {
   background-color: #040879;
 }
 
+/* Main Content Area */
 .document-content-area {
   display: flex;
   flex-grow: 1;
@@ -51,39 +58,43 @@
   min-height: 600px;
 }
 
+/* Categories and Subcategories Columns */
 .categories-column, .subcategories-column {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  width: 250px; /* Increased width */
+  width: 250px;
   background: white;
   border-radius: 8px;
   padding: 10px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  overflow-y: auto; /* Added overflow-y */
-  max-height: 600px; /* Increased max-height */
+  overflow-y: auto;
+  max-height: 600px;
 }
 
 .category-button, .subcategory-button {
   padding: 12px;
-  text-align: center;
+  text-align: left;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
   background-color: white;
   cursor: pointer;
   transition: background-color 0.2s;
+  font-size: 14px;
 }
 
 .category-button.active, .subcategory-button.active {
   background-color: #e6e6ff;
   border-color: #03055B;
   color: #03055B;
+  font-weight: 600;
 }
 
 .category-button:hover, .subcategory-button:hover {
   background-color: #f0f0ff;
 }
 
+/* Document View Area */
 .document-view-area {
   flex-grow: 1;
   display: flex;
@@ -93,8 +104,10 @@
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  overflow-y: auto;
 }
 
+/* Document Headers */
 .document-headers {
   display: flex;
   gap: 20px;
@@ -116,97 +129,102 @@
 .header-value {
   padding: 8px 15px;
   border: 1px solid #e0e0e0;
+  border-top: none;
   border-radius: 0 0 4px 4px;
-  background-color: #fafafa;
 }
 
-/* New PDF container to manage the entire PDF section */
+/* PDF Container and Viewer */
 .pdf-container {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
+  position: relative;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
-  margin-bottom: 15px;
-  overflow: hidden;
-}
-
-.pdf-viewer {
-  flex-grow: 1;
+  padding: 10px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  min-height: 400px;
-  overflow: auto;
+  height: 500px;
   background-color: #f9f9f9;
 }
 
-.pdf-document {
+.pdf-viewer {
   width: 100%;
-  height: 100%;
+  height: 420px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+}
+
+.pdf-document {
   display: flex;
   justify-content: center;
 }
 
 .pdf-page {
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
 }
 
 .pdf-placeholder {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
   height: 100%;
-  color: #aaa;
-  font-size: 20px;
-  font-weight: 300;
+  width: 100%;
+  color: #666;
   text-align: center;
 }
 
+/* Zoom Controls */
 .zoom-controls {
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 10px;
-  background-color: #f5f5f5;
-  border-top: 1px solid #e0e0e0;
   gap: 10px;
+  margin-top: 10px;
 }
 
 .zoom-button {
-  padding: 5px 10px;
+  width: 30px;
+  height: 30px;
   border: 1px solid #ccc;
-  background-color: white;
   border-radius: 4px;
+  background-color: white;
   cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .reset-zoom-button {
   padding: 5px 10px;
   border: 1px solid #ccc;
-  background-color: white;
   border-radius: 4px;
+  background-color: white;
   cursor: pointer;
-  margin-left: 10px;
+  font-size: 12px;
 }
 
+/* Page Navigation */
 .page-navigation {
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 10px;
-  background-color: #f5f5f5;
-  border-top: 1px solid #e0e0e0;
   gap: 10px;
+  margin-top: 10px;
 }
 
 .nav-button {
-  padding: 5px 10px;
+  width: 30px;
+  height: 30px;
   border: 1px solid #ccc;
-  background-color: white;
   border-radius: 4px;
+  background-color: white;
   cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .nav-button:disabled {
@@ -214,6 +232,7 @@
   cursor: not-allowed;
 }
 
+/* Previous Versions Section */
 .previous-versions-section {
   border: 1px solid #e0e0e0;
   border-radius: 4px;
@@ -221,12 +240,16 @@
 }
 
 .section-title {
-  margin: 0 0 10px 0;
+  margin-top: 0;
+  margin-bottom: 10px;
   font-size: 16px;
-  font-weight: 600;
+  color: #333;
 }
 
 .revisions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
   max-height: 150px;
   overflow-y: auto;
 }
@@ -234,103 +257,105 @@
 .revision-item {
   display: flex;
   align-items: center;
+  gap: 10px;
   padding: 8px;
-  border-bottom: 1px solid #eee;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
   cursor: pointer;
-}
-
-.revision-item:hover {
-  background-color: #f5f5f5;
 }
 
 .revision-item.selected {
   background-color: #e6e6ff;
-}
-
-.revision-item input[type="checkbox"] {
-  margin-right: 10px;
+  border-color: #03055B;
 }
 
 .revision-details {
   display: flex;
-  flex-grow: 1;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .revision-subject {
-  font-weight: 500;
-  width: 100px;
+  font-weight: 600;
+  font-size: 14px;
 }
 
 .revision-text {
-  flex-grow: 1;
-  color: #03055B;
+  font-size: 12px;
+  color: #666;
 }
 
 .revision-date {
-  color: #777;
-  font-size: 0.9em;
+  font-size: 12px;
+  color: #999;
 }
 
+/* References Section */
 .references-section {
   border: 1px solid #e0e0e0;
   border-radius: 4px;
   padding: 10px;
-  margin-top: 15px;
-  position: relative;
 }
 
 .reference-list {
   list-style-type: none;
-  padding: 0;
-  margin: 0 0 40px 0;
+  padding-left: 0;
+  margin-bottom: 10px;
 }
 
 .reference-item {
   padding: 5px 0;
-  color: #03055B;
+  font-size: 14px;
 }
 
 .add-reference-button {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  padding: 5px 10px;
+  padding: 8px 12px;
   background-color: #f0f0f0;
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 0.9em;
+  font-size: 14px;
+  transition: background-color 0.2s;
 }
 
+.add-reference-button:hover {
+  background-color: #e0e0e0;
+}
+
+/* Document Info Section */
 .document-info-section {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
-  margin-top: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 10px;
 }
 
 .info-row {
   display: flex;
   flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  min-width: 200px;
 }
 
 .info-label {
-  font-weight: 500;
-  margin-bottom: 5px;
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
 }
 
 .info-value {
-  padding: 8px;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  background-color: #fafafa;
+  color: #666;
+  font-size: 14px;
 }
 
+/* Document Actions */
 .document-actions {
   display: flex;
   justify-content: flex-end;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .save-button {
@@ -341,6 +366,8 @@
   border-radius: 4px;
   cursor: pointer;
   font-weight: 600;
+  font-size: 16px;
+  transition: background-color 0.2s;
 }
 
 .save-button:hover {
@@ -352,8 +379,8 @@
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
+  width: 100%;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
@@ -365,11 +392,11 @@
   background-color: white;
   border-radius: 8px;
   padding: 20px;
-  width: 600px;
+  width: 500px;
   max-width: 90%;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .modal-header {
@@ -377,22 +404,20 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #eee;
 }
 
 .modal-title {
+  margin: 0;
   font-size: 18px;
-  font-weight: 600;
-  color: #03055B;
+  color: #333;
 }
 
 .close-button {
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 24px;
   cursor: pointer;
-  color: #777;
+  color: #666;
 }
 
 .form-group {
@@ -401,24 +426,17 @@
 
 .form-label {
   display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #333;
 }
 
 .form-control {
-  width: 550px;
+  width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   border-radius: 4px;
-}
-
-.form-row {
-  display: flex;
-  gap: 15px;
-}
-
-.form-col {
-  flex: 1;
+  font-size: 14px;
 }
 
 .form-actions {
@@ -435,67 +453,139 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
 }
 
 .secondary-button {
   padding: 10px 20px;
-  background-color: #e0e0e0;
+  background-color: #f0f0f0;
   color: #333;
-  border: none;
+  border: 1px solid #ccc;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
 }
 
-.draft-list {
-  margin-top: 15px;
-  border: 1px solid #eee;
+.primary-button:hover {
+  background-color: #040879;
+}
+
+.secondary-button:hover {
+  background-color: #e0e0e0;
+}
+
+.primary-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* PDF Preview in Modal */
+.pdf-preview-container {
+  margin-bottom: 15px;
+}
+
+.pdf-preview {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+  background-color: #f0f0f0;
   border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+/* Page Selection */
+.page-selection {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-input {
+  width: 60px;
+  padding: 5px;
+  text-align: center;
+}
+
+.page-total {
+  color: #666;
+}
+
+/* Form Row and Column Layout */
+.form-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.form-col {
+  flex: 1;
+}
+
+/* Page Range Inputs */
+.page-range {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-range-input {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Draft List */
+.draft-list {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 15px;
 }
 
 .draft-item {
   display: flex;
   justify-content: space-between;
-  padding: 12px;
-  border-bottom: 1px solid #eee;
-}
-
-.draft-item:last-child {
-  border-bottom: none;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  margin-bottom: 8px;
 }
 
 .draft-info {
-  flex-grow: 1;
+  flex: 1;
 }
 
 .draft-title {
-  font-weight: 500;
+  font-weight: 600;
   margin-bottom: 5px;
 }
 
 .draft-metadata {
-  font-size: 0.9em;
-  color: #777;
+  font-size: 12px;
+  color: #666;
 }
 
 .draft-actions {
   display: flex;
-  gap: 8px;
-  align-items: center;
+  gap: 5px;
 }
 
 .draft-button {
   padding: 5px 10px;
   background-color: #f0f0f0;
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 0.9em;
+  font-size: 12px;
 }
 
-.draft-button:hover {
-  background-color: #e5e5e5;
-}
-
-.upload-button:hover, .draft-button:hover, .add-button:hover {
-  background-color: #040879;
+.no-drafts {
+  color: #666;
+  text-align: center;
+  padding: 20px;
 }

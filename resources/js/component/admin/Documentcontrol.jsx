@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PlusCircle } from 'lucide-react';
 import '../../../css/styles/admin/DocumentControl.css';
-import UploadModal from '../../../js/modal/UploadModal';
-import DraftModal from '../../../js/modal/DraftModal';
 import { Document, Page } from 'react-pdf';
 
 // Import the specific version of pdf.js that matches react-pdf
@@ -10,12 +8,318 @@ import { pdfjs } from 'react-pdf';
 // Set the worker source to the correct version
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
+// Custom Add File Modal Component
+const AddFileModal = ({ onClose, onAddFile }) => {
+  const [file, setFile] = useState(null);
+  const [selectedPage, setSelectedPage] = useState(1);
+  const [numPages, setNumPages] = useState(0);
+  const [previewUrl, setPreviewUrl] = useState(null);
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile && selectedFile.type === 'application/pdf') {
+      setFile(selectedFile);
+      const fileUrl = URL.createObjectURL(selectedFile);
+      setPreviewUrl(fileUrl);
+    }
+  };
+
+  const handleDocumentLoadSuccess = ({ numPages }) => {
+    setNumPages(numPages);
+    setSelectedPage(1);
+  };
+
+  const handlePageChange = (e) => {
+    const page = parseInt(e.target.value);
+    if (page > 0 && page <= numPages) {
+      setSelectedPage(page);
+    }
+  };
+
+  const handleAddFile = () => {
+    if (file) {
+      onAddFile(file, selectedPage);
+      onClose();
+    }
+  };
+
+  return (
+    <div className="modal-overlay">
+      <div className="modal-container">
+        <div className="modal-header">
+          <h3 className="modal-title">Add File</h3>
+          <button className="close-button" onClick={onClose}>×</button>
+        </div>
+
+        <div className="form-group">
+          <label className="form-label">Upload PDF:</label>
+          <input 
+            type="file" 
+            accept="application/pdf" 
+            onChange={handleFileChange} 
+            className="form-control"
+          />
+        </div>
+
+        {previewUrl && (
+          <div className="pdf-preview-container">
+            <h4>PDF Preview:</h4>
+            <div className="pdf-preview">
+              <Document
+                file={previewUrl}
+                onLoadSuccess={handleDocumentLoadSuccess}
+                className="pdf-document"
+              >
+                <Page 
+                  pageNumber={selectedPage} 
+                  renderTextLayer={false}
+                  renderAnnotationLayer={false}
+                  scale={0.5}
+                  className="pdf-page"
+                />
+              </Document>
+            </div>
+            
+            <div className="form-group page-selection">
+              <label className="form-label">Select Page:</label>
+              <input 
+                type="number" 
+                min="1" 
+                max={numPages || 1} 
+                value={selectedPage}
+                onChange={handlePageChange}
+                className="form-control page-input"
+              />
+              <span className="page-total">of {numPages}</span>
+            </div>
+          </div>
+        )}
+
+        <div className="form-actions">
+          <button 
+            className="primary-button" 
+            onClick={handleAddFile}
+            disabled={!file}
+          >
+            Add
+          </button>
+          <button className="secondary-button" onClick={onClose}>Cancel</button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Custom Upload Modal Component
+const UploadModal = ({ onClose, categories, subcategories, setPdfFile, isAddingFile }) => {
+  const [selectedSection, setSelectedSection] = useState('');
+  const [selectedSubject, setSelectedSubject] = useState('');
+  const [file, setFile] = useState(null);
+  const [startPage, setStartPage] = useState(1);
+  const [endPage, setEndPage] = useState(1);
+  const [numPages, setNumPages] = useState(0);
+  const [previewUrl, setPreviewUrl] = useState(null);
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile && selectedFile.type === 'application/pdf') {
+      setFile(selectedFile);
+      const fileUrl = URL.createObjectURL(selectedFile);
+      setPreviewUrl(fileUrl);
+    }
+  };
+
+  const handleDocumentLoadSuccess = ({ numPages }) => {
+    setNumPages(numPages);
+    setEndPage(numPages);
+  };
+
+  const handleSectionChange = (e) => {
+    setSelectedSection(e.target.value);
+    setSelectedSubject('');
+  };
+
+  const handleSubjectChange = (e) => {
+    setSelectedSubject(e.target.value);
+  };
+
+  const handleUpload = () => {
+    if (file) {
+      setPdfFile(file);
+      onClose();
+    }
+  };
+
+  return (
+    <div className="modal-overlay">
+      <div className="modal-container">
+        <div className="modal-header">
+          <h3 className="modal-title">Upload Document</h3>
+          <button className="close-button" onClick={onClose}>×</button>
+        </div>
+
+        {!isAddingFile && (
+          <div className="form-row">
+            <div className="form-col">
+              <div className="form-group">
+                <label className="form-label">Section:</label>
+                <select 
+                  value={selectedSection}
+                  onChange={handleSectionChange}
+                  className="form-control"
+                >
+                  <option value="">Select Section</option>
+                  {categories.map((category, index) => (
+                    <option key={index} value={category}>{category}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="form-col">
+              <div className="form-group">
+                <label className="form-label">Subject:</label>
+                <select 
+                  value={selectedSubject}
+                  onChange={handleSubjectChange}
+                  className="form-control"
+                  disabled={!selectedSection}
+                >
+                  <option value="">Select Subject</option>
+                  {selectedSection && subcategories[selectedSection].map((subcat, index) => (
+                    <option key={index} value={subcat}>{subcat}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="form-group">
+          <label className="form-label">Upload PDF:</label>
+          <input 
+            type="file" 
+            accept="application/pdf" 
+            onChange={handleFileChange} 
+            className="form-control"
+          />
+        </div>
+
+        {previewUrl && (
+          <div className="pdf-preview-container">
+            <h4>PDF Preview:</h4>
+            <div className="pdf-preview">
+              <Document
+                file={previewUrl}
+                onLoadSuccess={handleDocumentLoadSuccess}
+                className="pdf-document"
+              >
+                <Page 
+                  pageNumber={startPage} 
+                  renderTextLayer={false}
+                  renderAnnotationLayer={false}
+                  scale={0.5}
+                  className="pdf-page"
+                />
+              </Document>
+            </div>
+            
+            <div className="form-group page-selection">
+              <label className="form-label">Page Range:</label>
+              <div className="page-range">
+                <div className="page-range-input">
+                  <span>From:</span>
+                  <input 
+                    type="number" 
+                    min="1" 
+                    max={numPages || 1} 
+                    value={startPage}
+                    onChange={(e) => setStartPage(Math.max(1, Math.min(parseInt(e.target.value) || 1, numPages)))}
+                    className="form-control page-input"
+                  />
+                </div>
+                <div className="page-range-input">
+                  <span>To:</span>
+                  <input 
+                    type="number" 
+                    min={startPage}
+                    max={numPages || 1} 
+                    value={endPage}
+                    onChange={(e) => setEndPage(Math.max(startPage, Math.min(parseInt(e.target.value) || startPage, numPages)))}
+                    className="form-control page-input"
+                  />
+                </div>
+                <span className="page-total">of {numPages}</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="form-actions">
+          <button 
+            className="primary-button" 
+            onClick={handleUpload}
+            disabled={!file || (!isAddingFile && (!selectedSection || !selectedSubject))}
+          >
+            Upload
+          </button>
+          <button className="secondary-button" onClick={onClose}>Cancel</button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Draft Modal Component
+const DraftModal = ({ onClose }) => {
+  const [drafts, setDrafts] = useState([
+    { id: 1, title: 'User Guide - Foreword', date: 'Mar 15, 2025', category: 'User Guide', subcategory: 'Foreword' },
+    { id: 2, title: 'Leadership - Policy', date: 'Mar 10, 2025', category: 'Leadership', subcategory: 'Policy' }
+  ]);
+
+  return (
+    <div className="modal-overlay">
+      <div className="modal-container">
+        <div className="modal-header">
+          <h3 className="modal-title">Draft Documents</h3>
+          <button className="close-button" onClick={onClose}>×</button>
+        </div>
+        
+        <div className="draft-list">
+          {drafts.length === 0 ? (
+            <p className="no-drafts">No draft documents available.</p>
+          ) : (
+            drafts.map(draft => (
+              <div key={draft.id} className="draft-item">
+                <div className="draft-info">
+                  <div className="draft-title">{draft.title}</div>
+                  <div className="draft-metadata">
+                    {draft.category} - {draft.subcategory} | Last edited: {draft.date}
+                  </div>
+                </div>
+                <div className="draft-actions">
+                  <button className="draft-button">Edit</button>
+                  <button className="draft-button">Delete</button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+        
+        <div className="form-actions">
+          <button className="secondary-button" onClick={onClose}>Close</button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const DocumentControl = () => {
   const [selectedManual, setSelectedManual] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSubcategory, setSelectedSubcategory] = useState('');
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showDraftModal, setShowDraftModal] = useState(false);
+  const [showAddFileModal, setShowAddFileModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [numPages, setNumPages] = useState(null);
   const [pdfFile, setPdfFile] = useState(null);
@@ -24,16 +328,23 @@ const DocumentControl = () => {
   const [documentInfo, setDocumentInfo] = useState({
     documentCode: '01-001-2025',
     revisionNumber: '3',
-    pageNumber: '1',
     effectiveDate: '01/01/25'
   });
 
-  // Mock revisions for preview
+  // Keep track of total pages including added files
+  const [totalDocumentPages, setTotalDocumentPages] = useState(0);
+
+  // Revisions state
   const [revisions, setRevisions] = useState([
     { id: 1, subject: 'Foreword', revision: 'Page 1', date: 'Jan 24, 2025', selected: true },
     { id: 2, subject: 'Foreword', revision: 'Page 2', date: 'Jan 24, 2025', selected: false },
     { id: 3, subject: 'Foreword', revision: 'Page 3', date: 'Jan 24, 2025', selected: false }
   ]);
+
+  // References state
+  const [references, setReferences] = useState([]);
+  const [showAddReferenceModal, setShowAddReferenceModal] = useState(false);
+  const [newReference, setNewReference] = useState('');
 
   // Manual categories data structure
   const manualCategories = {
@@ -86,6 +397,7 @@ const DocumentControl = () => {
   // Function to handle page load success and get dimensions
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
+    setTotalDocumentPages(numPages);
     // Reset scale whenever a new document loads
     setScale(0.8);
   }
@@ -139,6 +451,10 @@ const DocumentControl = () => {
     setShowDraftModal(!showDraftModal);
   };
 
+  const toggleAddFileModal = () => {
+    setShowAddFileModal(!showAddFileModal);
+  };
+
   const handleRevisionSelect = (id) => {
     setRevisions(revisions.map(rev => ({
       ...rev,
@@ -146,7 +462,19 @@ const DocumentControl = () => {
     })));
   };
 
-  // File reader approach 
+  const handleAddReference = () => {
+    setShowAddReferenceModal(true);
+  };
+
+  const handleSaveReference = () => {
+    if (newReference.trim()) {
+      setReferences([...references, newReference]);
+      setNewReference('');
+    }
+    setShowAddReferenceModal(false);
+  };
+
+  // File handler
   const handleSetPdfFile = (file) => {
     if (file) {
       const reader = new FileReader();
@@ -159,48 +487,33 @@ const DocumentControl = () => {
     }
   };
 
-  const [addedFiles, setAddedFiles] = useState([]);
-  const [references, setReferences] = useState([]);
-  const [showAddReferenceModal, setShowAddReferenceModal] = useState(false);
-  const [newReference, setNewReference] = useState('');
-  const [isAddingFile, setIsAddingFile] = useState(false);
-  const [startPage, setStartPage] = useState(1);
-  const [endPage, setEndPage] = useState(1);
-
-  const handleAddFile = () => {
-    setIsAddingFile(true);
-    toggleUploadModal();
-  };
-
-  const handleAddReference = () => {
-    setShowAddReferenceModal(true);
-  };
-
-  const handleSaveReference = () => {
-    setReferences([...references, newReference]);
-    setNewReference('');
-    setShowAddReferenceModal(false);
-  };
-
-  const handleAddFileToPdf = (file) => {
+  // Handle adding a file with page selection
+  const handleAddFile = (file, selectedPage) => {
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        const newPdfFile = e.target.result;
-        const newNumPages = numPages + (endPage - startPage + 1);
-        setNumPages(newNumPages);
-        setPdfFile(newPdfFile);
-        setCurrentPage(1);
+        setPdfFile(e.target.result);
+        setCurrentPage(selectedPage);
         setScale(0.8); // Reset zoom when loading a new file
-        setIsAddingFile(false);
+        
+        // Update total page count
+        // Assuming we're adding to existing document
+        const newTotalPages = totalDocumentPages + 1;
+        setTotalDocumentPages(newTotalPages);
+        
+        // Add to revision list
         const newRevision = {
           id: revisions.length + 1,
-          subject: selectedSubcategory,
-          revision: `Pages ${startPage} to ${endPage}`,
-          date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+          subject: selectedSubcategory || 'New Document',
+          revision: `Page ${selectedPage}`,
+          date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
           selected: true
         };
-        setRevisions([...revisions, newRevision]);
+        
+        // Update revisions and mark the new one as selected
+        setRevisions(
+          revisions.map(rev => ({ ...rev, selected: false })).concat(newRevision)
+        );
       };
       reader.readAsArrayBuffer(file);
     }
@@ -222,7 +535,7 @@ const DocumentControl = () => {
         </div>
 
         <div className="document-control-buttons">
-          <button className="add-button" onClick={handleAddFile}>
+          <button className="add-button" onClick={toggleAddFileModal}>
             Add
           </button>
           <button className="upload-button" onClick={toggleUploadModal}>
@@ -244,7 +557,6 @@ const DocumentControl = () => {
                 key={index} 
                 className={`category-button ${selectedCategory === category ? 'active' : ''}`}
                 onClick={() => handleCategoryClick(category)}
-                disabled={isAddingFile}
               >
                 {category}
               </button>
@@ -260,7 +572,6 @@ const DocumentControl = () => {
                 key={index} 
                 className={`subcategory-button ${selectedSubcategory === subcategory ? 'active' : ''}`}
                 onClick={() => handleSubcategoryClick(subcategory)}
-                disabled={isAddingFile}
               >
                 {subcategory}
               </button>
@@ -387,10 +698,6 @@ const DocumentControl = () => {
                 <div className="info-value">{documentInfo.revisionNumber}</div>
               </div>
               <div className="info-row">
-                <div className="info-label">Page Number</div>
-                <div className="info-value">{currentPage} of {numPages || 1}</div>
-              </div>
-              <div className="info-row">
                 <div className="info-label">Effectivity Date</div>
                 <div className="info-value">{documentInfo.effectiveDate}</div>
               </div>
@@ -410,12 +717,8 @@ const DocumentControl = () => {
           onClose={toggleUploadModal} 
           categories={manualCategories['Quality Manual']}
           subcategories={subcategories}
-          setPdfFile={isAddingFile ? handleAddFileToPdf : handleSetPdfFile}
-          startPage={startPage}
-          setStartPage={setStartPage}
-          endPage={endPage}
-          setEndPage={setEndPage}
-          isAddingFile={isAddingFile}
+          setPdfFile={handleSetPdfFile}
+          isAddingFile={false}
         />
       )}
 
@@ -423,6 +726,14 @@ const DocumentControl = () => {
       {showDraftModal && (
         <DraftModal 
           onClose={toggleDraftModal}
+        />
+      )}
+
+      {/* Add File Modal */}
+      {showAddFileModal && (
+        <AddFileModal 
+          onClose={toggleAddFileModal}
+          onAddFile={handleAddFile}
         />
       )}
 
