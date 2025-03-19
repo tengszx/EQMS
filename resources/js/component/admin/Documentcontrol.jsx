@@ -119,6 +119,9 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile, isAddingF
   const [endPage, setEndPage] = useState(1);
   const [numPages, setNumPages] = useState(0);
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [documentCode, setDocumentCode] = useState('');
+  const [versionCode, setVersionCode] = useState('');
+  const [effectiveDate, setEffectiveDate] = useState('');
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -145,7 +148,7 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile, isAddingF
 
   const handleUpload = () => {
     if (file) {
-      setPdfFile(file);
+      setPdfFile(file, documentCode, versionCode, effectiveDate);
       onClose();
     }
   };
@@ -254,6 +257,36 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile, isAddingF
           </div>
         )}
 
+        <div className="form-group">
+          <label className="form-label">Document Code:</label>
+          <input 
+            type="text" 
+            value={documentCode}
+            onChange={(e) => setDocumentCode(e.target.value)}
+            className="form-control"
+          />
+        </div>
+
+        <div className="form-group">
+          <label className="form-label">Version Code:</label>
+          <input 
+            type="text" 
+            value={versionCode}
+            onChange={(e) => setVersionCode(e.target.value)}
+            className="form-control"
+          />
+        </div>
+
+        <div className="form-group">
+          <label className="form-label">Effective Date:</label>
+          <input 
+            type="date" 
+            value={effectiveDate}
+            onChange={(e) => setEffectiveDate(e.target.value)}
+            className="form-control"
+          />
+        </div>
+
         <div className="form-actions">
           <button 
             className="primary-button" 
@@ -320,6 +353,8 @@ const DocumentControl = () => {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showDraftModal, setShowDraftModal] = useState(false);
   const [showAddFileModal, setShowAddFileModal] = useState(false);
+  const [showDocumentView, setShowDocumentView] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [numPages, setNumPages] = useState(null);
   const [pdfFile, setPdfFile] = useState(null);
@@ -394,6 +429,17 @@ const DocumentControl = () => {
     ]
   };
 
+  // Files list for each subcategory
+  const [filesList, setFilesList] = useState({
+    'Foreword': [
+      { id: 1, name: 'Foreword.pdf', effectiveDate: 'Jan 24, 2025', documentCode: '01-001-2025', versionCode: '1' },
+      { id: 2, name: 'Foreword_v2.pdf', effectiveDate: 'Jan 25, 2025', documentCode: '01-001-2025', versionCode: '2' }
+    ],
+    'Table of Contents': [
+      { id: 1, name: 'Table of Contents.pdf', effectiveDate: 'Jan 24, 2025', documentCode: '01-002-2025', versionCode: '1' }
+    ]
+  });
+
   // Function to handle page load success and get dimensions
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
@@ -421,6 +467,15 @@ const DocumentControl = () => {
 
   const handleSubcategoryClick = (subcategory) => {
     setSelectedSubcategory(subcategory);
+  };
+
+  const handleFileClick = (file) => {
+    setSelectedFile(file);
+    setShowDocumentView(true);
+  };
+
+  const handleBackToList = () => {
+    setShowDocumentView(false);
   };
 
   const nextPage = () => {
@@ -475,13 +530,18 @@ const DocumentControl = () => {
   };
 
   // File handler
-  const handleSetPdfFile = (file) => {
+  const handleSetPdfFile = (file, documentCode, versionCode, effectiveDate) => {
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
         setPdfFile(e.target.result);
         setCurrentPage(1);
         setScale(0.8); // Reset zoom when loading a new file
+        setDocumentInfo({
+          documentCode,
+          revisionNumber: '1',
+          effectiveDate
+        });
       };
       reader.readAsArrayBuffer(file);
     }
@@ -514,6 +574,70 @@ const DocumentControl = () => {
         setRevisions(
           revisions.map(rev => ({ ...rev, selected: false })).concat(newRevision)
         );
+        
+        // Add to files list
+        const newFile = {
+          id: Object.keys(filesList).reduce((maxId, key) => Math.max(maxId, Math.max(...filesList[key].map(file => file.id))), 0) + 1,
+          name: file.name,
+          effectiveDate: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+          documentCode: documentInfo.documentCode,
+          versionCode: documentInfo.revisionNumber
+        };
+        
+        setFilesList({
+          ...filesList,
+          [selectedSubcategory]: [...filesList[selectedSubcategory], newFile]
+        });
+      };
+      reader.readAsArrayBuffer(file);
+    }
+  };
+
+  const handleUpload = (file, documentCode, versionCode, effectiveDate) => {
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setPdfFile(e.target.result);
+        setCurrentPage(1);
+        setScale(0.8); // Reset zoom when loading a new file
+        
+        // Update total page count
+        // Assuming we're adding to existing document
+        const newTotalPages = totalDocumentPages + 1;
+        setTotalDocumentPages(newTotalPages);
+        
+        // Add to revision list
+        const newRevision = {
+          id: revisions.length + 1,
+          subject: selectedSubcategory || 'New Document',
+          revision: `Page 1`,
+          date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+          selected: true
+        };
+        
+        // Update revisions and mark the new one as selected
+        setRevisions(
+          revisions.map(rev => ({ ...rev, selected: false })).concat(newRevision)
+        );
+        
+        // Add to files list
+        const newFile = {
+          id: Object.keys(filesList).reduce((maxId, key) => Math.max(maxId, Math.max(...filesList[key].map(file => file.id))), 0) + 1,
+          name: file.name,
+          effectiveDate: effectiveDate,
+          documentCode,
+          versionCode
+        };
+        
+        setFilesList({
+          ...filesList,
+          [selectedSubcategory]: [...filesList[selectedSubcategory], newFile]
+        });
+        setDocumentInfo({
+          documentCode,
+          revisionNumber: '1',
+          effectiveDate
+        });
       };
       reader.readAsArrayBuffer(file);
     }
@@ -579,8 +703,39 @@ const DocumentControl = () => {
           </div>
         )}
 
+        {/* Files List */}
+        {selectedSubcategory && !showDocumentView && (
+          <div className="files-list">
+            <h3 className="section-title">Files:</h3>
+            <table className="files-table">
+              <thead>
+                <tr>
+                  <th>File Name</th>
+                  <th>Effective Date</th>
+                  <th>Document Code</th>
+                  <th>Version Code</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filesList[selectedSubcategory].map(file => (
+                  <tr key={file.id}>
+                    <td>{file.name}</td>
+                    <td>{file.effectiveDate}</td>
+                    <td>{file.documentCode}</td>
+                    <td>{file.versionCode}</td>
+                    <td>
+                      <button className="view-button" onClick={() => handleFileClick(file)}>View</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
         {/* Document View Area */}
-        {selectedSubcategory && (
+        {selectedSubcategory && showDocumentView && (
           <div className="document-view-area">
             {/* Section and Subject headers */}
             <div className="document-headers">
@@ -638,11 +793,11 @@ const DocumentControl = () => {
                 >
                   ◀
                 </button>
-                <span>Page {currentPage} of {numPages || 1}</span>
+                <span>Page {currentPage} of {totalDocumentPages}</span>
                 <button 
                   onClick={nextPage} 
                   className="nav-button"
-                  disabled={!numPages || currentPage >= numPages}
+                  disabled={currentPage >= totalDocumentPages}
                 >
                   ▶
                 </button>
@@ -703,9 +858,9 @@ const DocumentControl = () => {
               </div>
             </div>
 
-            {/* Save Button */}
+            {/* Back to List Button */}
             <div className="document-actions">
-              <button className="save-button">SAVE</button>
+              <button className="back-button" onClick={handleBackToList}>Back to List</button>
             </div>
           </div>
         )}
@@ -717,8 +872,7 @@ const DocumentControl = () => {
           onClose={toggleUploadModal} 
           categories={manualCategories['Quality Manual']}
           subcategories={subcategories}
-          setPdfFile={handleSetPdfFile}
-          isAddingFile={false}
+          setPdfFile={handleUpload}
         />
       )}
 

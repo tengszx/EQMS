@@ -1,153 +1,189 @@
 import React, { useState } from 'react';
-import { X } from 'lucide-react';
 
 const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
-  const [formData, setFormData] = useState({
-    section: '',
-    subject: '',
-    file: null,
-    effectiveDate: '',
-  });
+  const [selectedSection, setSelectedSection] = useState('');
+  const [selectedSubject, setSelectedSubject] = useState('');
+  const [file, setFile] = useState(null);
+  const [startPage, setStartPage] = useState(1);
+  const [endPage, setEndPage] = useState(1);
+  const [numPages, setNumPages] = useState(0);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [documentCode, setDocumentCode] = useState('');
+  const [versionCode, setVersionCode] = useState('');
+  const [effectiveDate, setEffectiveDate] = useState('');
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-
-    if (name === 'file' && files) {
-      setFormData({
-        ...formData,
-        file: files[0]
-      });
-    } else if (name === 'section') {
-      setFormData({
-        ...formData,
-        section: value,
-        subject: '' // Reset subject when section changes
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value
-      });
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile && selectedFile.type === 'application/pdf') {
+      setFile(selectedFile);
+      const fileUrl = URL.createObjectURL(selectedFile);
+      setPreviewUrl(fileUrl);
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleDocumentLoadSuccess = ({ numPages }) => {
+    setNumPages(numPages);
+    setEndPage(numPages);
+  };
 
-    if (formData.file) {
-      // Process form submission logic would go here
-      console.log('Submitting:', formData);
+  const handleSectionChange = (e) => {
+    setSelectedSection(e.target.value);
+    setSelectedSubject('');
+  };
 
-      // Set the PDF file in the parent component
-      setPdfFile(formData.file);
+  const handleSubjectChange = (e) => {
+    setSelectedSubject(e.target.value);
+  };
+
+  const handleUpload = () => {
+    if (file) {
+      setPdfFile(file, documentCode, versionCode, effectiveDate);
       onClose();
-    } else {
-      alert('Please select a PDF file');
     }
   };
-
-  const handleSaveAsDraft = () => {
-    // Logic to save as draft would go here
-    console.log('Saving as draft:', formData);
-    onClose();
-  };
-
-  // Get available subjects based on selected section
-  const availableSubjects = formData.section ? subcategories[formData.section] : [];
 
   return (
     <div className="modal-overlay">
       <div className="modal-container">
         <div className="modal-header">
-          <h2 className="modal-title">Upload Document</h2>
-          <button className="close-button" onClick={onClose}>
-            <X size={24} />
-          </button>
+          <h3 className="modal-title">Upload Document</h3>
+          <button className="close-button" onClick={onClose}>×</button>
         </div>
 
-        <form onSubmit={handleSubmit} className="upload-form">
-          <div className="form-group">
-            <label className="form-label">Section</label>
-            <select 
-              name="section" 
-              className="form-control" 
-              value={formData.section}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Select Section</option>
-              {categories.map((category, index) => (
-                <option key={index} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
+        <div className="form-row">
+          <div className="form-col">
+            <div className="form-group">
+              <label className="form-label">Section:</label>
+              <select 
+                value={selectedSection}
+                onChange={handleSectionChange}
+                className="form-control"
+              >
+                <option value="">Select Section</option>
+                {categories.map((category, index) => (
+                  <option key={index} value={category}>{category}</option>
+                ))}
+              </select>
+            </div>
           </div>
-
-          <div className="form-group">
-            <label className="form-label">Subject</label>
-            <select 
-              name="subject" 
-              className="form-control" 
-              value={formData.subject}
-              onChange={handleChange}
-              required
-              disabled={!formData.section}
-            >
-              <option value="">Select Subject</option>
-              {availableSubjects && availableSubjects.map((subject, index) => (
-                <option key={index} value={subject}>
-                  {subject}
-                </option>
-              ))}
-            </select>
+          <div className="form-col">
+            <div className="form-group">
+              <label className="form-label">Subject:</label>
+              <select 
+                value={selectedSubject}
+                onChange={handleSubjectChange}
+                className="form-control"
+                disabled={!selectedSection}
+              >
+                <option value="">Select Subject</option>
+                {selectedSection && subcategories[selectedSection].map((subcat, index) => (
+                  <option key={index} value={subcat}>{subcat}</option>
+                ))}
+              </select>
+            </div>
           </div>
+        </div>
 
-          <div className="form-group">
-            <label className="form-label">Document File (PDF)</label>
-            <input 
-              type="file" 
-              name="file" 
-              accept=".pdf" 
-              className="form-control" 
-              onChange={handleChange}
-              required
-            />
-            {formData.file && (
-              <div className="file-info">
-                Selected file: {formData.file.name} ({Math.round(formData.file.size / 1024)} KB)
+        <div className="form-group">
+          <label className="form-label">Upload PDF:</label>
+          <input 
+            type="file" 
+            accept="application/pdf" 
+            onChange={handleFileChange} 
+            className="form-control"
+          />
+        </div>
+
+        {previewUrl && (
+          <div className="pdf-preview-container">
+            <h4>PDF Preview:</h4>
+            <div className="pdf-preview">
+              <Document
+                file={previewUrl}
+                onLoadSuccess={handleDocumentLoadSuccess}
+                className="pdf-document"
+              >
+                <Page 
+                  pageNumber={startPage} 
+                  renderTextLayer={false}
+                  renderAnnotationLayer={false}
+                  scale={0.5}
+                  className="pdf-page"
+                />
+              </Document>
+            </div>
+            
+            <div className="form-group page-selection">
+              <label className="form-label">Page Range:</label>
+              <div className="page-range">
+                <div className="page-range-input">
+                  <span>From:</span>
+                  <input 
+                    type="number" 
+                    min="1" 
+                    max={numPages || 1} 
+                    value={startPage}
+                    onChange={(e) => setStartPage(Math.max(1, Math.min(parseInt(e.target.value) || 1, numPages)))}
+                    className="form-control page-input"
+                  />
+                </div>
+                <div className="page-range-input">
+                  <span>To:</span>
+                  <input 
+                    type="number" 
+                    min={startPage}
+                    max={numPages || 1} 
+                    value={endPage}
+                    onChange={(e) => setEndPage(Math.max(startPage, Math.min(parseInt(e.target.value) || startPage, numPages)))}
+                    className="form-control page-input"
+                  />
+                </div>
+                <span className="page-total">of {numPages}</span>
               </div>
-            )}
+            </div>
           </div>
+        )}
 
-          <div className="form-group">
-            <label className="form-label">Effective Date</label>
-            <input 
-              type="date" 
-              name="effectiveDate" 
-              className="form-control" 
-              value={formData.effectiveDate}
-              onChange={handleChange}
-              required
-            />
-          </div>
+        <div className="form-group">
+          <label className="form-label">Document Code:</label>
+          <input 
+            type="text" 
+            value={documentCode}
+            onChange={(e) => setDocumentCode(e.target.value)}
+            className="form-control"
+          />
+        </div>
 
-          <div className="form-actions">
-            <button 
-              type="button" 
-              className="secondary-button" 
-              onClick={handleSaveAsDraft}
-            >
-              Save as Draft
-            </button>
-            <button 
-              type="submit" 
-              className="primary-button"
-            >
-              Upload
-            </button>
-          </div>
-        </form>
+        <div className="form-group">
+          <label className="form-label">Version Code:</label>
+          <input 
+            type="text" 
+            value={versionCode}
+            onChange={(e) => setVersionCode(e.target.value)}
+            className="form-control"
+          />
+        </div>
+
+        <div className="form-group">
+          <label className="form-label">Effective Date:</label>
+          <input 
+            type="date" 
+            value={effectiveDate}
+            onChange={(e) => setEffectiveDate(e.target.value)}
+            className="form-control"
+          />
+        </div>
+
+        <div className="form-actions">
+          <button 
+            className="primary-button" 
+            onClick={handleUpload}
+            disabled={!file || (!selectedSection || !selectedSubject)}
+          >
+            Upload
+          </button>
+          <button className="secondary-button" onClick={onClose}>Cancel</button>
+        </div>
       </div>
     </div>
   );

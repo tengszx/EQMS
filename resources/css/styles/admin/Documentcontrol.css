@@ -94,6 +94,43 @@
   background-color: #f0f0ff;
 }
 
+/* Files List */
+.files-list {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  overflow-y: auto;
+}
+
+.files-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.files-table th, .files-table td {
+  border: 1px solid #e0e0e0;
+  padding: 10px;
+  text-align: left;
+}
+
+.files-table th {
+  background-color: #f0f0f0;
+}
+
+.view-button {
+  padding: 5px 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
 /* Document View Area */
 .document-view-area {
   flex-grow: 1;
@@ -358,7 +395,7 @@
   margin-top: 10px;
 }
 
-.save-button {
+.back-button {
   padding: 10px 30px;
   background-color: #03055B;
   color: white;
@@ -370,7 +407,7 @@
   transition: background-color 0.2s;
 }
 
-.save-button:hover {
+.back-button:hover {
   background-color: #040879;
 }
 
