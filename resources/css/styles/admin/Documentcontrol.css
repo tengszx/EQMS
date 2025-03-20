@@ -37,7 +37,7 @@
 
 .upload-button, .draft-button, .add-button {
   padding: 10px 20px;
-  background-color: #03055B;
+  background-color: rgb(0, 123, 255);
   color: white;
   border: none;
   border-radius: 4px;
@@ -47,7 +47,7 @@
 }
 
 .upload-button:hover, .draft-button:hover, .add-button:hover {
-  background-color: #040879;
+  background-color: #0069d9;
 }
 
 /* Main Content Area */
@@ -79,19 +79,14 @@
   border-radius: 4px;
   background-color: white;
   cursor: pointer;
-  transition: background-color 0.2s;
   font-size: 14px;
 }
 
 .category-button.active, .subcategory-button.active {
-  background-color: #e6e6ff;
-  border-color: #03055B;
-  color: #03055B;
+  background-color: rgb(0, 123, 255);
+  border-color: rgb(0, 123, 255);
+  color: white;
   font-weight: 600;
-}
-
-.category-button:hover, .subcategory-button:hover {
-  background-color: #f0f0ff;
 }
 
 /* Files List */
@@ -119,16 +114,18 @@
 }
 
 .files-table th {
-  background-color: #f0f0f0;
+  background-color: rgb(0, 123, 255);
+  color: white;
 }
 
 .view-button {
   padding: 5px 10px;
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
+  background-color: rgb(0, 123, 255);
+  border: 1px solid rgb(0, 123, 255);
   border-radius: 4px;
   cursor: pointer;
   font-size: 12px;
+  color: white;
 }
 
 /* Document View Area */
@@ -156,8 +153,8 @@
 }
 
 .header-label {
-  background-color: #f0f0f0;
-  color: #333;
+  background-color: rgb(0, 123, 255);
+  color: white;
   padding: 8px 15px;
   border-radius: 4px 4px 0 0;
   font-weight: 600;
@@ -302,8 +299,9 @@
 }
 
 .revision-item.selected {
-  background-color: #e6e6ff;
-  border-color: #03055B;
+  background-color: rgb(0, 123, 255);
+  border-color: rgb(0, 123, 255);
+  color: white;
 }
 
 .revision-details {
@@ -397,7 +395,7 @@
 
 .back-button {
   padding: 10px 30px;
-  background-color: #03055B;
+  background-color: rgb(0, 123, 255);
   color: white;
   border: none;
   border-radius: 4px;
@@ -405,10 +403,28 @@
   font-weight: 600;
   font-size: 16px;
   transition: background-color 0.2s;
+  margin-right: 10px; /* Add margin to the back button */
 }
 
 .back-button:hover {
-  background-color: #040879;
+  background-color: #0069d9;
+}
+
+.save-button {
+  padding: 10px 30px;
+  background-color: rgb(0, 123, 255);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  transition: background-color 0.2s;
+  margin-left: 10px; /* Add margin to the save button */
+}
+
+.save-button:hover {
+  background-color: #0069d9;
 }
 
 /* Modal Styles */
@@ -485,7 +501,7 @@
 
 .primary-button {
   padding: 10px 20px;
-  background-color: #03055B;
+  background-color: rgb(0, 123, 255);
   color: white;
   border: none;
   border-radius: 4px;
@@ -506,7 +522,7 @@
 }
 
 .primary-button:hover {
-  background-color: #040879;
+  background-color: #0069d9;
 }
 
 .secondary-button:hover {

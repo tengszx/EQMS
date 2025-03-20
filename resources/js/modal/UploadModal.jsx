@@ -1,29 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
   const [selectedSection, setSelectedSection] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('');
+  const [availableSubjects, setAvailableSubjects] = useState([]);
   const [file, setFile] = useState(null);
-  const [startPage, setStartPage] = useState(1);
-  const [endPage, setEndPage] = useState(1);
-  const [numPages, setNumPages] = useState(0);
-  const [previewUrl, setPreviewUrl] = useState(null);
   const [documentCode, setDocumentCode] = useState('');
   const [versionCode, setVersionCode] = useState('');
   const [effectiveDate, setEffectiveDate] = useState('');
+  
+  useEffect(() => {
+    // When section changes, update available subjects
+    if (selectedSection) {
+      if (selectedSection === 'Quality Manual') {
+        // If Quality Manual is selected, show all subcategories as options
+        const allSubcategories = Object.keys(subcategories);
+        setAvailableSubjects(allSubcategories);
+      } else if (subcategories[selectedSection]) {
+        // If a specific section is selected, show its subjects
+        setAvailableSubjects(subcategories[selectedSection]);
+      } else {
+        setAvailableSubjects([]);
+      }
+    } else {
+      setAvailableSubjects([]);
+    }
+  }, [selectedSection, subcategories]);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile && selectedFile.type === 'application/pdf') {
       setFile(selectedFile);
-      const fileUrl = URL.createObjectURL(selectedFile);
-      setPreviewUrl(fileUrl);
     }
-  };
-
-  const handleDocumentLoadSuccess = ({ numPages }) => {
-    setNumPages(numPages);
-    setEndPage(numPages);
   };
 
   const handleSectionChange = (e) => {
@@ -36,11 +44,17 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
   };
 
   const handleUpload = () => {
-    if (file) {
-      setPdfFile(file, documentCode, versionCode, effectiveDate);
+    if (file && selectedSection && selectedSubject) {
+      setPdfFile(file, documentCode, versionCode, effectiveDate, selectedSection, selectedSubject);
       onClose();
     }
   };
+
+  // Debug logging
+  console.log('Selected Section:', selectedSection);
+  console.log('Available Subjects:', availableSubjects);
+  console.log('Selected Subject:', selectedSubject);
+  console.log('File:', file ? file.name : 'No file selected');
 
   return (
     <div className="modal-overlay">
@@ -60,9 +74,14 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
                 className="form-control"
               >
                 <option value="">Select Section</option>
-                {categories.map((category, index) => (
-                  <option key={index} value={category}>{category}</option>
-                ))}
+                <option value="User Guide">User Guide</option>
+                <option value="Context Organizational">Context Organizational</option>
+                <option value="Leadership">Leadership</option>
+                <option value="Planning">Planning</option>
+                <option value="Support">Support</option>
+                <option value="Operation">Operation</option>
+                <option value="Performance Evaluation">Performance Evaluation</option>
+                <option value="Improvement">Improvement</option>
               </select>
             </div>
           </div>
@@ -76,9 +95,25 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
                 disabled={!selectedSection}
               >
                 <option value="">Select Subject</option>
-                {selectedSection && subcategories[selectedSection].map((subcat, index) => (
-                  <option key={index} value={subcat}>{subcat}</option>
-                ))}
+                {selectedSection === 'User Guide' && (
+                  <>
+                    <option value="Foreword">Foreword</option>
+                    <option value="Table of Contents">Table of Contents</option>
+                    <option value="Objectives of the Quality Manual">Objectives of the Quality Manual</option>
+                    <option value="Background Info of NRCP">Background Info of NRCP</option>
+                    <option value="Authorization">Authorization</option>
+                    <option value="Distribution">Distribution</option>
+                    <option value="Coding System">Coding System</option>
+                  </>
+                )}
+                {selectedSection && selectedSection !== 'User Guide' && (
+                  <>
+                    <option value="Overview">Overview</option>
+                    <option value="Requirements">Requirements</option>
+                    <option value="Process">Process</option>
+                    <option value="Documentation">Documentation</option>
+                  </>
+                )}
               </select>
             </div>
           </div>
@@ -93,56 +128,6 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
             className="form-control"
           />
         </div>
-
-        {previewUrl && (
-          <div className="pdf-preview-container">
-            <h4>PDF Preview:</h4>
-            <div className="pdf-preview">
-              <Document
-                file={previewUrl}
-                onLoadSuccess={handleDocumentLoadSuccess}
-                className="pdf-document"
-              >
-                <Page 
-                  pageNumber={startPage} 
-                  renderTextLayer={false}
-                  renderAnnotationLayer={false}
-                  scale={0.5}
-                  className="pdf-page"
-                />
-              </Document>
-            </div>
-            
-            <div className="form-group page-selection">
-              <label className="form-label">Page Range:</label>
-              <div className="page-range">
-                <div className="page-range-input">
-                  <span>From:</span>
-                  <input 
-                    type="number" 
-                    min="1" 
-                    max={numPages || 1} 
-                    value={startPage}
-                    onChange={(e) => setStartPage(Math.max(1, Math.min(parseInt(e.target.value) || 1, numPages)))}
-                    className="form-control page-input"
-                  />
-                </div>
-                <div className="page-range-input">
-                  <span>To:</span>
-                  <input 
-                    type="number" 
-                    min={startPage}
-                    max={numPages || 1} 
-                    value={endPage}
-                    onChange={(e) => setEndPage(Math.max(startPage, Math.min(parseInt(e.target.value) || startPage, numPages)))}
-                    className="form-control page-input"
-                  />
-                </div>
-                <span className="page-total">of {numPages}</span>
-              </div>
-            </div>
-          </div>
-        )}
 
         <div className="form-group">
           <label className="form-label">Document Code:</label>
@@ -177,8 +162,9 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
         <div className="form-actions">
           <button 
             className="primary-button" 
+            style={{ backgroundColor: 'rgb(0, 123, 255)' }}
             onClick={handleUpload}
-            disabled={!file || (!selectedSection || !selectedSubject)}
+            disabled={!file || !selectedSection || !selectedSubject}
           >
             Upload
           </button>
