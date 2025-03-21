@@ -299,9 +299,7 @@
 }
 
 .revision-item.selected {
-  background-color: rgb(0, 123, 255);
-  border-color: rgb(0, 123, 255);
-  color: white;
+  color: black;
 }
 
 .revision-details {

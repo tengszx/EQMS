@@ -188,6 +188,10 @@ const DocumentControl = () => {
   };
 
   const handleRevisionSelect = (id) => {
+    const selectedRevision = revisions.find(rev => rev.id === id);
+    if (selectedRevision) {
+      setCurrentPage(selectedRevision.startPage);
+    }
     setRevisions(revisions.map(rev => ({
       ...rev,
       selected: rev.id === id
@@ -638,11 +642,6 @@ const DocumentControl = () => {
                       className={`revision-item ${revision.selected ? 'selected' : ''}`}
                       onClick={() => handleRevisionSelect(revision.id)}
                     >
-                      <input 
-                        type="checkbox" 
-                        checked={revision.selected} 
-                        onChange={() => handleRevisionSelect(revision.id)}
-                      />
                       <div className="revision-details">
                         <div className="revision-subject">{revision.subject}</div>
                         <div className="revision-text">{revision.revision}</div>
