@@ -3,6 +3,7 @@ import { PlusCircle } from 'lucide-react';
 import '../../../css/styles/admin/DocumentControl.css';
 import { Document, Page, pdfjs } from 'react-pdf';
 import UploadModal from '../../../js/modal/UploadModal';
+import DraftModal from '../../../js/modal/DraftModal';
 import { PDFDocument } from 'pdf-lib';
 
 // Set the worker source to the correct version
@@ -46,8 +47,8 @@ const AddFileModal = ({ onClose, onAddFile }) => {
 
         <div className="form-actions">
           <button 
-            className="primary-button" 
-            style={{ backgroundColor: 'rgb(0, 123, 255)' }}
+            className="primary-button add-button" 
+            style={{ backgroundColor: 'rgb(0, 123, 255)', color: 'white' }}
             onClick={handleAddFile}
             disabled={!file}
           >
@@ -74,11 +75,15 @@ const DocumentControl = () => {
   const [pdfFile, setPdfFile] = useState(null);
   const [scale, setScale] = useState(0.8);
   const [pdfDimensions, setPdfDimensions] = useState({ width: 0, height: 0 });
+  const [isPortrait, setIsPortrait] = useState(false);
   const [documentInfo, setDocumentInfo] = useState({
     documentCode: '',
     revisionNumber: '',
     effectiveDate: ''
   });
+
+  // Store drafted documents
+  const [drafts, setDrafts] = useState([]);
 
   // Track all uploaded PDFs
   const [uploadedPdfs, setUploadedPdfs] = useState([]);
@@ -112,6 +117,21 @@ const DocumentControl = () => {
   const onPageLoadSuccess = (page) => {
     const { width, height } = page;
     setPdfDimensions({ width, height });
+    
+    // Determine if the PDF is in portrait or landscape orientation
+    const isPortraitOrientation = height > width;
+    setIsPortrait(isPortraitOrientation);
+    
+    // Adjust scale based on orientation for better fit
+    if (isPortraitOrientation) {
+      // For portrait, use a larger initial scale
+      setScale(0.9);
+    } else {
+      // For landscape, use a smaller initial scale
+      setScale(0.8);
+    }
+    
+    console.log(`Page dimensions: ${width}x${height}, orientation: ${isPortraitOrientation ? 'portrait' : 'landscape'}`);
   };
 
   const handleManualChange = (e) => {
@@ -172,7 +192,8 @@ const DocumentControl = () => {
   };
 
   const resetZoom = () => {
-    setScale(0.8); // Reset to default scale
+    // Set different default zoom based on orientation
+    setScale(isPortrait ? 0.9 : 0.8);
   };
 
   const toggleUploadModal = () => {
@@ -196,6 +217,27 @@ const DocumentControl = () => {
       ...rev,
       selected: rev.id === id
     })));
+  };
+
+  // Function to handle saving drafts from UploadModal
+  const handleSaveDraft = (draftData) => {
+    console.log("Saving draft:", draftData);
+    
+    // Check if draft already exists to update it, otherwise add new
+    const existingDraftIndex = drafts.findIndex(draft => draft.id === draftData.id);
+    
+    if (existingDraftIndex !== -1) {
+      // Update existing draft
+      const updatedDrafts = [...drafts];
+      updatedDrafts[existingDraftIndex] = draftData;
+      setDrafts(updatedDrafts);
+    } else {
+      // Add new draft
+      setDrafts([...drafts, draftData]);
+    }
+    
+    // Close the upload modal
+    setShowUploadModal(false);
   };
 
   // Improved function to combine PDF files using pdf-lib
@@ -407,7 +449,7 @@ const DocumentControl = () => {
     return [];
   };
 
-  // Prepare subcategories mapping for the UploadModal
+  // Prepare subcategories mapping for the UploadModal and DraftModal
   const getSubcategoriesWithSubjects = () => {
     const mapping = {};
     
@@ -458,7 +500,7 @@ const DocumentControl = () => {
         <div className="document-control-buttons">
           <button 
             className="add-button" 
-            style={{ backgroundColor: 'rgb(0, 123, 255)' }}
+            style={{ backgroundColor: 'rgb(0, 123, 255)', color: 'white' }}
             onClick={toggleAddFileModal}
             disabled={!selectedSubcategory || !showDocumentView || !pdfFile}
           >
@@ -570,9 +612,25 @@ const DocumentControl = () => {
             </div>
 
             {/* PDF Viewer Container */}
-            <div className="pdf-container">
-              {/* PDF Viewer */}
-              <div className="pdf-viewer">
+            <div className="pdf-container" style={{ 
+              display: 'flex', 
+              flexDirection: 'column',
+              height: '100%',
+              maxHeight: 'calc(100vh - 250px)',
+              overflow: 'hidden'
+            }}>
+              {/* PDF Viewer with updated styles */}
+              <div className="pdf-viewer" style={{
+                flex: '1',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                overflow: 'auto',
+                background: '#f5f5f5',
+                padding: '10px',
+                borderRadius: '4px',
+                border: '1px solid #ddd'
+              }}>
                 {pdfFile ? (
                   <Document 
                     file={pdfFile} 
@@ -580,14 +638,27 @@ const DocumentControl = () => {
                     onLoadError={(error) => console.error('Error loading PDF:', error)}
                     className="pdf-document"
                   >
-                    <Page 
-                      pageNumber={currentPage}
-                      renderTextLayer={false}
-                      renderAnnotationLayer={false}
-                      scale={scale}
-                      onLoadSuccess={onPageLoadSuccess}
-                      className="pdf-page"
-                    />
+                    <div style={{
+                      padding: '5px',
+                      background: 'white',
+                      boxShadow: '0 2px 5px rgba(0,0,0,0.15)',
+                      maxHeight: '100%',
+                      display: 'flex',
+                      justifyContent: 'center'
+                    }}>
+                      <Page 
+                        pageNumber={currentPage}
+                        renderTextLayer={false}
+                        renderAnnotationLayer={false}
+                        scale={scale}
+                        onLoadSuccess={onPageLoadSuccess}
+                        className="pdf-page"
+                        height={isPortrait ? window.innerHeight * 0.65 : null}
+                        style={{
+                          maxHeight: isPortrait ? '100%' : 'auto'
+                        }}
+                      />
+                    </div>
                   </Document>
                 ) : (
                   <div className="pdf-placeholder">
@@ -597,7 +668,13 @@ const DocumentControl = () => {
               </div>
 
               {/* Zoom Controls */}
-              <div className="zoom-controls">
+              <div className="zoom-controls" style={{
+                marginTop: '10px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '10px'
+              }}>
                 <button onClick={zoomOut} className="zoom-button" title="Zoom Out">-</button>
                 <span>{Math.round(scale * 100)}%</span>
                 <button onClick={zoomIn} className="zoom-button" title="Zoom In">+</button>
@@ -605,7 +682,13 @@ const DocumentControl = () => {
               </div>
 
               {/* Page Navigation with source indicator */}
-              <div className="page-navigation">
+              <div className="page-navigation" style={{
+                marginTop: '10px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: '10px'
+              }}>
                 <button 
                   onClick={prevPage} 
                   className="nav-button"
@@ -684,13 +767,6 @@ const DocumentControl = () => {
               >
                 Back to List
               </button>
-              <button 
-                className="save-button" 
-                style={{ backgroundColor: 'rgb(0, 123, 255)' }}
-                onClick={handleSave}
-              >
-                Save
-              </button>
             </div>
           </div>
         )}
@@ -703,25 +779,20 @@ const DocumentControl = () => {
           categories={['Quality Manual']}
           subcategories={getSubcategoriesWithSubjects()}
           setPdfFile={handleSetPdfFile}
+          onSaveDraft={handleSaveDraft}
         />
       )}
 
       {/* Draft Modal */}
       {showDraftModal && (
-        <div className="modal-overlay">
-          <div className="modal-container">
-            <div className="modal-header">
-              <h3 className="modal-title">Drafts</h3>
-              <button className="close-button" onClick={toggleDraftModal}>×</button>
-            </div>
-            <div className="modal-body">
-              <p>No drafts available.</p>
-            </div>
-            <div className="form-actions">
-              <button className="secondary-button" onClick={toggleDraftModal}>Close</button>
-            </div>
-          </div>
-        </div>
+        <DraftModal
+          onClose={toggleDraftModal}
+          drafts={drafts}
+          onSaveDraft={handleSaveDraft}
+          categories={['Quality Manual']}
+          subcategories={getSubcategoriesWithSubjects()}
+          setPdfFile={handleSetPdfFile}
+        />
       )}
 
       {/* Add File Modal */}

@@ -1,23 +1,30 @@
 import React, { useState, useEffect } from 'react';
+import '../../css/styles/modal/UploadModal.css';
 
-const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
-  const [selectedSection, setSelectedSection] = useState('');
-  const [selectedSubject, setSelectedSubject] = useState('');
+const UploadModal = ({ onClose, categories, subcategories, setPdfFile, draftToEdit = null, onSaveDraft }) => {
+  const [selectedSection, setSelectedSection] = useState(draftToEdit ? draftToEdit.section : '');
+  const [selectedSubject, setSelectedSubject] = useState(draftToEdit ? draftToEdit.subject : '');
   const [availableSubjects, setAvailableSubjects] = useState([]);
-  const [file, setFile] = useState(null);
-  const [documentCode, setDocumentCode] = useState('');
-  const [versionCode, setVersionCode] = useState('');
-  const [effectiveDate, setEffectiveDate] = useState('');
+  const [file, setFile] = useState(draftToEdit ? draftToEdit.file : null);
+  const [fileName, setFileName] = useState(draftToEdit ? draftToEdit.fileName : '');
+  const [documentCode, setDocumentCode] = useState(draftToEdit ? draftToEdit.documentCode || '' : '');
+  const [versionCode, setVersionCode] = useState(draftToEdit ? draftToEdit.versionCode || '' : '');
+  const [effectiveDate, setEffectiveDate] = useState(draftToEdit ? draftToEdit.effectiveDate || '' : '');
+  const [draftId, setDraftId] = useState(draftToEdit ? draftToEdit.id : null);
+  const [isEditMode, setIsEditMode] = useState(Boolean(draftToEdit));
+  const [formIsValid, setFormIsValid] = useState(false);
   
   useEffect(() => {
-    // When section changes, update available subjects
+    const requiredFieldsFilled = Boolean(selectedSection && selectedSubject && file);
+    setFormIsValid(requiredFieldsFilled);
+  }, [selectedSection, selectedSubject, file]);
+
+  useEffect(() => {
     if (selectedSection) {
       if (selectedSection === 'Quality Manual') {
-        // If Quality Manual is selected, show all subcategories as options
         const allSubcategories = Object.keys(subcategories);
         setAvailableSubjects(allSubcategories);
       } else if (subcategories[selectedSection]) {
-        // If a specific section is selected, show its subjects
         setAvailableSubjects(subcategories[selectedSection]);
       } else {
         setAvailableSubjects([]);
@@ -31,6 +38,7 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
     const selectedFile = e.target.files[0];
     if (selectedFile && selectedFile.type === 'application/pdf') {
       setFile(selectedFile);
+      setFileName(selectedFile.name);
     }
   };
 
@@ -44,23 +52,42 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
   };
 
   const handleUpload = () => {
-    if (file && selectedSection && selectedSubject) {
+    if (formIsValid) {
       setPdfFile(file, documentCode, versionCode, effectiveDate, selectedSection, selectedSubject);
       onClose();
     }
   };
 
-  // Debug logging
-  console.log('Selected Section:', selectedSection);
-  console.log('Available Subjects:', availableSubjects);
-  console.log('Selected Subject:', selectedSubject);
-  console.log('File:', file ? file.name : 'No file selected');
+  const handleSaveAsDraft = () => {
+    if (formIsValid) {
+      const draftData = {
+        id: draftId || Date.now(),
+        file: file,
+        fileName: fileName,
+        documentCode: documentCode,
+        versionCode: versionCode,
+        effectiveDate: effectiveDate,
+        section: selectedSection,
+        subject: selectedSubject,
+        title: `${selectedSection} - ${selectedSubject}`,
+        lastModified: new Date().toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        })
+      };
+      
+      if (onSaveDraft) {
+        onSaveDraft(draftData);
+      }
+    }
+  };
 
   return (
     <div className="modal-overlay">
       <div className="modal-container">
         <div className="modal-header">
-          <h3 className="modal-title">Upload Document</h3>
+          <h3 className="modal-title">{isEditMode ? 'Edit Draft Document' : 'Upload Document'}</h3>
           <button className="close-button" onClick={onClose}>×</button>
         </div>
 
@@ -95,25 +122,11 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
                 disabled={!selectedSection}
               >
                 <option value="">Select Subject</option>
-                {selectedSection === 'User Guide' && (
-                  <>
-                    <option value="Foreword">Foreword</option>
-                    <option value="Table of Contents">Table of Contents</option>
-                    <option value="Objectives of the Quality Manual">Objectives of the Quality Manual</option>
-                    <option value="Background Info of NRCP">Background Info of NRCP</option>
-                    <option value="Authorization">Authorization</option>
-                    <option value="Distribution">Distribution</option>
-                    <option value="Coding System">Coding System</option>
-                  </>
-                )}
-                {selectedSection && selectedSection !== 'User Guide' && (
-                  <>
-                    <option value="Overview">Overview</option>
-                    <option value="Requirements">Requirements</option>
-                    <option value="Process">Process</option>
-                    <option value="Documentation">Documentation</option>
-                  </>
-                )}
+                {availableSubjects.map((subject) => (
+                  <option key={subject} value={subject}>
+                    {subject}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
@@ -127,6 +140,7 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
             onChange={handleFileChange} 
             className="form-control"
           />
+          {fileName && <div className="file-name">{fileName}</div>}
         </div>
 
         <div className="form-group">
@@ -162,11 +176,17 @@ const UploadModal = ({ onClose, categories, subcategories, setPdfFile }) => {
         <div className="form-actions">
           <button 
             className="primary-button" 
-            style={{ backgroundColor: 'rgb(0, 123, 255)' }}
             onClick={handleUpload}
-            disabled={!file || !selectedSection || !selectedSubject}
+            disabled={!formIsValid}
           >
             Upload
+          </button>
+          <button 
+            className="save-as-draft-button" 
+            onClick={handleSaveAsDraft}
+            disabled={!formIsValid}
+          >
+            {isEditMode ? 'Update Draft' : 'Save as Draft'}
           </button>
           <button className="secondary-button" onClick={onClose}>Cancel</button>
         </div>
