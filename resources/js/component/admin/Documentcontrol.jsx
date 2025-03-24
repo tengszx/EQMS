@@ -62,9 +62,9 @@ const AddFileModal = ({ onClose, onAddFile }) => {
 };
 
 const DocumentControl = () => {
-  const [selectedManual, setSelectedManual] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedSubcategory, setSelectedSubcategory] = useState('');
+  const [selectedManual, setSelectedManual] = useState('Quality Manual');
+  const [selectedCategory, setSelectedCategory] = useState('User Guide');
+  const [selectedSubcategory, setSelectedSubcategory] = useState('Foreword');
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showDraftModal, setShowDraftModal] = useState(false);
   const [showAddFileModal, setShowAddFileModal] = useState(false);
@@ -469,14 +469,27 @@ const DocumentControl = () => {
 
   // Get subjects for the selected category
   const getSubjects = () => {
-    if (selectedCategory === 'User Guide') {
-      return ['Foreword', 'Table of Contents', 'Objectives of the Quality Manual', 
-              'Background Info of NRCP', 'Authorization', 'Distribution', 'Coding System'];
-    } else if (selectedCategory) {
-      // Return default subjects for other categories
-      return ['Overview', 'Requirements', 'Process', 'Documentation'];
+    switch (selectedCategory) {
+      case 'User Guide':
+        return ['Foreword', 'Table of Contents', 'Objectives of the Quality Manual', 
+                'Background Info of NRCP', 'Authorization', 'Distribution', 'Coding System'];
+      case 'Context Organizational':
+        return ['Overview', 'Organizational Context', 'Stakeholders', 'Scope'];
+      case 'Leadership':
+        return ['Leadership and Commitment', 'Policy', 'Organizational Roles, Responsibilities and Authorities'];
+      case 'Planning':
+        return ['Planning', 'Quality Objectives', 'Risk and Opportunities', 'Quality Management System and Processes'];
+      case 'Support':
+        return ['Support', 'Resources', 'Competence', 'Awareness', 'Communication', 'Documented Information'];
+      case 'Operation':
+        return ['Operation', 'Operational Planning and Control', 'Design and Development of Products and Services'];
+      case 'Performance Evaluation':
+        return ['Performance Evaluation', 'Monitoring, Measurement, Analysis and Evaluation', 'Internal Audit', 'Management Review'];
+      case 'Improvement':
+        return ['Improvement', 'Nonconformity and Corrective Action', 'Continual Improvement'];
+      default:
+        return [];
     }
-    return [];
   };
 
   // Prepare subcategories mapping for the UploadModal and DraftModal
@@ -495,7 +508,31 @@ const DocumentControl = () => {
                            'Operation', 'Performance Evaluation', 'Improvement'];
     
     otherCategories.forEach(category => {
-      mapping[category] = ['Overview', 'Requirements', 'Process', 'Documentation'];
+      switch (category) {
+        case 'Context Organizational':
+          mapping[category] = ['Overview', 'Organizational Context', 'Stakeholders', 'Scope'];
+          break;
+        case 'Leadership':
+          mapping[category] = ['Leadership and Commitment', 'Policy', 'Organizational Roles, Responsibilities and Authorities'];
+          break;
+        case 'Planning':
+          mapping[category] = ['Planning', 'Quality Objectives', 'Risk and Opportunities', 'Quality Management System and Processes'];
+          break;
+        case 'Support':
+          mapping[category] = ['Support', 'Resources', 'Competence', 'Awareness', 'Communication', 'Documented Information'];
+          break;
+        case 'Operation':
+          mapping[category] = ['Operation', 'Operational Planning and Control', 'Design and Development of Products and Services'];
+          break;
+        case 'Performance Evaluation':
+          mapping[category] = ['Performance Evaluation', 'Monitoring, Measurement, Analysis and Evaluation', 'Internal Audit', 'Management Review'];
+          break;
+        case 'Improvement':
+          mapping[category] = ['Improvement', 'Nonconformity and Corrective Action', 'Continual Improvement'];
+          break;
+        default:
+          mapping[category] = [];
+      }
     });
     
     return mapping;
@@ -591,78 +628,72 @@ const DocumentControl = () => {
       {/* Main Content Area */}
       <div className="document-content-area">
         {/* Categories Column */}
-        {selectedManual && (
-          <div className="categories-column">
-            {getSubcategories().map((category, index) => (
-              <button 
-                key={index} 
-                className={`category-button ${selectedCategory === category ? 'active' : ''}`}
-                onClick={() => handleCategoryClick(category)}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-        )}
+        <div className="categories-column">
+          {getSubcategories().map((category, index) => (
+            <button 
+              key={index} 
+              className={`category-button ${selectedCategory === category ? 'active' : ''}`}
+              onClick={() => handleCategoryClick(category)}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
 
         {/* Subcategories Column */}
-        {selectedCategory && (
-          <div className="subcategories-column">
-            {getSubjects().map((subcategory, index) => (
-              <button 
-                key={index} 
-                className={`subcategory-button ${selectedSubcategory === subcategory ? 'active' : ''}`}
-                onClick={() => handleSubcategoryClick(subcategory)}
-              >
-                {subcategory}
-              </button>
-            ))}
-          </div>
-        )}
+        <div className="subcategories-column">
+          {getSubjects().map((subcategory, index) => (
+            <button 
+              key={index} 
+              className={`subcategory-button ${selectedSubcategory === subcategory ? 'active' : ''}`}
+              onClick={() => handleSubcategoryClick(subcategory)}
+            >
+              {subcategory}
+            </button>
+          ))}
+        </div>
 
         {/* Files List */}
-        {selectedSubcategory && !showDocumentView && (
-          <div className="files-list">
-            <h3 className="section-title">Files:</h3>
-            <table className="files-table">
-              <thead>
-                <tr>
-                  <th>File Name</th>
-                  <th>Effective Date</th>
-                  <th>Document Code</th>
-                  <th>Version Code</th>
-                  <th>Actions</th>
+        <div className="files-list">
+          <h3 className="section-title">Files:</h3>
+          <table className="files-table">
+            <thead>
+              <tr>
+                <th>File Name</th>
+                <th>Effective Date</th>
+                <th>Document Code</th>
+                <th>Version Code</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(filesList[selectedSubcategory] || []).map(file => (
+                <tr key={file.id}>
+                  <td>{file.name}</td>
+                  <td>{file.effectiveDate}</td>
+                  <td>{file.documentCode}</td>
+                  <td>{file.versionCode}</td>
+                  <td>
+                    <button 
+                      className="view-button" 
+                      style={{ backgroundColor: 'rgb(0, 123, 255)' }}
+                      onClick={() => handleFileClick(file)}>
+                      View
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {(filesList[selectedSubcategory] || []).map(file => (
-                  <tr key={file.id}>
-                    <td>{file.name}</td>
-                    <td>{file.effectiveDate}</td>
-                    <td>{file.documentCode}</td>
-                    <td>{file.versionCode}</td>
-                    <td>
-                      <button 
-                        className="view-button" 
-                        style={{ backgroundColor: 'rgb(0, 123, 255)' }}
-                        onClick={() => handleFileClick(file)}>
-                        View
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-                {(!filesList[selectedSubcategory] || filesList[selectedSubcategory].length === 0) && (
-                  <tr>
-                    <td colSpan="5" style={{ textAlign: 'center' }}>No files available. Upload a file to see it here.</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        )}
+              ))}
+              {(!filesList[selectedSubcategory] || filesList[selectedSubcategory].length === 0) && (
+                <tr>
+                  <td colSpan="5" style={{ textAlign: 'center' }}>No files available. Upload a file to see it here.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
 
         {/* Document View Area */}
-        {selectedSubcategory && showDocumentView && (
+        {showDocumentView && (
           <div className="document-view-area">
             {/* Section and Subject headers */}
             <div className="document-headers">
@@ -816,7 +847,7 @@ const DocumentControl = () => {
                 <div className="info-value">{documentInfo.documentCode}</div>
               </div>
               <div className="info-row">
-                <div className="info-label">Revision Number</div>
+                <div className="info-label">Version Number</div>
                 <div className="info-value">{documentInfo.revisionNumber}</div>
               </div>
               <div className="info-row">
