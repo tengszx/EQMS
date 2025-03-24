@@ -168,6 +168,15 @@ const DocumentControl = () => {
       
       // Reset uploaded PDFs to only include this file's data
       setUploadedPdfs([file.pdfData]);
+      
+      // Set page ranges for this file
+      setPdfPageRanges([{
+        start: 0,
+        end: 0, // Will be updated after document loads
+        pageCount: 0, // Will be updated after document loads
+        startPageNumber: 1,
+        fileName: file.name // Use the actual file name
+      }]);
     }
   };
 
@@ -175,23 +184,32 @@ const DocumentControl = () => {
     setShowDocumentView(false);
   };
 
-  const nextPage = () => {
+  // Fixed navigation functions with prevent default to stop page reload
+  const nextPage = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     setCurrentPage(prev => Math.min(prev + 1, numPages || 1));
   };
 
-  const prevPage = () => {
+  const prevPage = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     setCurrentPage(prev => Math.max(prev - 1, 1));
   };
 
-  const zoomIn = () => {
+  // Fixed zoom functions with prevent default
+  const zoomIn = (e) => {
+    e.preventDefault();
     setScale(prevScale => Math.min(prevScale + 0.1, 1.5));
   };
 
-  const zoomOut = () => {
+  const zoomOut = (e) => {
+    e.preventDefault();
     setScale(prevScale => Math.max(prevScale - 0.1, 0.5));
   };
 
-  const resetZoom = () => {
+  const resetZoom = (e) => {
+    e.preventDefault();
     // Set different default zoom based on orientation
     setScale(isPortrait ? 0.9 : 0.8);
   };
@@ -268,7 +286,8 @@ const DocumentControl = () => {
           start: startPage,
           end: totalPages - 1,
           pageCount: pageCount,
-          startPageNumber: startPage + 1 // Human-readable page number (1-based)
+          startPageNumber: startPage + 1, // Human-readable page number (1-based)
+          fileName: selectedFile ? selectedFile.name : `PDF Document ${pageRanges.length + 1}` // Use selectedFile.name if available
         });
       }
       
@@ -370,13 +389,24 @@ const DocumentControl = () => {
             revision: `Additional File: ${file.name}`,
             date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
             selected: true,
-            startPage: startPage // Add the starting page information
+            startPage: startPage, // Add the starting page information
+            fileName: file.name // Store the filename for display
           };
           
           // Update revisions and mark the new one as selected
           setRevisions(
             revisions.map(rev => ({ ...rev, selected: false })).concat(newRevision)
           );
+          
+          // Add fileName to the corresponding page range
+          setPdfPageRanges(prevRanges => {
+            const updatedRanges = [...prevRanges];
+            if (updatedRanges.length > 0) {
+              // Update the last added range with the file name
+              updatedRanges[updatedRanges.length - 1].fileName = file.name;
+            }
+            return updatedRanges;
+          });
           
           // Update the filesList with the combined PDF
           if (selectedSubcategory) {
@@ -471,15 +501,50 @@ const DocumentControl = () => {
     return mapping;
   };
 
-  // Find which PDF a specific page belongs to
+  // Find which PDF a specific page belongs to - FIXED FUNCTION
   const getDocumentForPage = (pageNumber) => {
+    // Convert to zero-based index for internal calculations
+    const zeroBasedPage = pageNumber - 1;
+    
     for (let i = 0; i < pdfPageRanges.length; i++) {
       const range = pdfPageRanges[i];
-      if (pageNumber >= range.start + 1 && pageNumber <= range.end + 1) {
+      if (zeroBasedPage >= range.start && zeroBasedPage <= range.end) {
         return i; // Return the index of the document
       }
     }
     return 0; // Default to the first document if not found
+  };
+
+  // Get the file name for the current page - FIXED FUNCTION
+  const getFileNameForCurrentPage = () => {
+    if (!pdfFile || pdfPageRanges.length === 0) {
+      return selectedFile ? selectedFile.name : "No document loaded";
+    }
+    
+    const docIndex = getDocumentForPage(currentPage);
+    
+    // If we have a valid document index and filename
+    if (docIndex >= 0 && docIndex < pdfPageRanges.length && pdfPageRanges[docIndex].fileName) {
+      return pdfPageRanges[docIndex].fileName;
+    }
+    
+    // If we have a selected file, return its name
+    if (selectedFile && selectedFile.name) {
+      return selectedFile.name;
+    }
+    
+    // Find corresponding revision
+    const revisionForPage = revisions.find(rev => 
+      rev.startPage <= currentPage && 
+      (!rev.endPage || rev.endPage >= currentPage)
+    );
+    
+    if (revisionForPage && revisionForPage.fileName) {
+      return revisionForPage.fileName;
+    }
+    
+    // Fallback to selected file name
+    return selectedFile ? selectedFile.name : "Document";
   };
 
   return (
@@ -675,10 +740,10 @@ const DocumentControl = () => {
                 alignItems: 'center',
                 gap: '10px'
               }}>
-                <button onClick={zoomOut} className="zoom-button" title="Zoom Out">-</button>
+                <button onClick={zoomOut} className="zoom-button" title="Zoom Out" type="button">-</button>
                 <span>{Math.round(scale * 100)}%</span>
-                <button onClick={zoomIn} className="zoom-button" title="Zoom In">+</button>
-                <button onClick={resetZoom} className="reset-zoom-button" title="Reset Zoom">Reset</button>
+                <button onClick={zoomIn} className="zoom-button" title="Zoom In" type="button">+</button>
+                <button onClick={resetZoom} className="reset-zoom-button" title="Reset Zoom" type="button">Reset</button>
               </div>
 
               {/* Page Navigation with source indicator */}
@@ -693,14 +758,15 @@ const DocumentControl = () => {
                   onClick={prevPage} 
                   className="nav-button"
                   disabled={currentPage <= 1}
+                  type="button"
                 >
                   ◀
                 </button>
                 <span>
                   Page {currentPage} of {numPages || 0}
-                  {pdfPageRanges.length > 1 && (
+                  {pdfFile && (
                     <span className="source-indicator">
-                      {' '}(Document {getDocumentForPage(currentPage) + 1})
+                      {' '}({getFileNameForCurrentPage()})
                     </span>
                   )}
                 </span>
@@ -708,6 +774,7 @@ const DocumentControl = () => {
                   onClick={nextPage} 
                   className="nav-button"
                   disabled={currentPage >= (numPages || 0)}
+                  type="button"
                 >
                   ▶
                 </button>
@@ -764,6 +831,7 @@ const DocumentControl = () => {
                 className="back-button" 
                 style={{ backgroundColor: 'rgb(0, 123, 255)' }}
                 onClick={handleBackToList}
+                type="button"
               >
                 Back to List
               </button>

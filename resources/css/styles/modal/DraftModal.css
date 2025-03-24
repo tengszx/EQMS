@@ -9,9 +9,9 @@
     align-items: center;
     justify-content: center;
     z-index: 1000;
-}
-
-.modal-container {
+  }
+  
+  .modal-container {
     background-color: white;
     border-radius: 8px;
     width: 700px;
@@ -20,25 +20,25 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     overflow: hidden;
     padding: 20px;
-}
-
-.modal-header {
+  }
+  
+  .modal-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 0 15px 0;
     margin-bottom: 20px;
     border-bottom: 1px solid #eee;
-}
-
-.modal-title {
+  }
+  
+  .modal-title {
     margin: 0;
     font-size: 18px;
     font-weight: 500;
     color: #333;
-}
-
-.close-button {
+  }
+  
+  .close-button {
     background: none;
     border: none;
     color: #333;
@@ -47,46 +47,46 @@
     align-items: center;
     justify-content: center;
     padding: 5px;
-}
-
-.draft-list {
+  }
+  
+  .draft-list {
     max-height: 60vh;
     overflow-y: auto;
-}
-
-.draft-item {
+  }
+  
+  .draft-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px;
     border-bottom: 1px solid #eee;
-}
-
-.draft-item:last-child {
+  }
+  
+  .draft-item:last-child {
     border-bottom: none;
-}
-
-.draft-info {
+  }
+  
+  .draft-info {
     flex: 1;
-}
-
-.draft-title {
+  }
+  
+  .draft-title {
     font-weight: 500;
     margin-bottom: 5px;
     color: #333;
-}
-
-.draft-metadata {
+  }
+  
+  .draft-metadata {
     font-size: 14px;
     color: #666;
-}
-
-.draft-actions {
+  }
+  
+  .draft-actions {
     display: flex;
     gap: 8px;
-}
-
-.draft-button {
+  }
+  
+  .draft-button {
     width: 32px;
     height: 34px;
     display: flex;
@@ -98,30 +98,23 @@
     color: white; /* Set font color to white */
     cursor: pointer;
     transition: all 0.2s;
-}
-
-.delete-button {
+  }
+  
+  .delete-button {
     color: #555;
-}
-
-.delete-button.hovered {
+  }
+  
+  .delete-button.hovered {
     color: red;
-}
-
-.upload1-button {
-    color: #555; /* Default color */
-}
-
-.upload1-button:hover {
-    color: rgb(0, 123, 255); /* Change color on hover */
-}
-
-.edit-button {
+  }
+  
+  .edit-button {
     color: #555;
-}
-
-.no-drafts-message {
+  }
+  
+  .no-drafts-message {
     text-align: center;
     padding: 30px;
     color: #666;
-}
+  }
+  

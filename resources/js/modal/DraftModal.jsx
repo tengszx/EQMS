@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Edit, Trash2, Upload } from 'lucide-react';
+import { X, Edit, Trash2 } from 'lucide-react';
 import '../../css/styles/modal/DraftModal.css';
 import UploadModal from './UploadModal';
 
@@ -25,35 +25,19 @@ const DraftModal = ({ onClose, onSaveDraft, categories, subcategories, setPdfFil
     setDrafts(drafts.filter(draft => draft.id !== draftId));
   };
 
-  const handleUpload = (draftId) => {
-    const draftToUpload = drafts.find(draft => draft.id === draftId);
-    if (draftToUpload) {
-      setPdfFile(
-        draftToUpload.file,
-        draftToUpload.documentCode,
-        draftToUpload.versionCode,
-        draftToUpload.effectiveDate,
-        draftToUpload.section,
-        draftToUpload.subject
-      );
-      setDrafts(drafts.filter(draft => draft.id !== draftId));
-      onClose();
-    }
-  };
-
   const handleSaveDraft = (draftData) => {
     if (drafts.some(draft => draft.id === draftData.id)) {
-      setDrafts(drafts.map(draft => 
+      setDrafts(drafts.map(draft =>
         draft.id === draftData.id ? draftData : draft
       ));
     } else {
       setDrafts([...drafts, draftData]);
     }
-    
+
     if (onSaveDraft) {
       onSaveDraft(drafts);
     }
-    
+
     setShowUploadModal(false);
     setSelectedDraft(null);
   };
@@ -77,8 +61,8 @@ const DraftModal = ({ onClose, onSaveDraft, categories, subcategories, setPdfFil
           {drafts.length > 0 ? (
             <div className="draft-list">
               {drafts.map(draft => (
-                <div 
-                  key={draft.id} 
+                <div
+                  key={draft.id}
                   className="draft-item"
                   onMouseEnter={() => setHoveredItem(draft.id)}
                   onMouseLeave={() => setHoveredItem(null)}
@@ -90,21 +74,14 @@ const DraftModal = ({ onClose, onSaveDraft, categories, subcategories, setPdfFil
                     </div>
                   </div>
                   <div className="draft-actions">
-                    <button 
+                    <button
                       className={`draft-button delete-button ${hoveredItem === draft.id ? 'hovered' : ''}`}
                       onClick={() => handleDelete(draft.id)}
                       title="Delete"
                     >
                       <Trash2 size={16} />
                     </button>
-                    <button 
-                      className="draft-button upload1-button"
-                      onClick={() => handleUpload(draft.id)}
-                      title="Upload"
-                    >
-                      <Upload size={16} />
-                    </button>
-                    <button 
+                    <button
                       className={`draft-button edit-button ${hoveredItem === draft.id ? 'hovered' : ''}`}
                       onClick={() => handleEdit(draft)}
                       title="Edit"
@@ -124,7 +101,7 @@ const DraftModal = ({ onClose, onSaveDraft, categories, subcategories, setPdfFil
       </div>
 
       {showUploadModal && (
-        <UploadModal 
+        <UploadModal
           onClose={handleCloseUploadModal}
           categories={categories}
           subcategories={subcategories}
