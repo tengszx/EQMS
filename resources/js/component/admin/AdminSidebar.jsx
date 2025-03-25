@@ -8,7 +8,8 @@ import {
     HardHat,     
     FileChartPie, 
     UserCog,     
-    Settings 
+    Settings,
+    CalendarClock
 } from 'lucide-react'; 
 import '../../../css/styles/admin/AdminSidebar.css';
 
@@ -19,6 +20,7 @@ const AdminSidebar = ({ activeMenu, onMenuSelect }) => {
     const menuItems = [
         { title: "Dashboard", icon: <House size={20} color="#03055B" /> },
         { title: "Document Control", icon: <FolderCog size={20} color="#03055B" /> },
+        { title: "Event Control", icon: <CalendarClock size={20} color="#03055B" /> },
         { title: "Calendar", icon: <Calendar size={20} color="#03055B" /> },
         { title: "Compliance & Standard", icon: <FileText size={20} color="#03055B" /> },
         { title: "Audits & Inspection", icon: <Calendar size={20} color="#03055B" /> },

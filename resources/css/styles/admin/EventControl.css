@@ -1,0 +1,246 @@
+.event-control-container {
+    display: flex;
+    gap: 25px;
+    padding: 30px;
+    background-color: #f5f5f5;
+    max-width: 1400px;
+    margin: 0 auto;
+    border-radius: 10px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.ongoing-events-container, 
+.set-event-container {
+    background-color: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    width: 50%;
+    min-height: 600px;
+}
+
+.set-event-container h2,
+.ongoing-events-container h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 20px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 8px;
+}
+
+.time-input > div {
+    margin-bottom: 15px;
+}
+
+.time-input,
+.date-input,
+.update-type-input,
+.description-input {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+}
+
+.time-range {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
+.start-time-select,
+.end-time-select {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.time-picker-container {
+    position: relative;
+    width: 100%;
+}
+
+.time-input-with-icon {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.time-input-with-icon:hover {
+    background-color: #f9f9f9;
+    border-color: #999;
+}
+
+.time-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 250px;
+    border: 1px solid #ddd;
+    background-color: white;
+    z-index: 20;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.time-selection-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    height: 200px;
+}
+
+.time-column {
+    overflow-y: auto;
+    border-right: 1px solid #eee;
+    max-height: 200px;
+}
+
+.time-column:last-child {
+    border-right: none;
+}
+
+.time-option {
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 15px;
+}
+
+.time-option:hover {
+    background-color: #f0f0f0;
+}
+
+.time-option.selected {
+    background-color: #e0e0e0;
+    font-weight: bold;
+    color: #333;
+}
+
+.date-input {
+    display: flex;
+    gap: 15px;
+}
+
+.start-date, 
+.end-date {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+input[type="date"], 
+select, 
+textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+.description-input textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+}
+
+.form-action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.post-btn, 
+.cancel-btn,
+.clear-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.3s ease;
+}
+
+.post-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.cancel-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+.clear-btn {
+    background-color: #2196F3;
+    color: white;
+}
+
+.post-btn:hover {
+    background-color: #45a049;
+}
+
+.cancel-btn:hover {
+    background-color: #d32f2f;
+}
+
+.clear-btn:hover {
+    background-color: #1976D2;
+}
+
+.event-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.edit-btn, 
+.delete-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: transparent;
+}
+
+.edit-btn {
+    color: #2196F3;
+}
+
+.delete-btn {
+    color: #f44336;
+}
+
+.edit-btn:hover {
+    background-color: rgba(33, 150, 243, 0.1);
+}
+
+.delete-btn:hover {
+    background-color: rgba(244, 67, 54, 0.1);
+}
+
+.no-events-message {
+    text-align: center;
+    color: #888;
+    padding: 40px;
+    font-size: 16px;
+}

@@ -654,43 +654,45 @@ const DocumentControl = () => {
         </div>
 
         {/* Files List */}
-        <div className="files-list">
-          <h3 className="section-title">Files:</h3>
-          <table className="files-table">
-            <thead>
-              <tr>
-                <th>File Name</th>
-                <th>Effective Date</th>
-                <th>Document Code</th>
-                <th>Version Code</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(filesList[selectedSubcategory] || []).map(file => (
-                <tr key={file.id}>
-                  <td>{file.name}</td>
-                  <td>{file.effectiveDate}</td>
-                  <td>{file.documentCode}</td>
-                  <td>{file.versionCode}</td>
-                  <td>
-                    <button 
-                      className="view-button" 
-                      style={{ backgroundColor: 'rgb(0, 123, 255)' }}
-                      onClick={() => handleFileClick(file)}>
-                      View
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              {(!filesList[selectedSubcategory] || filesList[selectedSubcategory].length === 0) && (
+        {!showDocumentView && (
+          <div className="files-list">
+            <h3 className="section-title">Files:</h3>
+            <table className="files-table">
+              <thead>
                 <tr>
-                  <td colSpan="5" style={{ textAlign: 'center' }}>No files available. Upload a file to see it here.</td>
+                  <th>File Name</th>
+                  <th>Effective Date</th>
+                  <th>Document Code</th>
+                  <th>Version Code</th>
+                  <th>Actions</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {(filesList[selectedSubcategory] || []).map(file => (
+                  <tr key={file.id}>
+                    <td>{file.name}</td>
+                    <td>{file.effectiveDate}</td>
+                    <td>{file.documentCode}</td>
+                    <td>{file.versionCode}</td>
+                    <td>
+                      <button 
+                        className="view-button" 
+                        style={{ backgroundColor: 'rgb(0, 123, 255)' }}
+                        onClick={() => handleFileClick(file)}>
+                        View
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+                {(!filesList[selectedSubcategory] || filesList[selectedSubcategory].length === 0) && (
+                  <tr>
+                    <td colSpan="5" style={{ textAlign: 'center' }}>No files available. Upload a file to see it here.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
 
         {/* Document View Area */}
         {showDocumentView && (
