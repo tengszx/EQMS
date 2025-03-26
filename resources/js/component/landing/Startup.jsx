@@ -10,7 +10,7 @@ const Startup = () => {
     }, []);
 
     return (
-        <div className="startup-container">
+        <div className="startup-container" style={{ backgroundImage: `url(/images/startupbackground.png)` }}>
             {/* Content wrapper with enhanced text readability */}
             <div className="content-wrapper">
                 <h1 className="main-title">

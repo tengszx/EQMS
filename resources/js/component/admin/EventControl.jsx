@@ -1,61 +1,120 @@
 import React, { useState } from 'react';
-import { Clock, Edit2, Trash2 } from 'lucide-react';
+import { Clock, Edit2, Trash2, X } from 'lucide-react';
+import '../../../css/styles/admin/EventControl.css';
+
+const CustomTimePicker = ({ 
+    value, 
+    onChange, 
+    label = "Select Time" 
+}) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedHour, setSelectedHour] = useState('12');
+    const [selectedMinute, setSelectedMinute] = useState('00');
+    const [selectedPeriod, setSelectedPeriod] = useState('am');
+
+    const hourOptions = Array.from({ length: 12 }, (_, i) => 
+        String(i + 1).padStart(2, '0')
+    );
+
+    const minuteOptions = Array.from({ length: 60 }, (_, i) => 
+        String(i).padStart(2, '0')
+    );
+
+    const handleTimeSelect = () => {
+        const formattedTime = `${selectedHour}:${selectedMinute} ${selectedPeriod}`;
+        onChange(formattedTime);
+        setIsOpen(false);
+    };
+
+    return (
+        <div className="custom-time-picker">
+            <div className="time-display-container">
+                <input 
+                    type="text" 
+                    value={value || '12:00 AM'} 
+                    readOnly 
+                    className="time-display"
+                />
+                <div className="time-icon-wrapper">
+                    <Clock 
+                        size={18} 
+                        className="time-icon" 
+                        onClick={() => setIsOpen(!isOpen)}
+                    />
+                </div>
+            </div>
+
+            {isOpen && (
+                <div className="time-dropdown">
+                    <div className="time-select-grid">
+                        <div className="hour-column">
+                            <div className="column-header">Hour</div>
+                            <div className="scrollable-column">
+                                {hourOptions.map(hour => (
+                                    <div 
+                                        key={hour} 
+                                        className={`time-option ${selectedHour === hour ? 'selected' : ''}`}
+                                        onClick={() => setSelectedHour(hour)}
+                                    >
+                                        {hour}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="minute-column">
+                            <div className="column-header">Minute</div>
+                            <div className="scrollable-column">
+                                {minuteOptions.map(minute => (
+                                    <div 
+                                        key={minute} 
+                                        className={`time-option ${selectedMinute === minute ? 'selected' : ''}`}
+                                        onClick={() => setSelectedMinute(minute)}
+                                    >
+                                        {minute}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="period-column">
+                            <div className="column-header">Period</div>
+                            <div className="scrollable-column">
+                                {['AM', 'PM'].map(period => (
+                                    <div 
+                                        key={period} 
+                                        className={`time-option ${selectedPeriod === period ? 'selected' : ''}`}
+                                        onClick={() => setSelectedPeriod(period)}
+                                    >
+                                        {period}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="time-select-actions">
+                        <button 
+                            className="select-time-btn"
+                            onClick={handleTimeSelect}
+                        >
+                            Select Time
+                        </button>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
 
 const EventControl = () => {
     const [events, setEvents] = useState([]);
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [eventTime, setEventTime] = useState({ 
-        start: { hour: '12', minute: '00', period: 'AM' },
-        end: { hour: '01', minute: '00', period: 'PM' }
-    });
-    const [isTimeDropdownOpen, setIsTimeDropdownOpen] = useState({
-        start: false,
-        end: false
+        start: '12:00 AM', 
+        end: '12:00 PM' 
     });
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [updateType, setUpdateType] = useState('');
     const [description, setDescription] = useState('');
-
-    const hours = Array.from({length: 12}, (_, i) => (i + 1).toString().padStart(2, '0'));
-    const minutes = Array.from({length: 60}, (_, i) => i.toString().padStart(2, '0'));
-    const periods = ['AM', 'PM'];
-
-    const formatTime = (timeObj) => {
-        return `${timeObj.hour}:${timeObj.minute} ${timeObj.period}`;
-    };
-
-    const handleTimeSelect = (value, type, field) => {
-        const updatedTime = {
-            ...eventTime,
-            [type]: {
-                ...eventTime[type],
-                [field]: value
-            }
-        };
-        
-        setEventTime(updatedTime);
-        
-        // Only close dropdown if all selections are made
-        const isComplete = 
-            updatedTime[type].hour !== '' && 
-            updatedTime[type].minute !== '' && 
-            updatedTime[type].period !== '';
-        
-        if (isComplete) {
-            setIsTimeDropdownOpen(prev => ({
-                ...prev,
-                [type]: false
-            }));
-        }
-    };
-
-    const toggleTimeDropdown = (type) => {
-        setIsTimeDropdownOpen(prev => ({
-            ...prev,
-            [type]: !prev[type]
-        }));
-    };
 
     const handlePostEvent = () => {
         if (!updateType || !description) {
@@ -64,7 +123,7 @@ const EventControl = () => {
         }
 
         const newEvent = {
-            time: `${formatTime(eventTime.start)} - ${formatTime(eventTime.end)}`,
+            time: `${eventTime.start} - ${eventTime.end}`,
             date: `${startDate.toLocaleDateString()} to ${endDate.toLocaleDateString()}`,
             type: updateType,
             description: description
@@ -76,8 +135,8 @@ const EventControl = () => {
 
     const resetForm = () => {
         setEventTime({ 
-            start: { hour: '12', minute: '00', period: 'AM' },
-            end: { hour: '01', minute: '00', period: 'PM' }
+            start: '12:00 AM', 
+            end: '12:00 PM' 
         });
         setStartDate(new Date());
         setEndDate(new Date());
@@ -88,18 +147,13 @@ const EventControl = () => {
 
     const handleEditEvent = (index) => {
         const eventToEdit = events[index];
+        setSelectedEvent(index);
+        
         const [startTime, endTime] = eventToEdit.time.split(' - ');
         
-        const parseTime = (timeStr) => {
-            const [time, period] = timeStr.split(' ');
-            const [hour, minute] = time.split(':');
-            return { hour, minute, period };
-        };
-
-        setSelectedEvent(index);
         setEventTime({
-            start: parseTime(startTime),
-            end: parseTime(endTime)
+            start: startTime,
+            end: endTime
         });
         
         setStartDate(new Date());
@@ -112,7 +166,7 @@ const EventControl = () => {
         if (selectedEvent !== null) {
             const updatedEvents = [...events];
             updatedEvents[selectedEvent] = {
-                time: `${formatTime(eventTime.start)} - ${formatTime(eventTime.end)}`,
+                time: `${eventTime.start} - ${eventTime.end}`,
                 date: `${startDate.toLocaleDateString()} to ${endDate.toLocaleDateString()}`,
                 type: updateType,
                 description: description
@@ -130,216 +184,120 @@ const EventControl = () => {
     return (
         <div className="event-control-container">
             <div className="set-event-container">
-                <h2>Create/Edit Event</h2>
                 <div className="time-input">
-                    <label>Event Time</label>
+                    <label>Time</label>
                     <div className="time-range">
                         <div className="start-time-select">
                             <label>Start Time</label>
-                            <div className="time-picker-container">
-                                <div 
-                                    className="time-input-with-icon"
-                                    onClick={() => toggleTimeDropdown('start')}
-                                >
-                                    <span>{formatTime(eventTime.start)}</span>
-                                    <Clock size={20} />
-                                </div>
-                                {isTimeDropdownOpen.start && (
-                                    <div className="time-dropdown">
-                                        <div className="time-selection-grid">
-                                            <div className="time-column hours-column">
-                                                {hours.map(hour => (
-                                                    <div 
-                                                        key={hour} 
-                                                        className={`time-option ${eventTime.start.hour === hour ? 'selected' : ''}`}
-                                                        onClick={() => handleTimeSelect(hour, 'start', 'hour')}
-                                                    >
-                                                        {hour}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            <div className="time-column minutes-column">
-                                                {minutes.map(minute => (
-                                                    <div 
-                                                        key={minute} 
-                                                        className={`time-option ${eventTime.start.minute === minute ? 'selected' : ''}`}
-                                                        onClick={() => handleTimeSelect(minute, 'start', 'minute')}
-                                                    >
-                                                        {minute}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            <div className="time-column period-column">
-                                                {periods.map(period => (
-                                                    <div 
-                                                        key={period} 
-                                                        className={`time-option ${eventTime.start.period === period ? 'selected' : ''}`}
-                                                        onClick={() => handleTimeSelect(period, 'start', 'period')}
-                                                    >
-                                                        {period}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
+                            <CustomTimePicker 
+                                value={eventTime.start}
+                                onChange={(time) => setEventTime(prev => ({...prev, start: time}))}
+                            />
                         </div>
                         <div className="end-time-select">
                             <label>End Time</label>
-                            <div className="time-picker-container">
-                                <div 
-                                    className="time-input-with-icon"
-                                    onClick={() => toggleTimeDropdown('end')}
-                                >
-                                    <span>{formatTime(eventTime.end)}</span>
-                                    <Clock size={20} />
-                                </div>
-                                {isTimeDropdownOpen.end && (
-                                    <div className="time-dropdown">
-                                        <div className="time-selection-grid">
-                                            <div className="time-column hours-column">
-                                                {hours.map(hour => (
-                                                    <div 
-                                                        key={hour} 
-                                                        className={`time-option ${eventTime.end.hour === hour ? 'selected' : ''}`}
-                                                        onClick={() => handleTimeSelect(hour, 'end', 'hour')}
-                                                    >
-                                                        {hour}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            <div className="time-column minutes-column">
-                                                {minutes.map(minute => (
-                                                    <div 
-                                                        key={minute} 
-                                                        className={`time-option ${eventTime.end.minute === minute ? 'selected' : ''}`}
-                                                        onClick={() => handleTimeSelect(minute, 'end', 'minute')}
-                                                    >
-                                                        {minute}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                            <div className="time-column period-column">
-                                                {periods.map(period => (
-                                                    <div 
-                                                        key={period} 
-                                                        className={`time-option ${eventTime.end.period === period ? 'selected' : ''}`}
-                                                        onClick={() => handleTimeSelect(period, 'end', 'period')}
-                                                    >
-                                                        {period}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="date-input">
-                        <div className="start-date">
-                            <label>Start Date</label>
-                            <input 
-                                type="date" 
-                                value={startDate.toISOString().split('T')[0]} 
-                                onChange={(e) => setStartDate(new Date(e.target.value))}
-                            />
-                        </div>
-                        <div className="end-date">
-                            <label>End Date</label>
-                            <input 
-                                type="date" 
-                                value={endDate.toISOString().split('T')[0]} 
-                                onChange={(e) => setEndDate(new Date(e.target.value))}
+                            <CustomTimePicker 
+                                value={eventTime.end}
+                                onChange={(time) => setEventTime(prev => ({...prev, end: time}))}
                             />
                         </div>
                     </div>
+                </div>
 
-                    <div className="update-type-input">
-                        <label>Update Type</label>
-                        <select 
-                            value={updateType} 
-                            onChange={(e) => setUpdateType(e.target.value)}
+                <div className="date-input">
+                    <div className="start-date">
+                        <label>Start Date</label>
+                        <input 
+                            type="date" 
+                            value={startDate.toISOString().split('T')[0]} 
+                            onChange={(e) => setStartDate(new Date(e.target.value))}
+                        />
+                    </div>
+                    <div className="end-date">
+                        <label>End Date</label>
+                        <input 
+                            type="date" 
+                            value={endDate.toISOString().split('T')[0]} 
+                            onChange={(e) => setEndDate(new Date(e.target.value))}
+                        />
+                    </div>
+                </div>
+
+                <div className="update-type-input">
+                    <label>Update</label>
+                    <select 
+                        value={updateType} 
+                        onChange={(e) => setUpdateType(e.target.value)}
+                    >
+                        <option value="">Select Type</option>
+                        <option value="Update">Update</option>
+                        <option value="New Features">New Features</option>
+                        <option value="System Maintenance">System Maintenance</option>
+                    </select>
+                </div>
+
+                <div className="description-input">
+                    <label>Description</label>
+                    <textarea 
+                        value={description} 
+                        onChange={(e) => setDescription(e.target.value)}
+                        placeholder="Enter event description"
+                    ></textarea>
+                </div>
+
+                <div className="form-actions">
+                    <button 
+                        className="post-btn" 
+                        onClick={selectedEvent !== null ? handleUpdateEvent : handlePostEvent}
+                    >
+                        {selectedEvent !== null ? 'Update' : 'Post'}
+                    </button>
+                    {selectedEvent !== null && (
+                        <button 
+                            className="cancel-btn" 
+                            onClick={resetForm}
                         >
-                            <option value="">Select Type</option>
-                            <option value="Update">Update</option>
-                            <option value="New Features">New Features</option>
-                            <option value="System Maintenance">System Maintenance</option>
-                        </select>
-                    </div>
-
-                    <div className="description-input">
-                        <label>Description</label>
-                        <textarea 
-                            value={description} 
-                            onChange={(e) => setDescription(e.target.value)}
-                            placeholder="Enter event description"
-                        ></textarea>
-                    </div>
-
-                    <div className="form-actions">
-                        <div className="form-action-buttons">
-                            <button 
-                                className="post-btn" 
-                                onClick={selectedEvent !== null ? handleUpdateEvent : handlePostEvent}
-                            >
-                                {selectedEvent !== null ? 'Update Event' : 'Post Event'}
-                            </button>
-                            {selectedEvent !== null && (
-                                <button 
-                                    className="cancel-btn" 
-                                    onClick={resetForm}
-                                >
-                                    Cancel
-                                </button>
-                            )}
-                            <button 
-                                className="clear-btn" 
-                                onClick={resetForm}
-                            >
-                                Clear
-                            </button>
-                        </div>
-                    </div>
+                            <X size={16} /> Cancel
+                        </button>
+                    )}
+                    <button 
+                        className="clear-btn" 
+                        onClick={resetForm}
+                    >
+                        Clear
+                    </button>
                 </div>
             </div>
 
             <div className="ongoing-events-container">
                 <h2>Ongoing Events</h2>
-                {events.length === 0 ? (
-                    <div className="no-events-message">No events created yet</div>
-                ) : (
-                    events.map((event, index) => (
-                        <div key={index} className="event-item">
-                            <div className="event-details">
-                                <div className="event-time">
-                                    <span className="start-time">{event.time.split(' - ')[0]}</span>
-                                    <span className="separator">to</span>
-                                    <span className="end-time">{event.time.split(' - ')[1]}</span>
-                                </div>
-                                <div className="event-date">{event.date}</div>
-                                <div className="event-type">{event.type}</div>
-                                <div className="event-description">{event.description}</div>
+                {events.map((event, index) => (
+                    <div key={index} className="event-item">
+                        <div className="event-details">
+                            <div className="event-time">
+                                <span className="start-time">{event.time.split(' - ')[0]}</span>
+                                <span className="end-time">{event.time.split(' - ')[1]}</span>
                             </div>
-                            <div className="event-actions">
-                                <button 
-                                    className="edit-btn" 
-                                    onClick={() => handleEditEvent(index)}
-                                >
-                                    <Edit2 size={16} />
-                                </button>
-                                <button 
-                                    className="delete-btn" 
-                                    onClick={() => handleDeleteEvent(index)}
-                                >
-                                    <Trash2 size={16} />
-                                </button>
-                            </div>
+                            <div className="event-date">{event.date}</div>
+                            <div className="event-type">{event.type}</div>
+                            <div className="event-description">{event.description}</div>
                         </div>
-                    ))
-                )}
+                        <div className="event-actions">
+                            <button 
+                                className="edit-btn" 
+                                onClick={() => handleEditEvent(index)}
+                            >
+                                <Edit2 size={16} />
+                            </button>
+                            <button 
+                                className="delete-btn" 
+                                onClick={() => handleDeleteEvent(index)}
+                            >
+                                <Trash2 size={16} />
+                            </button>
+                        </div>
+                    </div>
+                ))}
             </div>
         </div>
     );
