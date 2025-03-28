@@ -2,16 +2,6 @@ import React, { useEffect, useState } from "react";
 import { motion, useMotionValue } from "framer-motion";
 import '../../../css/styles/landing/CarouselEvent.css';
 
-const imgs = [
-  "/images/image1.png",
-  "/images/image2.png",
-  "/images/image3.png",
-  "/images/image4.png",
-  "/images/image5.png",
-  "/images/image6.png",
-  "/images/image7.png",
-];
-
 const ONE_SECOND = 1000;
 const AUTO_DELAY = ONE_SECOND * 10;
 const DRAG_BUFFER = 50;
@@ -33,10 +23,10 @@ export const CarouselEvent = () => {
 
       if (x === 0) {
         setImgIndex((pv) => {
-          if (pv === imgs.length - 1) {
+          if (pv === 0) {
             return 0;
           }
-          return pv + 1;
+          return pv;
         });
       }
     }, AUTO_DELAY);
@@ -47,10 +37,10 @@ export const CarouselEvent = () => {
   const onDragEnd = () => {
     const x = dragX.get();
 
-    if (x <= -DRAG_BUFFER && imgIndex < imgs.length - 1) {
-      setImgIndex((pv) => pv + 1);
+    if (x <= -DRAG_BUFFER && imgIndex < 0) {
+      setImgIndex((pv) => pv);
     } else if (x >= DRAG_BUFFER && imgIndex > 0) {
-      setImgIndex((pv) => pv - 1);
+      setImgIndex((pv) => pv);
     }
   };
 
@@ -72,7 +62,7 @@ export const CarouselEvent = () => {
         onDragEnd={onDragEnd}
         className="flex cursor-grab items-center active:cursor-grabbing"
       >
-        <Images imgIndex={imgIndex} />
+        {/* Images removed */}
       </motion.div>
 
       <Dots imgIndex={imgIndex} setImgIndex={setImgIndex} />
@@ -81,45 +71,10 @@ export const CarouselEvent = () => {
   );
 };
 
-const Images = ({ imgIndex }) => {
-  return (
-    <>
-      {imgs.map((imgSrc, idx) => {
-        return (
-          <motion.div
-            key={idx}
-            style={{
-              backgroundImage: `url(${imgSrc})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              height: '100%', // Set to 100% to fill the container
-            }}
-            animate={{
-              scale: imgIndex === idx ? 0.95 : 0.85,
-            }}
-            transition={SPRING_OPTIONS}
-            className="aspect-video w-screen shrink-0 rounded-xl bg-neutral-800 object-cover"
-          />
-        );
-      })}
-    </>
-  );
-};
-
 const Dots = ({ imgIndex, setImgIndex }) => {
   return (
     <div className="mt-4 flex w-full justify-center gap-2">
-      {imgs.map((_, idx) => {
-        return (
-          <button
-            key={idx}
-            onClick={() => setImgIndex(idx)}
-            className={`h-3 w-3 rounded-full transition-colors ${
-              idx === imgIndex ? "bg-neutral-50" : "bg-neutral-500"
-            }`}
-          />
-        );
-      })}
+      {/* Dots for images removed */}
     </div>
   );
 };

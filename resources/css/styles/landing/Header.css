@@ -1,12 +1,10 @@
 .header {
-    font-family: "Helvetica", sans-serif;
+    font-family: "Helvetica", sans-serif; /* Specify a fallback font */
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(255, 255, 255, 0.3); /* Transparent background */
-    backdrop-filter: blur(10px); /* Blur effect for glass effect */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+    background: rgba(15, 36, 62, 1); /* Set background color using rgba */
     z-index: 1000;
     transition: transform 0.3s ease-in-out; /* Smooth hiding/showing */
 }
@@ -59,7 +57,7 @@
 
 .link {
     text-decoration: none;
-    color: #4a5568;
+    color: #ffffff; /* Change link color for better visibility */
     padding: 0.5rem 1rem; /* Padding around links */
     transition: color 0.2s ease;
     border-radius: 0.375rem; /* Rounded corners for links */

@@ -41,31 +41,6 @@
     align-items: center;
 }
 
-.aspect-video {
-    aspect-ratio: 21 / 9; /* Changed to more panoramic aspect ratio */
-}
-
-.w-screen {
-    width: 100%;
-    max-height: 100%; /* Set height constraint to fill parent */
-}
-
-.shrink-0 {
-    flex-shrink: 0;
-}
-
-.rounded-xl {
-    border-radius: 0.75rem;
-}
-
-.bg-neutral-800 {
-    background-color: #262626;
-}
-
-.object-cover {
-    object-fit: cover;
-}
-
 .mt-4 {
     margin-top: 0.75rem; /* Reduced from 1rem */
 }
@@ -80,32 +55,6 @@
 
 .gap-2 {
     gap: 0.5rem;
-}
-
-.h-3 {
-    height: 0.5rem; /* Reduced from 0.75rem */
-}
-
-.w-3 {
-    width: 0.5rem; /* Reduced from 0.75rem */
-}
-
-.rounded-full {
-    border-radius: 9999px;
-}
-
-.transition-colors {
-    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
-}
-
-.bg-neutral-50 {
-    background-color: #fafafa;
-}
-
-.bg-neutral-500 {
-    background-color: #737373;
 }
 
 .pointer-events-none {
