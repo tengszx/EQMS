@@ -164,7 +164,7 @@
 }
 
 .add-event-button.active {
-    background-color: #e74c3c;
+    background-color: red;
 }
 
 .events-list {
@@ -285,8 +285,8 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 12px 16px;
-    color: #333;
+    padding: 12px 12px;
+    
 }
 
 .date-display {
