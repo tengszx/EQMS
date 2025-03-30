@@ -23,10 +23,10 @@ export const CarouselEvent = () => {
 
       if (x === 0) {
         setImgIndex((pv) => {
-          if (pv === 0) {
+          if (pv === 1) {
             return 0;
           }
-          return pv;
+          return pv + 1;
         });
       }
     }, AUTO_DELAY);
@@ -37,15 +37,15 @@ export const CarouselEvent = () => {
   const onDragEnd = () => {
     const x = dragX.get();
 
-    if (x <= -DRAG_BUFFER && imgIndex < 0) {
-      setImgIndex((pv) => pv);
+    if (x <= -DRAG_BUFFER && imgIndex < 1) {
+      setImgIndex((pv) => pv + 1);
     } else if (x >= DRAG_BUFFER && imgIndex > 0) {
-      setImgIndex((pv) => pv);
+      setImgIndex((pv) => pv - 1);
     }
   };
 
   return (
-    <div className="carousel-container relative overflow-hidden bg-neutral-950 py-8">
+    <div className="carousel-container relative overflow-hidden">
       <motion.div
         drag="x"
         dragConstraints={{
@@ -62,19 +62,40 @@ export const CarouselEvent = () => {
         onDragEnd={onDragEnd}
         className="flex cursor-grab items-center active:cursor-grabbing"
       >
-        {/* Images removed */}
+        {/* Single image per slide with padding */}
+        <div className="carousel-slide">
+          <img 
+            src="/images/sample1.png" 
+            alt="Carousel Image 1" 
+            className="carousel-image"
+          />
+        </div>
+        <div className="carousel-slide">
+          <img 
+            src="/images/sample2.png" 
+            alt="Carousel Image 2" 
+            className="carousel-image"
+          />
+        </div>
       </motion.div>
 
-      <Dots imgIndex={imgIndex} setImgIndex={setImgIndex} />
       <GradientEdges />
+      <Dots imgIndex={imgIndex} setImgIndex={setImgIndex} />
     </div>
   );
 };
 
 const Dots = ({ imgIndex, setImgIndex }) => {
   return (
-    <div className="mt-4 flex w-full justify-center gap-2">
-      {/* Dots for images removed */}
+    <div className="dots-container">
+      <button 
+        className={`dot-button ${imgIndex === 0 ? 'active' : ''}`}
+        onClick={() => setImgIndex(0)}
+      />
+      <button 
+        className={`dot-button ${imgIndex === 1 ? 'active' : ''}`}
+        onClick={() => setImgIndex(1)}
+      />
     </div>
   );
 };
@@ -82,8 +103,8 @@ const Dots = ({ imgIndex, setImgIndex }) => {
 const GradientEdges = () => {
   return (
     <>
-      <div className="pointer-events-none absolute bottom-0 left-0 top-0 w-[10vw] max-w-[100px] bg-gradient-to-r from-neutral-950/50 to-neutral-950/0" />
-      <div className="pointer-events-none absolute bottom-0 right-0 top-0 w-[10vw] max-w-[100px] bg-gradient-to-l from-neutral-950/50 to-neutral-950/0" />
+      <div className="pointer-events-none absolute bottom-0 left-0 top-0 w-[10vw] max-w-[100px] bg-gradient-to-r from-navy-blue/50 to-navy-blue/0" />
+      <div className="pointer-events-none absolute bottom-0 right-0 top-0 w-[10vw] max-w-[100px] bg-gradient-to-l from-navy-blue/50 to-navy-blue/0" />
     </>
   );
 };

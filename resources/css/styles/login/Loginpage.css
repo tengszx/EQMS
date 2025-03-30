@@ -1,49 +1,43 @@
 /* Loginpage.css */
 
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .login-container {
-  min-height: 100vh;
+  height: 100vh;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255, 255, 255, 0.1); /* More transparent for glass effect */
-  backdrop-filter: blur(10px); /* Frosted glass effect */
+  background-color: rgba(15, 36, 62, 1);
   padding: 1rem;
-  position: relative; /* Required for absolute positioning */
+  position: relative;
 }
 
-/* Removed particles container styling */
-
-/* Login wrapper styling */
-.login-wrapper {
+.login-content {
   width: 100%;
-  max-width: 1200px;
+  max-width: 400px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  gap: 4rem;
-  padding: 2rem;
-  position: relative; /* Ensure wrapper is above any background */
+  justify-content: center;
+  position: relative;
   z-index: 1;
 }
 
-.form-section {
-  width: 40%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Update the form-box for glass effect */
 .form-box {
   width: 100%;
-  background: rgba(255, 255, 255, 0.5); /* Slightly more opaque for better readability */
-  border: 1px solid rgba(255, 255, 255, 0.7); /* Lighter border */
-  border-radius: 8px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
-              0 2px 4px -1px rgba(0, 0, 0, 0.06),
-              0 0 10px rgba(0, 0, 0, 0.1); 
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  backdrop-filter: blur(5px); /* Additional blur for better text readability */
 }
 
 .form-content {
@@ -51,6 +45,27 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+}
+
+.logo-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.logo {
+  width: 120px;
+  height: auto;
+  object-fit: contain;
+}
+
+.login-title {
+  text-align: center;
+  color: #ffffff;
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
 }
 
 .input-group {
@@ -61,24 +76,54 @@
 
 .input-group label {
   font-size: 0.875rem;
-  font-weight: 600; /* Slightly bolder for better visibility */
-  color: #1a237e; /* Matching the button color for consistency */
-  text-shadow: 0 0 1px rgba(255, 255, 255, 0.5); /* Subtle text shadow for better readability */
+  font-weight: 500;
+  color: #ffffff;
 }
 
 .input-group input {
-  width: 93%;
+  width: 100%;
   padding: 0.75rem;
-  border: 1px solid #D1D5DB;
-  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  box-sizing: border-box;
   transition: all 0.3s ease;
-  background-color: rgba(255, 255, 255, 0.9); /* Slightly opaque for consistent styling */
 }
 
 .input-group input:focus {
   outline: none;
-  border-color: #1a237e; /* Matching the button color */
-  box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+.input-group input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Password input styling */
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-toggle-btn:hover {
+  color: #ffffff;
 }
 
 .forgot-password {
@@ -87,63 +132,56 @@
 
 .forgot-password a {
   font-size: 0.875rem;
-  color: #1a237e; /* Matching the button color */
+  color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
   transition: color 0.3s ease;
-  font-weight: 500; /* Medium weight for better visibility */
 }
 
 .forgot-password a:hover {
-  color: #0d1442;
+  color: #ffffff;
   text-decoration: underline;
 }
 
 .login-button {
   width: 100%;
   padding: 0.75rem;
-  background-color: #1a237e;
-  color: white;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: rgba(15, 36, 62, 1);
   border: none;
-  border-radius: 6px;
-  font-weight: 500;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .login-button:hover {
-  background-color: #0d1442;
-  transform: scale(1.02);
+  background-color: #ffffff;
+  transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.logo-container {
-  width: 60%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.logo {
-  width: 100%;
-  max-width: 500px; /* Adjust based on your logo size */
-  height: auto;
-  object-fit: contain;
 }
 
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
-  .login-wrapper {
-      flex-direction: column-reverse;
-      gap: 2rem;
-      padding: 1rem;
+  .login-content {
+    padding: 1rem;
   }
-
-  .form-section,
-  .logo-container {
-      width: 100%;
+  
+  .form-box {
+    max-width: 90%;
   }
-
+  
   .logo {
-      max-width: 300px;
+    width: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-content {
+    padding: 1.5rem;
+  }
+  
+  .login-title {
+    font-size: 1.25rem;
   }
 }
