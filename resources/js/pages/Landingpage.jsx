@@ -25,12 +25,20 @@ const LandingPage = () => {
                 <CarouselEvent /> 
                 <div className="widget-section">
                     <h2 className="widget-title">Overview and Features</h2>
-                    <div className="widget-grid">
-                        <DocumentWidget /> 
-                        <ReportingWidget />
-                        <ProcessWidget />
-                        <GenerateWidget />
-                        <TrackWidget />
+                    <div className="dashboard-grid">
+                        <div className="left-column">
+                            <DocumentWidget />
+                        </div>
+                        <div className="right-column">
+                            <div className="top-row">
+                                <GenerateWidget />
+                                <ProcessWidget />
+                            </div>
+                            <div className="bottom-row">
+                                <ReportingWidget />
+                                <TrackWidget />
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="quick-access-wrapper">

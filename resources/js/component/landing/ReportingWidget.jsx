@@ -2,19 +2,23 @@ import React from 'react';
 import '../../../css/styles/landing/ReportingWidget.css';
 
 const ReportingWidget = () => {
-    return (
-        <div className="widget">
-            <div className="widget-content">
-                <img src="/images/reportinganalytics.png" alt="Reporting Analytics" className="logo" />
-                <div className="widget-header">
-                    <div className="widget-name">Reporting Analytic</div>
-                    <div className="widget-text">
-                    The act of creating structured documents that summarize data, findings, or insights, often used for review, compliance, or decision-making purposes.
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+  const handleClick = () => {
+    console.log('Reporting & Analytics widget clicked');
+    // Add your navigation or action logic here
+  };
+
+  return (
+    <div className="reporting-widget" onClick={handleClick}>
+      <div className="reporting-content">
+        <h2>Reporting & Analytics</h2>
+        <p>
+          The act of creating structured documents that summarize data,
+          findings, or insights, often used for review, compliance, or
+          decision-making purposes.
+        </p>
+      </div>
+    </div>
+  );
 };
 
 export default ReportingWidget;

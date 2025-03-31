@@ -1,51 +1,33 @@
-.widget {
-    background-color: #fff;
-    border-radius: 16px;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transition: box-shadow 0.3s ease; /* Removed transform transition */
-    overflow: hidden;
-    position: relative;
+.reporting-widget {
+  background-color: #2f9bbf;
+  color: white;
+  border-radius: 10px;
+  padding: 30px;
+  height: 100%;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
-/* Remove the skew transformation on hover */
-.widget:hover {
-    /* No transform property */
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+.reporting-widget:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-.widget-content {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    padding: 20px;
+.reporting-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.logo {
-    width: 100%;
-    height: auto;
-    max-height: 180px;
-    object-fit: contain;
-    margin-bottom: 15px;
-    border-radius: 50px;
+.reporting-widget h2 {
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+  font-weight: 600;
 }
 
-.widget-header {
-    display: flex;
-    flex-direction: column;
-    margin-top: auto;
-}
-
-.widget-name {
-    font-size: 1.2em;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 8px;
-}
-
-.widget-text {
-    font-size: 0.9em;
-    color: #666;
+.reporting-widget p {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
 }

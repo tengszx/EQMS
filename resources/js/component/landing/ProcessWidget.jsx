@@ -1,21 +1,24 @@
-// ProcessWidget.jsx
 import React from 'react';
 import '../../../css/styles/landing/ProcessWidget.css';
 
 const ProcessWidget = () => {
-    return (
-        <div className="widget">
-            <div className="widget-content">
-                <img src="/images/processmonitoring.png" alt="Process Monitoring" className="logo" />
-                <div className="widget-header">
-                    <div className="widget-name">Process Monitoring</div>
-                    <div className="widget-text">
-                    he continuous observation and evaluation of processes to ensure they operate efficiently, meet predefined standards, and identify areas for improvement.
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+  const handleClick = () => {
+    console.log('Process Monitoring widget clicked');
+    // Add your navigation or action logic here
+  };
+
+  return (
+    <div className="process-widget" onClick={handleClick}>
+      <div className="process-content">
+        <h2>Process Monitoring</h2>
+        <p>
+          The continuous observation and evaluation of processes
+          to ensure they operate efficiently, meet predefined
+          standards, and identify areas for improvement.
+        </p>
+      </div>
+    </div>
+  );
 };
 
 export default ProcessWidget;
