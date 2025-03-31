@@ -17,8 +17,6 @@ const QuickAccessSection = () => {
     });
   }, [color]);
 
-  const backgroundImage = `radial-gradient(125% 125% at 50% 0%, #020617 50%, ${color})`;
-
   const actions = [
     {
       id: 1,
@@ -47,44 +45,86 @@ const QuickAccessSection = () => {
   ];
 
   return (
-    <motion.div className="quick-access-container" style={{ backgroundImage }}>
+    <div className="quick-access-container">
       <div className="quick-access-header">
         <h2>Quick Access Action</h2>
       </div>
       
-      <div className="timeline-container">
+      <div className="timeline-layout">
         <div className="timeline-line"></div>
         <div className="trophy-icon">🏆</div>
         
-        <div className="actions-grid">
-          {actions.map((action) => (
+        <div className="cards-layout">
+          {/* Card 1 - Top Left */}
+          <div className="card-position card-1">
             <motion.div 
-              key={action.id}
-              className={`action-item ${action.id % 2 === 0 ? 'action-right' : 'action-left'}`}
-              whileHover={{ scale: 1.03 }}
+              className="card-wrapper"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: action.id * 0.1 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
             >
-              <div className={`number-indicator indicator-${action.id}`}>
-                #{action.id}
+              <div className="action-card">
+                <div className="card-number">#1</div>
+                <h3>{actions[0].title}</h3>
+                <p>{actions[0].description}</p>
               </div>
-              
-              <a href={action.link} className="action-card-link">
-                <motion.div 
-                  className="action-card glass-effect"
-                  whileHover={{ y: -5 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <h3 className="gradient">{action.title}</h3>
-                  <p>{action.description}</p>
-                </motion.div>
-              </a>
+              <div className="vertical-line"></div>
             </motion.div>
-          ))}
+          </div>
+          
+          {/* Card 3 - Top Right */}
+          <div className="card-position card-3">
+            <motion.div 
+              className="card-wrapper"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              <div className="action-card">
+                <div className="card-number">#3</div>
+                <h3>{actions[2].title}</h3>
+                <p>{actions[2].description}</p>
+              </div>
+              <div className="vertical-line"></div>
+            </motion.div>
+          </div>
+          
+          {/* Card 2 - Bottom Left */}
+          <div className="card-position card-2">
+            <motion.div 
+              className="card-wrapper"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <div className="action-card">
+                <div className="card-number">#2</div>
+                <h3>{actions[1].title}</h3>
+                <p>{actions[1].description}</p>
+              </div>
+              <div className="vertical-line"></div>
+            </motion.div>
+          </div>
+          
+          {/* Card 4 - Bottom Right */}
+          <div className="card-position card-4">
+            <motion.div 
+              className="card-wrapper"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
+              <div className="action-card">
+                <div className="card-number">#4</div>
+                <h3>{actions[3].title}</h3>
+                <p>{actions[3].description}</p>
+              </div>
+              <div className="vertical-line"></div>
+            </motion.div>
+          </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
