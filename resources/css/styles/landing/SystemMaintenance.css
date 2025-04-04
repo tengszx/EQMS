@@ -12,26 +12,24 @@
     max-width: 400px;
     padding: 30px;
     border-radius: 12px;
-    background-color: white;
+    background-color: #0a192f;
     width: 400px;
     margin-left: 600px;
-    border: 1px solid rgba(0, 0, 0, 0.2); /* Added a border for better visibility */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Added a border for better visibility */
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
                 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-
-    
 }
 
 .maintenance-title {
     font-size: 1.25rem;
     font-weight: 500;
-    color: #1f2937;
+    color: white;
     margin: 0;
 }
 
 .maintenance-card {
     width: 100%;
-    background-color: #f1f5f9;
+    background-color: #112240;
     border-radius: 16px;
     padding: 16px 20px;
     display: flex;
@@ -39,7 +37,7 @@
 }
 
 .card-text {
-    color: #4b5563;
+    color: white;
     font-size: 0.9375rem;
     font-weight: 400;
 }

@@ -1,305 +1,313 @@
 /* Quick Access Section Styles */
+.quick-access-wrapper {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
 .quick-access-container {
-    width: 4500px;
-    margin-left: 500px;
-    padding: 40px;
-    background: linear-gradient(to bottom, #0a2e59, #1a4d8c);
-    position: relative;
-    overflow: hidden;
-    min-height: 600px;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .quick-access-header {
-    text-align: center;
-    margin-bottom: 40px;
-  }
-  
-  .quick-access-header h2 {
-    font-size: 36px;
-    font-weight: 600;
-    color: white;
-    letter-spacing: 0.5px;
-  }
-  
-  .timeline-layout {
-    position: relative;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: 400px;
-  }
-  
-  .timeline-line {
-    position: absolute;
-    left: 0;
-    right: 30px;
-    top: 50%;
-    height: 3px;
-    background-color: #ff6666;
-    z-index: 1;
-  }
-  
-  .trophy-icon {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 28px;
-    z-index: 3;
-    color: #ffd700;
-  }
-  
-  .cards-layout {
-    position: relative;
-    width: 100%;
-    height: 100%;
+  width: 100%; /* Set the width to 80% of the parent element */
+  padding: 40px;
+  background: linear-gradient(to bottom, #0a2e59, #1a4d8c);
+  position: center; /* Change to relative positioning */
+  overflow: hidden;
+  min-height: 850px;
+  display: flex;
+  flex-direction: column;
+}
+
+.quick-access-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.quick-access-header h2 {
+  font-size: 36px;
+  font-weight: 600;
+  color: white;
+  letter-spacing: 0.5px;
+}
+
+.timeline-layout {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.timeline-line {
+  position: absolute;
+  left: 0;
+  right: 30px;
+  top: 50%;
+  height: 3px;
+  background-color: #ff6666;
+  z-index: 1;
+}
+
+.trophy-icon {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 28px;
+  z-index: 3;
+  color: #ffd700;
+}
+
+.cards-layout {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.card-position {
+  position: absolute; /* Change to absolute positioning */
+  width: 25%;
+}
+
+/* Card 1 - Top Left */
+.card-1 {
+  top: 0;
+  left: 5%;
+}
+
+/* Card 3 - Top Right */
+.card-3 {
+  top: 0;
+  right: 25%;
+}
+
+/* Card 2 - Bottom Left */
+.card-2 {
+  bottom: 0;
+  left: 25%;
+}
+
+/* Card 4 - Bottom Right */
+.card-4 {
+  bottom: 0;
+  right: 10%;
+}
+
+.card-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.vertical-line {
+  position: absolute;
+  width: 3px;
+  background-color: #ff6666;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+/* Top cards vertical connector - connect cards to center timeline */
+.card-1 .vertical-line,
+.card-3 .vertical-line {
+  top: 0;
+  height: 20px;
+}
+
+/* Bottom cards vertical connector - connect cards to center timeline */
+.card-2 .vertical-line,
+.card-4 .vertical-line {
+  bottom: 0;
+  height: 20px;
+}
+
+.action-card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  min-height: 150px;
+  transition: transform 0.3s ease;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Add margin-bottom for bottom cards */
+.card-2 .action-card,
+.card-4 .action-card {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.action-card:hover {
+  transform: scale(1.02);
+}
+
+.card-number {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  color: #ff69b4;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.action-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  padding-left: 20px;
+  color: #333;
+}
+
+.action-card p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #666;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 1200px) {
+  .quick-access-container {
+    width: 90%; /* Reset width for smaller screens */
   }
   
   .card-position {
-    position: absolute;
     width: 30%;
   }
   
-  /* Card 1 - Top Left */
   .card-1 {
-    top: 0;
-    left: 5%;
+    left: 3%;
   }
   
-  /* Card 3 - Top Right */
   .card-3 {
-    top: 0;
-    right: 25%;
+    right: 20%;
   }
   
-  /* Card 2 - Bottom Left */
   .card-2 {
-    bottom: 0;
-    left: 25%;
+    left: 20%;
   }
   
-  /* Card 4 - Bottom Right */
   .card-4 {
-    bottom: 0;
-    right: 10%;
-  }
-  
-  .card-wrapper {
-    position: relative;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .vertical-line {
-    position: absolute;
-    width: 3px;
-    background-color: #ff6666;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2;
-  }
-  
-  /* Top cards vertical connector - connect cards to center timeline */
-  .card-1 .vertical-line,
-  .card-3 .vertical-line {
-    top: 0;
-    height: 20px;
-  }
-  
-  /* Bottom cards vertical connector - connect cards to center timeline */
-  .card-2 .vertical-line,
-  .card-4 .vertical-line {
-    bottom: 0;
-    height: 20px;
+    right: 5%;
   }
   
   .action-card {
-    background-color: white;
-    border-radius: 10px;
-    padding: 24px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    position: relative;
-    min-height: 150px;
-    transition: transform 0.3s ease;
-    width: 100%;
-    margin-top: 20px;
+    padding: 20px;
+    min-height: 160px;
   }
-  
-  /* Add margin-bottom for bottom cards */
-  .card-2 .action-card,
-  .card-4 .action-card {
-    margin-top: 0;
-    margin-bottom: 20px;
-  }
-  
-  .action-card:hover {
-    transform: scale(1.02);
-  }
-  
-  .card-number {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    color: #ff69b4;
-    font-weight: bold;
-    font-size: 16px;
+}
+
+@media (max-width: 992px) {
+  .quick-access-container {
+    padding: 30px;
   }
   
   .action-card h3 {
-    font-size: 18px;
-    font-weight: 600;
-    margin-bottom: 10px;
-    padding-left: 20px;
-    color: #333;
+    font-size: 17px;
   }
   
   .action-card p {
-    font-size: 14px;
-    line-height: 1.5;
-    color: #666;
+    font-size: 13px;
   }
   
-  /* Media queries for responsiveness */
-  @media (max-width: 1200px) {
-    .card-position {
-      width: 35%;
-    }
-    
-    .card-1 {
-      left: 3%;
-    }
-    
-    .card-3 {
-      right: 20%;
-    }
-    
-    .card-2 {
-      left: 20%;
-    }
-    
-    .card-4 {
-      right: 5%;
-    }
-    
-    .action-card {
-      padding: 20px;
-      min-height: 160px;
-    }
+  .card-position {
+    width: 35%;
   }
   
-  @media (max-width: 992px) {
-    .quick-access-container {
-      padding: 30px;
-    }
-    
-    .action-card h3 {
-      font-size: 17px;
-    }
-    
-    .action-card p {
-      font-size: 13px;
-    }
-    
-    .card-position {
-      width: 40%;
-    }
-    
-    .vertical-line {
-      height: 60px !important;
-    }
+  .vertical-line {
+    height: 60px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .quick-access-header h2 {
+    font-size: 28px;
   }
   
-  @media (max-width: 768px) {
-    .quick-access-header h2 {
-      font-size: 28px;
-    }
-    
-    .cards-layout {
-      display: flex;
-      flex-direction: column;
-      gap: 80px;
-    }
-    
-    .card-position {
-      position: relative;
-      width: 90%;
-      margin-left: 40px;
-      top: auto;
-      left: auto;
-      right: auto;
-      bottom: auto;
-    }
-    
-    .card-1, .card-2, .card-3, .card-4 {
-      top: auto;
-      left: auto;
-      right: auto;
-      bottom: auto;
-    }
-  
-    .card-wrapper {
-      align-items: flex-start;
-    }
-    
-    .timeline-line {
-      height: 100%;
-      width: 3px;
-      left: 20px;
-      top: 0;
-      right: auto;
-    }
-    
-    .trophy-icon {
-      right: auto;
-      left: 20px;
-      top: auto;
-      bottom: -5px;
-      transform: none;
-    }
-    
-    .vertical-line {
-      left: 0 !important;
-      transform: none !important;
-      width: 20px !important;
-      height: 3px !important;
-      top: 50% !important;
-      bottom: auto !important;
-    }
-  
-    .action-card {
-      margin-top: 0 !important;
-      margin-bottom: 0 !important;
-      margin-left: 40px;
-    }
-  
-    .card-2 .action-card,
-    .card-4 .action-card {
-      margin-top: 0 !important;
-      margin-bottom: 0 !important;
-    }
+  .cards-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
   }
   
-  @media (max-width: 576px) {
-    .quick-access-container {
-      padding: 20px 15px;
-    }
-    
-    .quick-access-header h2 {
-      font-size: 24px;
-    }
-    
-    .action-card {
-      padding: 15px;
-      min-height: 140px;
-    }
-    
-    .card-position {
-      width: 85%;
-    }
+  .card-position {
+    position: relative;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
   }
   
+  .card-1, .card-2, .card-3, .card-4 {
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+  }
+  
+  .card-wrapper {
+    align-items: flex-start;
+  }
+  
+  .timeline-line {
+    height: 100%;
+    width: 3px;
+    left: 20px;
+    top: 0;
+    right: auto;
+  }
+  
+  .trophy-icon {
+    right: auto;
+    left: 20px;
+    top: auto;
+    bottom: -5px;
+    transform: none;
+  }
+  
+  .vertical-line {
+    left: 0 !important;
+    transform: none !important;
+    width: 20px !important;
+    height: 3px !important;
+    top: 50% !important;
+    bottom: auto !important;
+  }
+  
+  .action-card {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    margin-left: 5%;
+  }
+  
+  .card-2 .action-card,
+  .card-4 .action-card {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .quick-access-container {
+    padding: 20px 15px;
+  }
+  
+  .quick-access-header h2 {
+    font-size: 24px;
+  }
+  
+  .action-card {
+    padding: 15px;
+    min-height: 140px;
+  }
+  
+  .card-position {
+    width: 85%;
+  }
+}

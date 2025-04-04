@@ -4,9 +4,7 @@
     overflow: hidden;
     border-radius: 10px;
     height: 600px;
-    margin-right: 60px;
-    margin-left: 60px;
-    position: relative;
+    position: center;
     background: linear-gradient(135deg, #0f243e 0%, #0f243e 100%);
   }
   
