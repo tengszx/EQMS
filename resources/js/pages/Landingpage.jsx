@@ -2,7 +2,6 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import Header from '../../js/component/landing/Header';
 import Startup from '../component/landing/Startup';
-import CarouselEvent from '../component/landing/CarouselEvent'; 
 import DocumentWidget from '../component/landing/DocumentWidget';
 import ReportingWidget from '../component/landing/ReportingWidget';
 import ProcessWidget from '../component/landing/ProcessWidget';
@@ -22,7 +21,6 @@ const LandingPage = () => {
             <Header />
             <div className="main-content scroll-container">
                 <Startup />
-                <CarouselEvent /> 
                 <div className="widget-section">
                     <h2 className="widget-title">Overview and Features</h2>
                     <div className="dashboard-grid">

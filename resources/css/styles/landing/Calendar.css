@@ -89,7 +89,8 @@
 }
 
 .day-button.today {
-    background-color: #ffeb3b;
+    background-color: rgba(15, 36, 62, 1);
+    color: white;
 }
 
 .schedule-panel {
