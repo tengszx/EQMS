@@ -1,11 +1,10 @@
-/* Headerboard.css */
-
 .header-board {
-  width: 1757px;
   padding: 10px 20px;
   background: linear-gradient(to right, #add8e6, #f5f5dc); /* Applied gradient from sidebar */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   margin-top: -7px;
+  width: calc(100% - 45px); /* Adjust width based on sidebar */
+  position: relative; /* Ensure it doesn't overlap */
 }
 
 .header-content {
@@ -226,4 +225,11 @@
 
 .menu-item.logout:hover {
   background-color: #fff0f0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header-board {
+      width: calc(100% - 45px); /* Adjust width for smaller screens */
+  }
 }

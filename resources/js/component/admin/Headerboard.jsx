@@ -12,7 +12,6 @@ const HeaderBoard = () => {
   const profileRef = useRef(null);
   const searchRef = useRef(null);
   
-  // Handle clicks outside the notification and profile menus
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (notificationRef.current && !notificationRef.current.contains(event.target)) {
@@ -32,7 +31,6 @@ const HeaderBoard = () => {
     };
   }, []);
 
-  // Sample notifications
   const notifications = [
     { id: 1, text: "New message received", time: "5 minutes ago", isRead: false },
     { id: 2, text: "Your report is ready", time: "2 hours ago", isRead: true },

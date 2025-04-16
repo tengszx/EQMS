@@ -1,7 +1,7 @@
 .admin-sidebar {
     background: linear-gradient(to right, #add8e6, #f5f5dc); /* Gradient background */
     width: 45px; /* Collapsed width */
-    height: 96vh; /* Full height */
+    height: 100vh; /* Full height */
     padding: 20px;
     position: fixed; /* Fix the sidebar to the left */
     left: 0;
@@ -11,7 +11,7 @@
     overflow: hidden; /* Prevents overflow when collapsed */
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start; /* Align items to the start */
 }
 
 .admin-sidebar.sidebar-expanded {
@@ -30,7 +30,6 @@
     height: 60px; /* Increased height */
     object-fit: contain;
     position: relative; /* Position relative for layout */
-    margin-left: -8px;
 }
 
 .sidebar-title {
@@ -52,7 +51,7 @@
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; /* Center align items */
 }
 
 .menu-item {
@@ -61,7 +60,7 @@
     margin-top: 5px;
     transition: all 0.2s ease;
     width: 100%;
-    text-align: center;
+    text-align: center; /* Center text */
 }
 
 .menu-item:hover {
@@ -76,8 +75,8 @@
     display: flex;
     align-items: center;
     padding: 12px;
-    gap: 15px;
-    justify-content: center;
+    gap: 10px; /* Reduced gap for better alignment */
+    justify-content: center; /* Center items */
 }
 
 .menu-icon {

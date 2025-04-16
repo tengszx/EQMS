@@ -16,7 +16,7 @@ const LPHeader = () => {
 
     const handleLoginClick = () => {
         window.location.href = '/login';
-    }
+    };
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);

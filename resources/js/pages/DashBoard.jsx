@@ -3,10 +3,7 @@ import { ArrowRight, ArrowLeft } from 'lucide-react';
 import '../../css/styles/dash/Dashboard.css'; 
 import AdminSidebar from '../component/admin/AdminSidebar'; 
 import Headerboard from '../component/admin/Headerboard'; 
-import Metrics from '../component/admin/Metrics'; 
 import DocumentControl from '../component/admin/DocumentControl'; 
-import CalendarDashboard from '../component/admin/CalendarDashboard'; 
-import EventControl from '../component/admin/EventControl'; 
 import { createRoot } from 'react-dom/client';
 
 const Dashboard = () => {
@@ -25,15 +22,11 @@ const Dashboard = () => {
     const renderContent = () => {
         switch(activeMenu) {
             case "Dashboard":
-                return <Metrics />;
+                return <div>Dashboard Content</div>; // Placeholder for dashboard content
             case "Document Control":
                 return <DocumentControl />;
-            case "Calendar":
-                return <CalendarDashboard />;
-            case "Event Control":
-                return <EventControl />;
             default:
-                return <Metrics />;
+                return <div>Dashboard Content</div>; // Fallback
         }
     };
     
@@ -42,6 +35,7 @@ const Dashboard = () => {
             <AdminSidebar 
                 activeMenu={activeMenu}
                 onMenuSelect={handleMenuSelect}
+                sidebarOpen={sidebarOpen}
             />
             <div className={`admin-container ${sidebarOpen ? '' : 'collapsed'}`}>
                 <button className="sidebar-toggle" onClick={toggleSidebar}>

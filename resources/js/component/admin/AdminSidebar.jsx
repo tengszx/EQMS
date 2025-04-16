@@ -3,27 +3,23 @@ import {
     House, 
     FolderCog, 
     FileText, 
-    Calendar, 
     FileSearch,  
     HardHat,     
     FileChartPie, 
     UserCog,     
-    Settings,
-    CalendarClock
+    Settings
 } from 'lucide-react'; 
 import '../../../css/styles/admin/AdminSidebar.css';
 
-const AdminSidebar = ({ activeMenu, onMenuSelect }) => {
+const AdminSidebar = ({ activeMenu, onMenuSelect, sidebarOpen }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [isSettingsHover, setIsSettingsHover] = useState(false);
 
     const menuItems = [
         { title: "Dashboard", icon: <House size={20} color="#03055B" /> },
         { title: "Document Control", icon: <FolderCog size={20} color="#03055B" /> },
-        { title: "Event Control", icon: <CalendarClock size={20} color="#03055B" /> },
-        { title: "Calendar", icon: <Calendar size={20} color="#03055B" /> },
         { title: "Compliance & Standard", icon: <FileText size={20} color="#03055B" /> },
-        { title: "Audits & Inspection", icon: <Calendar size={20} color="#03055B" /> },
+        { title: "Audits & Inspection", icon: <FileText size={20} color="#03055B" /> },
         { title: "CAPA", icon: <FileSearch size={20} color="#03055B" /> },
         { title: "Training Management", icon: <HardHat size={20} color="#03055B" /> },
         { title: "Report & Analytics", icon: <FileChartPie size={20} color="#03055B" /> },

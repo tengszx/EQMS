@@ -25,11 +25,10 @@
   margin-top: 20px;
   margin-right: 10px;
   padding: 30px;
-  background-color: white; /* Changed to white */
+  background-color: white; 
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  width: 107%; 
-  height: 90%;
+  flex-grow: 1; 
 }
 
 .sidebar-toggle {
@@ -52,27 +51,17 @@
 
 .main-content {
   width: 100%; 
-  height: calc(100% - 10px); 
-}
-
-/* Styles for Headerboard */
-.dashboard-header {
-  padding: 0 30px; /* Match padding with main content */
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .admin-container {
-    margin-left: 45px; 
-    width: calc(100% - 45px); 
+      margin-left: 45px; 
+      width: calc(100% - 45px); 
   }
-  
+
   .admin-main-content {
-    margin-right: 15px;
-    padding: 20px;
-  }
-  
-  .dashboard-header {
-    padding: 0 20px;
+      margin-right: 15px;
+      padding: 20px;
   }
 }
