@@ -1,18 +1,18 @@
+// AdminSidebar.jsx
 import React, { useState } from 'react';
-import { 
-    House, 
-    FolderCog, 
-    FileText, 
-    FileSearch,  
-    HardHat,     
-    FileChartPie, 
-    UserCog,     
+import {
+    House,
+    FolderCog,
+    FileText,
+    FileSearch,
+    HardHat,
+    FileChartPie,
+    UserCog,
     Settings
-} from 'lucide-react'; 
+} from 'lucide-react';
 import '../../../css/styles/admin/AdminSidebar.css';
 
-const AdminSidebar = ({ activeMenu, onMenuSelect, sidebarOpen }) => {
-    const [isExpanded, setIsExpanded] = useState(false);
+const AdminSidebar = ({ activeMenu, onMenuSelect, sidebarOpen, onMouseEnter, onMouseLeave }) => {
     const [isSettingsHover, setIsSettingsHover] = useState(false);
 
     const menuItems = [
@@ -28,22 +28,24 @@ const AdminSidebar = ({ activeMenu, onMenuSelect, sidebarOpen }) => {
     ];
 
     return (
-        <div 
-            className={`admin-sidebar ${isExpanded ? 'sidebar-expanded' : ''}`} 
-            onMouseEnter={() => setIsExpanded(true)} 
-            onMouseLeave={() => {
-                setIsExpanded(false);
-                setIsSettingsHover(false);
-            }}
+        <div
+            className={`admin-sidebar ${sidebarOpen ? 'sidebar-expanded' : ''}`}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
         >
             <div className="sidebar-header">
-                <img src="/images/EQMS_LOGO-removebg-preview.png" alt="Logo" className="logo" />
-                {isExpanded && <h1 className="sidebar-title" style={{color: '#03055B'}}>eQMS</h1>}
+                <div className="logo-container">
+                    <img
+                        src="/images/EQMS_LOGO-removebg-preview.png"
+                        alt="Logo"
+                        className="logo"
+                    />
+                </div>
             </div>
 
             <ul className="menu-list">
                 {menuItems.map((item, index) => (
-                    <li 
+                    <li
                         key={index}
                         className={`menu-item ${activeMenu === item.title ? 'active' : ''}`}
                         onClick={() => onMenuSelect(item.title)}
@@ -60,17 +62,23 @@ const AdminSidebar = ({ activeMenu, onMenuSelect, sidebarOpen }) => {
                     >
                         <div className="menu-content">
                             <span className="menu-icon">{item.icon}</span>
-                            {isExpanded && (
-                                <span className="menu-title" style={{color: '#03055B'}}>{item.title}</span>
+                            {sidebarOpen && (
+                                <span className="menu-title" style={{ color: '#03055B' }}>{item.title}</span>
                             )}
-                            {item.title === "Settings" && isExpanded && (
-                                <span className="dropdown-arrow" style={{color: '#03055B'}}>&#9660;</span>
+                            {item.title === "Settings" && sidebarOpen && (
+                                <span className="dropdown-arrow" style={{ color: '#03055B' }}>&#9660;</span>
                             )}
                         </div>
-                        {isSettingsHover && item.title === "Settings" && isExpanded && (
+                        {isSettingsHover && item.title === "Settings" && sidebarOpen && (
                             <ul className="dropdown-list">
-                                <li className="dropdown-item" onClick={() => onMenuSelect('Subsetting 1')} style={{backgroundColor: '#03055B', color: '#FFFFFF'}}>Subsetting 1</li>
-                                <li className="dropdown-item" onClick={() => onMenuSelect('Subsetting 2')} style={{backgroundColor: '#03055B', color: '#FFFFFF'}}>Subsetting 2</li>
+                                <li className="dropdown-item" onClick={(e) => {
+                                    e.stopPropagation();
+                                    onMenuSelect('Subsetting 1');
+                                }}>Subsetting 1</li>
+                                <li className="dropdown-item" onClick={(e) => {
+                                    e.stopPropagation();
+                                    onMenuSelect('Subsetting 2');
+                                }}>Subsetting 2</li>
                             </ul>
                         )}
                     </li>

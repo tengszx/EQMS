@@ -1,17 +1,41 @@
+/* Headerboard.css */
 .header-board {
-  padding: 10px 20px;
-  background: linear-gradient(to right, #add8e6, #f5f5dc); /* Applied gradient from sidebar */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  margin-top: -7px;
-  width: calc(100% - 45px); /* Adjust width based on sidebar */
-  position: relative; /* Ensure it doesn't overlap */
+  margin-right: -50px;
+  padding: 0 20px;
+  background: linear-gradient(to right, #f5f5dc, #add8e6); /* Reversed gradient colors */
+  box-sizing: border-box;
+  position: relative;
+  top: 0;
+  transition: width 0.3s ease;
+  z-index: 10;
+  margin: 0;
+  padding-top: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  display: block;
+  line-height: normal;
+}
+
+/* Fix for both sidebar states */
+.header-board.sidebar-open,
+.header-board.sidebar-closed {
+  margin-top: -10px;
+  margin-left: -15px;
+
 }
 
 .header-content {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   height: 60px;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
 }
 
 /* Search container styles */
@@ -21,26 +45,26 @@
   align-items: center;
   background-color: white;
   border-radius: 50px;
-  padding: 5px 10px; /* Reduced padding */
-  width: 30px; /* Adjusted width for smaller size */
-  height: 30px; /* Adjusted height for smaller size */
+  padding: 5px 10px;
+  width: 30px;
+  height: 30px;
   overflow: hidden;
-  transition: all 0.3s ease; /* Animation for expansion */
+  transition: all 0.3s ease;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .search-container.expanded {
-  width: 250px; /* Adjusted expanded width */
+  width: 250px;
 }
 
 .search-container:hover {
-  width: 250px; /* Expand on hover */
+  width: 250px;
 }
 
 .search-icon {
   color: #666;
   min-width: 20px;
-  transition: all 0.3s ease; /* Smooth transition for icon */
+  transition: all 0.3s ease;
 }
 
 .search-input {
@@ -56,7 +80,7 @@
 
 .search-container.expanded .search-input,
 .search-container:hover .search-input {
-  opacity: 1; /* Show input when expanded or hovered */
+  opacity: 1;
 }
 
 /* Right icons styles */
@@ -66,7 +90,8 @@
   gap: 20px;
 }
 
-.icon-wrapper, .profile-icon {
+.icon-wrapper,
+.profile-icon {
   position: relative;
   background-color: white;
   border-radius: 50%;
@@ -80,7 +105,8 @@
   transition: all 0.2s ease;
 }
 
-.icon-wrapper:hover, .profile-icon:hover {
+.icon-wrapper:hover,
+.profile-icon:hover {
   background-color: #f5f5f5;
   transform: translateY(-2px);
 }
@@ -96,11 +122,13 @@
   border-radius: 50%;
 }
 
-.notification-container, .profile-container {
+.notification-container,
+.profile-container {
   position: relative;
 }
 
-.notification-dropdown, .profile-dropdown {
+.notification-dropdown,
+.profile-dropdown {
   position: absolute;
   top: 45px;
   right: 0;
@@ -108,11 +136,12 @@
   border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   width: 300px;
-  z-index: 10;
+  z-index: 100;
   overflow: hidden;
 }
 
-.notification-header, .profile-header {
+.notification-header,
+.profile-header {
   padding: 15px;
   border-bottom: 1px solid #f0f0f0;
   display: flex;
@@ -120,7 +149,8 @@
   align-items: center;
 }
 
-.notification-header h3, .profile-header h3 {
+.notification-header h3,
+.profile-header h3 {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
@@ -227,9 +257,65 @@
   background-color: #fff0f0;
 }
 
+/* Responsive states for sidebar relation */
+.header-board.sidebar-open {
+  width: 101%;
+}
+
+.header-board.sidebar-closed {
+  width: 101%;
+}
+
 /* Responsive Design */
+@media (max-width: 1024px) {
+  .search-container.expanded {
+      width: 200px;
+  }
+
+  .search-container:hover {
+      width: 200px;
+  }
+}
+
 @media (max-width: 768px) {
   .header-board {
-      width: calc(100% - 45px); /* Adjust width for smaller screens */
+      padding: 0 10px;
+  }
+
+  .right-icons {
+      gap: 10px;
+  }
+
+  .notification-dropdown,
+  .profile-dropdown {
+      width: 260px;
+      right: -10px;
+  }
+
+  .search-container.expanded,
+  .search-container:hover {
+      width: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-content {
+      height: auto;
+      flex-wrap: wrap;
+  }
+
+  .right-icons {
+      margin-left: auto;
+  }
+
+  .notification-dropdown,
+  .profile-dropdown {
+      width: 200px;
+      right: -10px;
+  }
+
+  .search-container.expanded,
+  .search-container:hover {
+      width: 120px;
   }
 }

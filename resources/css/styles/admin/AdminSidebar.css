@@ -1,47 +1,56 @@
+/* AdminSidebar.css */
 .admin-sidebar {
-    background: linear-gradient(to right, #add8e6, #f5f5dc); /* Gradient background */
-    width: 45px; /* Collapsed width */
-    height: 100vh; /* Full height */
-    padding: 20px;
-    position: fixed; /* Fix the sidebar to the left */
+    background: linear-gradient(to right, #add8e6, #f5f5dc);
+    width: 60px;
+    height: 100vh;
+    padding: 20px 10px;
+    position: fixed;
     left: 0;
     top: 0;
-    transition: width 0.3s ease; /* Animation for width change */
+    transition: width 0.3s ease;
     z-index: 1000;
-    overflow: hidden; /* Prevents overflow when collapsed */
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Align items to the start */
+    justify-content: flex-start;
 }
 
 .admin-sidebar.sidebar-expanded {
-    width: 260px; /* Expanded width */
+    width: 300px;
 }
 
 .sidebar-header {
     display: flex;
     align-items: center;
     gap: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    justify-content: center;
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
 }
 
 .logo {
-    width: 60px; /* Increased width */
-    height: 60px; /* Increased height */
+    width: 60px;
+    height: 60px;
     object-fit: contain;
-    position: relative; /* Position relative for layout */
 }
 
 .sidebar-title {
     font-size: 20px;
     font-weight: 600;
-    transition: transform 0.3s ease; /* Animation for scale */
+    transition: transform 0.3s ease;
     white-space: nowrap;
     margin: 0;
 }
 
-.admin-sidebar:hover .sidebar-title {
-    animation: bounce 0.6s; /* Apply bounce animation */
+.admin-sidebar.sidebar-expanded .sidebar-title {
+    animation: bounce 0.6s;
 }
 
 .menu-list {
@@ -51,32 +60,39 @@
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center align items */
+    align-items: center;
+    width: 100%;
 }
 
 .menu-item {
     border-radius: 8px;
     cursor: pointer;
-    margin-top: 5px;
+    margin-top: 10px;
     transition: all 0.2s ease;
-    width: 100%;
-    text-align: center; /* Center text */
+    width: 90%;
+    text-align: center;
 }
 
 .menu-item:hover {
-    background: rgba(173, 216, 230, 0.5); /* Light blue background on hover */
+    background: rgba(173, 216, 230, 0.5);
 }
 
 .menu-item.active {
-    background: rgba(255, 255, 255, 0.1);
+    /* Reduced highlight size and changed the style */
+    background: rgba(255, 255, 255, 0.2); /* More subtle highlight */
+    border-left: 3px solid #03055B; /* Added a border for visual emphasis */
 }
 
 .menu-content {
     display: flex;
     align-items: center;
     padding: 12px;
-    gap: 10px; /* Reduced gap for better alignment */
-    justify-content: center; /* Center items */
+    gap: 10px;
+    justify-content: center;
+}
+
+.admin-sidebar.sidebar-expanded .menu-content {
+    justify-content: flex-start;
 }
 
 .menu-icon {
@@ -84,8 +100,8 @@
     align-items: center;
     justify-content: center;
     min-width: 20px;
-    opacity: 1; /* Always visible */
-    transition: opacity 0.3s ease; /* Smooth transition */
+    opacity: 1;
+    transition: opacity 0.3s ease;
 }
 
 .menu-title {
@@ -99,44 +115,75 @@
     list-style: none;
     padding: 0;
     margin: 5px 0 0 0;
-    background: rgba(255, 255, 255, 0.8); /* Lighter background for dropdown */
+    /* Match the sidebar background color */
+    background: linear-gradient(to right, #add8e6, #f5f5dc);
     border-radius: 8px;
+    width: 90%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
 }
 
 .dropdown-item {
     padding: 10px 15px;
     cursor: pointer;
     transition: background 0.2s ease;
+    color: #03055B; /* Match the menu title color */
 }
 
 .dropdown-item:hover {
-    background: rgba(255, 255, 255, 0.2); /* Light background on hover */
-}
-
-.dropdown-item {
-    background-color: #03055B;
-    color: #FFFFFF;
+    background: rgba(173, 216, 230, 0.3); /* Lighter background on hover */
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+    .admin-sidebar.sidebar-expanded {
+        width: 300px;
+    }
+}
+
 @media (max-width: 768px) {
     .admin-sidebar {
-        width: 45px; /* Collapsed width */
+        width: 85px;
     }
 
     .admin-sidebar.sidebar-expanded {
-        width: 260px; /* Expanded width */
+        width: 240px;
+    }
+
+    .sidebar-title {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-sidebar {
+        width: 85px;
+        padding: 15px 10px;
+    }
+
+    .admin-sidebar.sidebar-expanded {
+        width: 240px;
+    }
+
+    .logo {
+        width: 50px;
+        height: 50px;
     }
 }
 
 /* Add the bounce animation */
 @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
         transform: translateY(0);
     }
+
     40% {
         transform: translateY(-5px);
     }
+
     60% {
         transform: translateY(-3px);
     }

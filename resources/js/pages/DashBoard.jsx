@@ -1,3 +1,4 @@
+// Dashboard.jsx
 import React, { useState } from 'react';
 import { ArrowRight, ArrowLeft } from 'lucide-react'; 
 import '../../css/styles/dash/Dashboard.css'; 
@@ -7,11 +8,15 @@ import DocumentControl from '../component/admin/DocumentControl';
 import { createRoot } from 'react-dom/client';
 
 const Dashboard = () => {
-    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
     const [activeMenu, setActiveMenu] = useState("Dashboard");
     
-    const toggleSidebar = () => {
-        setSidebarOpen(!sidebarOpen);
+    const handleSidebarMouseEnter = () => {
+        setSidebarOpen(true);
+    };
+    
+    const handleSidebarMouseLeave = () => {
+        setSidebarOpen(false);
     };
     
     const handleMenuSelect = (menu) => {
@@ -36,12 +41,11 @@ const Dashboard = () => {
                 activeMenu={activeMenu}
                 onMenuSelect={handleMenuSelect}
                 sidebarOpen={sidebarOpen}
+                onMouseEnter={handleSidebarMouseEnter}
+                onMouseLeave={handleSidebarMouseLeave}
             />
-            <div className={`admin-container ${sidebarOpen ? '' : 'collapsed'}`}>
-                <button className="sidebar-toggle" onClick={toggleSidebar}>
-                    {sidebarOpen ? <ArrowLeft className="toggle-icon" /> : <ArrowRight className="toggle-icon" />}
-                </button>
-                <Headerboard />
+            <div className={`admin-container ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
+                <Headerboard sidebarOpen={sidebarOpen} />
                 <div className="admin-main-content">
                     <div className="main-content">
                         {renderContent()}
