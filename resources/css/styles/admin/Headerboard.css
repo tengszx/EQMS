@@ -233,6 +233,7 @@
 }
 
 .menu-item {
+  margin-left: 18px;
   padding: 10px 20px;
   display: flex;
   align-items: center;
@@ -242,7 +243,7 @@
 }
 
 .menu-item:hover {
-  background-color: #f9f9f9;
+  background-color: #ffffff;
 }
 
 .menu-item span {
@@ -254,7 +255,7 @@
 }
 
 .menu-item.logout:hover {
-  background-color: #fff0f0;
+  background-color: #ffffff;
 }
 
 /* Responsive states for sidebar relation */

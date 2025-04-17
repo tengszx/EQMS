@@ -65,22 +65,22 @@
 }
 
 .menu-item {
-    border-radius: 8px;
+    border-radius: 33px 0 0 33px; /* Top-left and bottom-left corners rounded */
+    margin-left: 20px;
     cursor: pointer;
     margin-top: 10px;
-    transition: all 0.2s ease;
+    transition: all 0.1s ease;
     width: 90%;
     text-align: center;
 }
 
 .menu-item:hover {
-    background: rgba(173, 216, 230, 0.5);
+    background: rgba(255, 255, 255, 255);
 }
 
 .menu-item.active {
     /* Reduced highlight size and changed the style */
-    background: rgba(255, 255, 255, 0.2); /* More subtle highlight */
-    border-left: 3px solid #03055B; /* Added a border for visual emphasis */
+    background: rgba(255, 255, 255, 255); /* More subtle highlight */
 }
 
 .menu-content {
