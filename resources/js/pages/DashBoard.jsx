@@ -1,11 +1,11 @@
 // Dashboard.jsx
 import React, { useState } from 'react';
+import { createRoot } from 'react-dom/client';
 import { ArrowRight, ArrowLeft } from 'lucide-react'; 
 import '../../css/styles/dash/Dashboard.css'; 
 import AdminSidebar from '../component/admin/AdminSidebar'; 
 import Headerboard from '../component/admin/Headerboard'; 
-import DocumentControl from '../component/admin/DocumentControl'; 
-import { createRoot } from 'react-dom/client';
+import DocumentControl from '../component/admin/DocumentControl';
 
 const Dashboard = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -31,7 +31,7 @@ const Dashboard = () => {
             case "Document Control":
                 return <DocumentControl />;
             default:
-                return <div>Dashboard Content</div>; // Fallback
+                return <div>Dashboard Content</div>; // Fallback for unknown menu
         }
     };
     
