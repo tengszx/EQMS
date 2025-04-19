@@ -1,0 +1,253 @@
+/* AddAuditModal.css */
+.audit-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.audit-modal-content {
+  background-color: white;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 650px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  animation: auditModalFadeIn 0.3s ease-out;
+  border: 1px solid #dee2e6;
+}
+
+@keyframes auditModalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.audit-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #dee2e6;
+  background-color: #f8f9fa;
+}
+
+.audit-modal-header h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #212529;
+}
+
+.audit-close-button {
+  background-color: transparent;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.audit-close-button:hover {
+  background-color: #e9ecef;
+  color: #212529;
+}
+
+.audit-modal-body {
+  padding: 24px;
+  max-height: 70vh;
+  overflow-y: auto;
+  background-color: white;
+}
+
+.audit-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.audit-form-group {
+  margin-bottom: 5px;
+}
+
+.audit-form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #212529;
+}
+
+/* Special styling for Audit ID field */
+.audit-id-input-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.audit-id-prefix {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  background-color: #e9ecef;
+  color: #495057;
+  font-weight: 600;
+  height: 45px;
+  border-right: 1px solid #ced4da;
+}
+
+.audit-id-input {
+  flex: 1;
+  border: none;
+  padding: 1px 16px;
+  font-size: 0.95rem;
+  height: 45px;
+}
+
+.audit-id-input:focus {
+  outline: none;
+}
+
+.audit-id-input-container:focus-within {
+  border-color: #4361ee;
+  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+}
+
+.audit-select {
+  height: 38px; 
+  width: 80%;
+  border-radius: 5px;
+  border: 1px solid #ced4da;
+}
+
+.audit-form-group input:not(.audit-id-input),
+.audit-date-input {
+  width: 80%;
+  margin: -3px;
+  padding: 12px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  color: #212529;
+  height: 30px;
+}
+
+.audit-form-group input:focus,
+.audit-select:focus,
+.audit-date-input:focus {
+  outline: none;
+  border-color: #4361ee;
+  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+}
+
+.audit-form-group input::placeholder {
+  color: #adb5bd;
+}
+
+.audit-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  padding: 20px 24px;
+  border-top: 1px solid #dee2e6;
+  background-color: #f8f9fa;
+}
+
+.audit-cancel-button {
+  background-color: white;
+  color: #495057;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+  height: 45px;
+  min-width: 100px;
+}
+
+.audit-cancel-button:hover {
+  background-color: #e9ecef;
+  border-color: #adb5bd;
+}
+
+.audit-add-button {
+  background-color: #4361ee;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+  height: 45px;
+  min-width: 120px;
+}
+
+.audit-add-button:hover {
+  background-color: #3a56d4;
+}
+
+.audit-add-button:disabled {
+  background-color: #adb5bd;
+  cursor: not-allowed;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .audit-modal-content {
+    max-width: 100%;
+    margin: 10px;
+    height: auto;
+    max-height: 90vh;
+  }
+  
+  .audit-modal-body {
+    padding: 20px;
+  }
+  
+  .audit-form-grid {
+    gap: 15px;
+  }
+}
+
+@media (min-width: 768px) {
+  .audit-form-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 20px;
+  }
+  
+  /* Make ID field span full width */
+  .audit-form-grid .audit-form-group:first-child {
+    grid-column: 1 / -1;
+  }
+  
+  /* Make Title field span full width */
+  .audit-form-grid .audit-form-group:nth-child(2) {
+    grid-column: 1 / -1;
+  }
+}
