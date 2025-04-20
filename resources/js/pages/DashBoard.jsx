@@ -1,16 +1,22 @@
 // Dashboard.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // Import useEffect
 import { createRoot } from 'react-dom/client';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 import '../../css/styles/dash/Dashboard.css';
 import AdminSidebar from '../component/admin/AdminSidebar';
 import Headerboard from '../component/admin/Headerboard';
 import DocumentControl from '../component/admin/DocumentControl';
-import AuditSystem from '../component/admin/AuditSystem'; // Corrected import
+import AuditSystem from '../component/admin/AuditSystem';
+import CAPASystem from '../component/admin/CAPASystem'; // New import added
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState("Dashboard");
+  const [isCAPAActive, setIsCAPAActive] = useState(false); // State to track CAPA menu
+
+  useEffect(() => {
+    setIsCAPAActive(activeMenu === "CAPA"); // Update state when activeMenu changes
+  }, [activeMenu]);
 
   const handleSidebarMouseEnter = () => {
     setSidebarOpen(true);
@@ -33,8 +39,10 @@ const Dashboard = () => {
         return <DocumentControl />;
       case "Audits & Inspection": // Added case for Audit System
         return <AuditSystem />;
+      case "CAPA": // Added case for CAPA System
+        return <CAPASystem />;
       default:
-        return <div>Dashboard Content</div>; // Fallback for unknown menu
+        return null; // Or some default content
     }
   };
 
@@ -55,6 +63,10 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      {/* Conditionally render the CAPA CSS */}
+      {isCAPAActive && (
+        <link rel="stylesheet" type="text/css" href="../../../css/styles/admin/CAPASystem.css" />
+      )}
     </div>
   );
 };

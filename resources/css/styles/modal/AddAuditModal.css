@@ -39,14 +39,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 24px;
+  padding: 16px 20px;
   border-bottom: 1px solid #dee2e6;
   background-color: #f8f9fa;
 }
 
 .audit-modal-header h2 {
   margin: 0;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 600;
   color: #212529;
 }
@@ -60,8 +60,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   transition: all 0.2s;
 }
@@ -72,7 +72,7 @@
 }
 
 .audit-modal-body {
-  padding: 24px;
+  padding: 20px;
   max-height: 70vh;
   overflow-y: auto;
   background-color: white;
@@ -81,18 +81,18 @@
 .audit-form-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
+  gap: 15px;
 }
 
 .audit-form-group {
-  margin-bottom: 5px;
+  margin-bottom: 0;
 }
 
 .audit-form-group label {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #212529;
 }
 
@@ -111,20 +111,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 12px;
+  padding: 0 10px;
   background-color: #e9ecef;
   color: #495057;
   font-weight: 600;
-  height: 45px;
+  height: 40px;
   border-right: 1px solid #ced4da;
 }
 
 .audit-id-input {
   flex: 1;
   border: none;
-  padding: 1px 16px;
+  padding: 0 12px;
   font-size: 0.95rem;
-  height: 45px;
+  height: 40px;
 }
 
 .audit-id-input:focus {
@@ -137,23 +137,23 @@
 }
 
 .audit-select {
-  height: 38px; 
-  width: 80%;
+  height: 36px; 
+  width: 100%;
   border-radius: 5px;
   border: 1px solid #ced4da;
+  padding: 0 8px;
 }
 
 .audit-form-group input:not(.audit-id-input),
 .audit-date-input {
-  width: 80%;
-  margin: -3px;
-  padding: 12px 12px;
+  width: 90%;
+  padding: 8px 12px;
   border: 1px solid #ced4da;
   border-radius: 5px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   transition: all 0.2s;
   color: #212529;
-  height: 30px;
+  height: 20px;
 }
 
 .audit-form-group input:focus,
@@ -171,8 +171,8 @@
 .audit-modal-footer {
   display: flex;
   justify-content: flex-end;
-  gap: 15px;
-  padding: 20px 24px;
+  gap: 12px;
+  padding: 16px 20px;
   border-top: 1px solid #dee2e6;
   background-color: #f8f9fa;
 }
@@ -182,12 +182,12 @@
   color: #495057;
   border: 1px solid #ced4da;
   border-radius: 5px;
-  padding: 10px 20px;
+  padding: 8px 16px;
   cursor: pointer;
   font-weight: 500;
   transition: all 0.2s;
-  height: 45px;
-  min-width: 100px;
+  height: 40px;
+  min-width: 90px;
 }
 
 .audit-cancel-button:hover {
@@ -200,12 +200,12 @@
   color: white;
   border: none;
   border-radius: 5px;
-  padding: 10px 20px;
+  padding: 8px 16px;
   cursor: pointer;
   font-weight: 500;
   transition: all 0.2s;
-  height: 45px;
-  min-width: 120px;
+  height: 40px;
+  min-width: 110px;
 }
 
 .audit-add-button:hover {
@@ -227,18 +227,18 @@
   }
   
   .audit-modal-body {
-    padding: 20px;
+    padding: 16px;
   }
   
   .audit-form-grid {
-    gap: 15px;
+    gap: 12px;
   }
 }
 
 @media (min-width: 768px) {
   .audit-form-grid {
     grid-template-columns: 1fr 1fr;
-    gap: 24px 20px;
+    gap: 18px 16px;
   }
   
   /* Make ID field span full width */

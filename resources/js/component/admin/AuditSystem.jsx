@@ -4,12 +4,9 @@ import '../../../css/styles/admin/AuditSystem.css';
 import AddAuditModal from '../../modal/AddAuditModal';
 
 const AuditSystem = () => {
-  const [auditRecords, setAuditRecords] = useState([
-  ]);
+  const [auditRecords, setAuditRecords] = useState([]);
 
-  const [auditSchedule, setAuditSchedule] = useState([
-    
-  ]);
+  const [auditSchedule, setAuditSchedule] = useState([]);
 
   const [showAddAuditModal, setShowAddAuditModal] = useState(false);
   const [nextAuditId, setNextAuditId] = useState(4);
@@ -98,16 +95,19 @@ const AuditSystem = () => {
       updatedRecords[currentAuditIndex] = completeAudit;
       setAuditRecords(updatedRecords);
     } else {
-      // Add new audit
-      setAuditRecords([...auditRecords, completeAudit]);
-      setNextAuditId(nextAuditId + 1);
-      
-      // Add to schedule
+      // Add to schedule only (not to audit records)
       const scheduleItem = {
         title: completeAudit.title,
-        date: completeAudit.date
+        date: completeAudit.date,
+        type: completeAudit.type,
+        scope: completeAudit.scope,
+        auditor: completeAudit.auditor,
+        status: completeAudit.status,
+        id: completeAudit.id
       };
+      
       setAuditSchedule([...auditSchedule, scheduleItem]);
+      setNextAuditId(nextAuditId + 1);
     }
 
     // Reset and close modal
@@ -127,20 +127,9 @@ const AuditSystem = () => {
 
   const moveToAuditRecords = (index) => {
     const scheduledAudit = auditSchedule[index];
-    const formattedId = `AUD-${String(nextAuditId).padStart(3, '0')}`;
 
-    const auditToAdd = {
-      id: formattedId,
-      title: scheduledAudit.title,
-      type: 'Internal', // Default values
-      scope: 'General',
-      auditor: 'TBA',
-      date: scheduledAudit.date,
-      status: 'Scheduled'
-    };
-
-    setAuditRecords([...auditRecords, auditToAdd]);
-    setNextAuditId(nextAuditId + 1);
+    // Move from schedule to audit records
+    setAuditRecords([...auditRecords, scheduledAudit]);
 
     // Remove from schedule
     const updatedSchedule = [...auditSchedule];
@@ -213,6 +202,7 @@ const AuditSystem = () => {
               <div className="schedule-info">
                 <h3>{audit.title}</h3>
                 <p>Scheduled Date: {audit.date}</p>
+                <p>Type: {audit.type} | Auditor: {audit.auditor}</p>
               </div>
               <button
                 className="move-button"

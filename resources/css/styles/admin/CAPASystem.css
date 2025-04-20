@@ -1,0 +1,472 @@
+/* CAPASystem.css */
+.capa-container {
+    font-family: Arial, sans-serif;
+    width: 95%; /* Adjusted width */
+    max-width: 1400px; /* Increased max-width */
+    margin: 20px auto; /* Added margin for spacing */
+    padding: 30px; /* Increased padding */
+    background-color: #f9fafb;
+    border-radius: 12px; /* Increased border-radius */
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15); /* Increased box-shadow */
+}
+
+.capa-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px; /* Increased margin */
+}
+
+.capa-header h1 {
+    color: #1e293b;
+    margin: 0;
+    font-size: 32px; /* Increased font size */
+}
+
+.new-capa-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Increased gap */
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px; /* Increased border-radius */
+    padding: 12px 20px; /* Increased padding */
+    font-size: 16px; /* Increased font size */
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.new-capa-btn:hover {
+    background-color: #1d4ed8;
+}
+
+.capa-filters {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px; /* Increased margin */
+}
+
+.search-container {
+    position: relative;
+    flex: 1;
+    margin-right: 20px; /* Increased margin */
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px; /* Increased left */
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 12px 12px 45px; /* Increased padding */
+    border: 1px solid #d1d5db;
+    border-radius: 6px; /* Increased border-radius */
+    font-size: 16px; /* Increased font size */
+}
+
+.filter-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Increased gap */
+}
+
+.filter-container label {
+    font-size: 16px; /* Increased font size */
+    color: #4b5563;
+}
+
+.status-filter {
+    padding: 12px; /* Increased padding */
+    border: 1px solid #d1d5db;
+    border-radius: 6px; /* Increased border-radius */
+    font-size: 16px; /* Increased font size */
+}
+
+.capa-table-container {
+    overflow-x: auto;
+}
+
+.capa-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 12px; /* Increased border-radius */
+    overflow: hidden;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15); /* Increased box-shadow */
+}
+
+.capa-table th,
+.capa-table td {
+    padding: 16px 20px; /* Increased padding */
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 16px; /* Increased font size */
+}
+
+.capa-table th {
+    background-color: #f3f4f6;
+    color: #4b5563;
+    font-weight: 600;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 6px 12px; /* Increased padding */
+    border-radius: 9999px;
+    font-size: 14px; /* Increased font size */
+    font-weight: 500;
+}
+
+.status-badge.in-progress {
+    background-color: #fff7ed;
+    color: #c2410c;
+}
+
+.status-badge.complete {
+    background-color: #ecfdf5;
+    color: #047857;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px; /* Increased gap */
+}
+
+/* Action buttons with hover effect */
+.action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; /* Increased width */
+    height: 40px; /* Increased height */
+    border: none;
+    border-radius: 6px; /* Increased border-radius */
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: transparent;
+    color: #4b5563;
+}
+
+.view-btn:hover {
+    background-color: #f3f4f6;
+    color: #4b5563;
+}
+
+.edit-btn:hover {
+    background-color: #dbeafe;
+    color: #2563eb;
+}
+
+.delete-btn:hover {
+    background-color: #fee2e2;
+    color: #ef4444;
+}
+
+/* Modal Styles */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-container {
+    background-color: white;
+    border-radius: 12px; /* Increased border-radius */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Increased box-shadow */
+    width: 90%; /* Adjusted width */
+    max-width: 1000px; /* Increased max-width */
+    max-height: 95vh; /* Increased max-height */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.view-modal {
+    max-width: 1200px; /* Increased max-width */
+}
+
+.view-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 32px; /* Increased gap */
+    padding: 32px; /* Increased padding */
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px; /* Increased padding */
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 24px; /* Increased font size */
+    color: #1e293b;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 32px; /* Increased font size */
+    color: #6b7280;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.modal-body {
+    padding: 30px; /* Increased padding */
+    flex: 1;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px; /* Increased gap */
+    padding: 20px 30px; /* Increased padding */
+    border-top: 1px solid #e5e7eb;
+}
+
+.form-group {
+    margin-bottom: 20px; /* Increased margin */
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px; /* Increased margin */
+    font-size: 16px; /* Increased font size */
+    color: #4b5563;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px; /* Increased padding */
+    border: 1px solid #d1d5db;
+    border-radius: 6px; /* Increased border-radius */
+    font-size: 16px; /* Increased font size */
+}
+
+.form-group input:disabled {
+    background-color: #f3f4f6;
+    color: #6b7280;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px; /* Increased gap */
+    margin-top: 32px; /* Increased margin */
+}
+
+.save-btn {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px; /* Increased border-radius */
+    padding: 12px 20px; /* Increased padding */
+    font-size: 16px; /* Increased font size */
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.save-btn:hover {
+    background-color: #1d4ed8;
+}
+
+.cancel-btn,
+.close-modal-btn {
+    background-color: #f3f4f6;
+    color: #4b5563;
+    border: none;
+    border-radius: 6px; /* Increased border-radius */
+    padding: 12px 20px; /* Increased padding */
+    font-size: 16px; /* Increased font size */
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.cancel-btn:hover,
+.close-modal-btn:hover {
+    background-color: #e5e7eb;
+}
+
+.capa-details {
+    margin-bottom: 32px; /* Increased margin */
+}
+
+.detail-item {
+    margin-bottom: 16px; /* Increased margin */
+    display: flex;
+}
+
+.detail-item label {
+    font-weight: 500;
+    color: #4b5563;
+    width: 120px; /* Increased width */
+    margin-right: 20px; /* Increased margin */
+    font-size: 16px; /* Increased font size */
+}
+
+/* PDF viewer styles */
+.pdf-viewer {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px; /* Increased border-radius */
+    overflow: hidden;
+    height: 600px; /* Increased height */
+    display: flex;
+    flex-direction: column;
+}
+
+.pdf-toolbar {
+    background-color: #f3f4f6;
+    padding: 10px; /* Increased padding */
+    display: flex;
+    gap: 10px; /* Increased gap */
+}
+
+.zoom-btn {
+    background-color: white;
+    border: 1px solid #d1d5db;
+    border-radius: 6px; /* Increased border-radius */
+    padding: 8px 16px; /* Increased padding */
+    font-size: 14px; /* Increased font size */
+    cursor: pointer;
+}
+
+.zoom-btn:hover {
+    background-color: #f9fafb;
+}
+
+.pdf-document {
+    flex: 1;
+    background-color: #f9fafb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+}
+
+.pdf-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #6b7280;
+}
+
+.pdf-placeholder p {
+    margin-top: 10px; /* Increased margin */
+    font-size: 16px; /* Increased font size */
+}
+
+/* View modal edit button */
+.edit-btn-large {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Increased gap */
+    background-color: #dbeafe;
+    color: #2563eb;
+    border: none;
+    border-radius: 6px; /* Increased border-radius */
+    padding: 12px 20px; /* Increased padding */
+    font-size: 16px; /* Increased font size */
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.edit-btn-large:hover {
+    background-color: #bfdbfe;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .capa-container {
+        padding: 20px;
+    }
+
+    .capa-header h1 {
+        font-size: 28px;
+    }
+
+    .new-capa-btn {
+        font-size: 14px;
+        padding: 10px 16px;
+    }
+
+    .capa-filters {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .search-container {
+        margin-right: 0;
+    }
+
+    .search-input {
+        padding: 10px 10px 10px 40px;
+        font-size: 14px;
+    }
+
+    .filter-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .status-filter {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .capa-table th,
+    .capa-table td {
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+
+    .action-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    .view-modal-body {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .detail-item {
+        flex-direction: column;
+    }
+
+    .detail-item label {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .pdf-viewer {
+        height: 500px;
+    }
+
+    .edit-btn-large {
+        font-size: 14px;
+        padding: 10px 16px;
+    }
+}
