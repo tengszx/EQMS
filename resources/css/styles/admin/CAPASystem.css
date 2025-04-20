@@ -65,7 +65,6 @@
 .search-input {
     width: 100%;
     padding: 12px 12px 12px 45px; /* Increased padding */
-    border: 1px solid #d1d5db;
     border-radius: 6px; /* Increased border-radius */
     font-size: 16px; /* Increased font size */
 }

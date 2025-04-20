@@ -1,6 +1,8 @@
+// NewCAPAModal.jsx
 import React, { useState, useRef } from 'react';
 import '../../css/styles/modal/NewCAPAModal.css';
-import { FilePdf } from 'lucide-react';
+// Check if FilePdf exists
+import { FileText } from 'lucide-react'; // Use an alternative icon
 
 const NewCAPAModal = ({ onClose, onSave, nextId }) => {
     const [formData, setFormData] = useState({
@@ -194,7 +196,7 @@ const NewCAPAModal = ({ onClose, onSave, nextId }) => {
                             />
                             {selectedFile && (
                                 <div className="selected-file-info">
-                                    <FilePdf size={20} className="pdf-icon" />
+                                    <FileText size={20} className="pdf-icon" /> {/* Changed to FileText */}
                                     <span>{selectedFile.name}</span>
                                 </div>
                             )}

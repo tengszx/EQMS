@@ -71,6 +71,7 @@
     border: 1px solid #d1d5db;
     border-radius: 6px; /* Increased border-radius */
     font-size: 16px; /* Increased font size */
+    appearance: none; /* Added for compatibility */
 }
 
 /* Custom CAPA ID input container */
@@ -96,6 +97,7 @@
 
 /* Input for numbers only */
 .number-only-input {
+    appearance: textfield; /* Added for compatibility */
     -moz-appearance: textfield;
 }
 
