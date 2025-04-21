@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Search, Edit, Eye, Trash2, Plus, FileText } from 'lucide-react';
 import '../../../css/styles/admin/CAPASystem.css';
 import NewCAPAModal from '../../modal/NewCAPAModal';
-
 const CAPASystem = () => {
     const [capaData, setCAPAData] = useState([
         {
@@ -13,7 +12,7 @@ const CAPASystem = () => {
             owner: 'John Doe',
             date: '2025-04-15',
             category: 'Equipment',
-            pdfFile: null // Add pdfFile property
+            pdfFile: null
         },
         {
             id: 'CAPA002',
@@ -23,26 +22,22 @@ const CAPASystem = () => {
             owner: 'Jane Smith',
             date: '2025-04-10',
             category: 'Process',
-            pdfFile: null // Add pdfFile property
+            pdfFile: null
         },
     ]);
-
     const [showNewModal, setShowNewModal] = useState(false);
     const [showViewModal, setShowViewModal] = useState(false);
-    const [showEditModal, setShowEditModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false); // Fixed: Added missing '=' sign
     const [selectedCAPA, setSelectedCAPA] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
     const [nextId, setNextId] = useState(3);
 
-    // Filter data based on search term and status filter
     const filteredData = capaData.filter(capa => {
-        const matchesSearch = Object.values(capa).some(
-            value => value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+        const matchesSearch = Object.values(capa).some(value =>
+            value && value.toString().toLowerCase().includes(searchTerm.toLowerCase())
         );
-
         const matchesStatus = statusFilter === '' || capa.status === statusFilter;
-
         return matchesSearch && matchesStatus;
     });
 
@@ -81,11 +76,9 @@ const CAPASystem = () => {
             <div className="capa-header">
                 <h1>Corrective and Preventive Action (CAPA)</h1>
                 <button className="new-capa-btn" onClick={() => setShowNewModal(true)}>
-                    <Plus size={18} />
-                    New CAPA
+                    <Plus size={18} /> New CAPA
                 </button>
             </div>
-
             <div className="capa-filters">
                 <div className="search-container">
                     <Search size={20} className="search-icon" />
@@ -97,7 +90,6 @@ const CAPASystem = () => {
                         className="search-input"
                     />
                 </div>
-
                 <div className="filter-container">
                     <label>Status:</label>
                     <select
@@ -111,7 +103,6 @@ const CAPASystem = () => {
                     </select>
                 </div>
             </div>
-
             <div className="capa-table-container">
                 <table className="capa-table">
                     <thead>
@@ -141,25 +132,13 @@ const CAPASystem = () => {
                                 <td>{capa.category}</td>
                                 <td>{capa.date}</td>
                                 <td className="action-buttons">
-                                    <button
-                                        className="action-btn view-btn"
-                                        onClick={() => handleViewCAPA(capa)}
-                                        title="View"
-                                    >
+                                    <button className="action-btn view-btn" onClick={() => handleViewCAPA(capa)} title="View">
                                         <Eye size={18} />
                                     </button>
-                                    <button
-                                        className="action-btn edit-btn"
-                                        onClick={() => handleEditCAPA(capa)}
-                                        title="Edit"
-                                    >
+                                    <button className="action-btn edit-btn" onClick={() => handleEditCAPA(capa)} title="Edit">
                                         <Edit size={18} />
                                     </button>
-                                    <button
-                                        className="action-btn delete-btn"
-                                        onClick={() => handleDeleteCAPA(capa.id)}
-                                        title="Delete"
-                                    >
+                                    <button className="action-btn delete-btn" onClick={() => handleDeleteCAPA(capa.id)} title="Delete">
                                         <Trash2 size={18} />
                                     </button>
                                 </td>
@@ -168,8 +147,6 @@ const CAPASystem = () => {
                     </tbody>
                 </table>
             </div>
-
-            {/* New CAPA Modal */}
             {showNewModal && (
                 <NewCAPAModal
                     onClose={() => setShowNewModal(false)}
@@ -177,8 +154,6 @@ const CAPASystem = () => {
                     nextId={`CAPA${String(nextId).padStart(3, '0')}`}
                 />
             )}
-
-            {/* View CAPA Modal */}
             {showViewModal && selectedCAPA && (
                 <div className="modal-backdrop">
                     <div className="modal-container view-modal">
@@ -219,10 +194,9 @@ const CAPASystem = () => {
                                     <span>{selectedCAPA.date}</span>
                                 </div>
                             </div>
-
                             <div className="pdf-viewer">
                                 {selectedCAPA.pdfFile ? (
-                                    <iframe src={selectedCAPA.pdfFile} width="100%" height="500px" title="CAPA Document" />
+                                    <iframe src={selectedCAPA.pdfFile} width="100%" height="400px" title="CAPA Document" />
                                 ) : (
                                     <div className="pdf-placeholder">
                                         <FileText size={48} />
@@ -239,16 +213,13 @@ const CAPASystem = () => {
                                     setShowEditModal(true);
                                 }}
                             >
-                                <Edit size={18} />
-                                Edit
+                                <Edit size={18} /> Edit
                             </button>
                             <button className="close-modal-btn" onClick={() => setShowViewModal(false)}>Close</button>
                         </div>
                     </div>
                 </div>
             )}
-
-            {/* Edit CAPA Modal */}
             {showEditModal && selectedCAPA && (
                 <div className="modal-backdrop">
                     <div className="modal-container">

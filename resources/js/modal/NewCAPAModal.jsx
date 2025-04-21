@@ -1,8 +1,7 @@
 // NewCAPAModal.jsx
 import React, { useState, useRef } from 'react';
 import '../../css/styles/modal/NewCAPAModal.css';
-// Check if FilePdf exists
-import { FileText } from 'lucide-react'; // Use an alternative icon
+import { FileText } from 'lucide-react';
 
 const NewCAPAModal = ({ onClose, onSave, nextId }) => {
     const [formData, setFormData] = useState({
@@ -12,12 +11,10 @@ const NewCAPAModal = ({ onClose, onSave, nextId }) => {
         owner: '',
         category: '',
         date: new Date().toISOString().split('T')[0],
-        pdfFile: null // Initialize pdfFile to null
+        pdfFile: null
     });
 
-    const [selectedFile, setSelectedFile] = useState(null); // State to hold the selected file
-
-    // Reference for the manually editable CAPA ID number
+    const [selectedFile, setSelectedFile] = useState(null);
     const capaNumberRef = useRef(null);
 
     const handleChange = (e) => {
@@ -32,12 +29,11 @@ const NewCAPAModal = ({ onClose, onSave, nextId }) => {
         const file = event.target.files[0];
         setSelectedFile(file);
 
-        // Read the file as a data URL
         const reader = new FileReader();
         reader.onloadend = () => {
             setFormData({
                 ...formData,
-                pdfFile: reader.result // Store the data URL in the state
+                pdfFile: reader.result
             });
         };
         if (file) {
@@ -48,14 +44,12 @@ const NewCAPAModal = ({ onClose, onSave, nextId }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Get the numeric portion entered by the user (if any)
         let capaId = nextId;
         if (capaNumberRef.current && capaNumberRef.current.value) {
             const numericValue = capaNumberRef.current.value;
             capaId = `CAPA${numericValue.padStart(3, '0')}`;
         }
 
-        // Save with either the default next ID or the manually entered one
         onSave({
             ...formData,
             id: capaId
@@ -63,11 +57,9 @@ const NewCAPAModal = ({ onClose, onSave, nextId }) => {
     };
 
     const validateOwner = (value) => {
-        // Only allow letters and spaces
         return /^[A-Za-z\s]+$/.test(value) || value === '';
     };
 
-    // Extract the numeric part from the nextId
     const extractNumberFromId = (id) => {
         return id.replace('CAPA', '');
     };
@@ -91,7 +83,6 @@ const NewCAPAModal = ({ onClose, onSave, nextId }) => {
                                     defaultValue={extractNumberFromId(nextId)}
                                     className="capa-id-input"
                                     onKeyPress={(e) => {
-                                        // Allow only numbers
                                         if (!/[0-9]/.test(e.key)) {
                                             e.preventDefault();
                                         }
@@ -185,7 +176,6 @@ const NewCAPAModal = ({ onClose, onSave, nextId }) => {
                             />
                         </div>
 
-                        {/* PDF Uploader */}
                         <div className="form-group">
                             <label>Upload PDF:</label>
                             <input
@@ -196,7 +186,7 @@ const NewCAPAModal = ({ onClose, onSave, nextId }) => {
                             />
                             {selectedFile && (
                                 <div className="selected-file-info">
-                                    <FileText size={20} className="pdf-icon" /> {/* Changed to FileText */}
+                                    <FileText size={20} className="pdf-icon" />
                                     <span>{selectedFile.name}</span>
                                 </div>
                             )}

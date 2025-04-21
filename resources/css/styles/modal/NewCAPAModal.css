@@ -14,52 +14,52 @@
 
 .new-capa-modal {
     background-color: white;
-    border-radius: 12px; /* Increased border-radius */
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); /* Increased box-shadow */
-    width: 90%; /* Adjusted width */
-    max-width: 600px; /* Increased max-width */
-    max-height: 95vh; /* Increased max-height */
+    border-radius: 8px;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 500px;
+    max-height: 90vh;
     overflow-y: auto;
-    position: relative; /* Added for positioning close button */
+    position: relative;
 }
 
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 30px; /* Increased padding */
+    padding: 15px 20px;
     border-bottom: 1px solid #e5e7eb;
 }
 
 .modal-header h2 {
     margin: 0;
-    font-size: 24px; /* Increased font size */
+    font-size: 18px;
     color: #1e293b;
 }
 
 .close-btn {
     background: none;
     border: none;
-    font-size: 32px; /* Increased font size */
+    font-size: 24px;
     color: #6b7280;
     cursor: pointer;
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 5px;
+    right: 5px;
 }
 
 .modal-body {
-    padding: 30px; /* Increased padding */
+    padding: 20px;
 }
 
 .form-group {
-    margin-bottom: 20px; /* Increased margin */
+    margin-bottom: 15px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 10px; /* Increased margin */
-    font-size: 16px; /* Increased font size */
+    margin-bottom: 5px;
+    font-size: 14px;
     color: #4b5563;
     font-weight: 500;
 }
@@ -67,14 +67,14 @@
 .form-group input,
 .form-group select {
     width: 100%;
-    padding: 12px; /* Increased padding */
+    margin-right: 6px;
+    padding: 8px;
     border: 1px solid #d1d5db;
-    border-radius: 6px; /* Increased border-radius */
-    font-size: 16px; /* Increased font size */
-    appearance: none; /* Added for compatibility */
+    border-radius: 4px;
+    font-size: 14px;
+    appearance: none; /* Important for consistent styling */
 }
 
-/* Custom CAPA ID input container */
 .capa-id-container {
     display: flex;
     align-items: center;
@@ -83,51 +83,43 @@
 .capa-id-prefix {
     background-color: #f3f4f6;
     color: #6b7280;
-    padding: 12px; /* Increased padding */
+    padding: 8px;
     border: 1px solid #d1d5db;
     border-right: none;
-    border-radius: 6px 0 0 6px; /* Increased border-radius */
+    border-radius: 4px 0 0 4px;
     font-weight: 500;
+    font-size: 14px;
 }
 
 .capa-id-input {
-    border-radius: 0 6px 6px 0; /* Increased border-radius */
+    border-radius: 0 4px 4px 0;
     flex-grow: 1;
-}
-
-/* Input for numbers only */
-.number-only-input {
-    appearance: textfield; /* Added for compatibility */
-    -moz-appearance: textfield;
-}
-
-.number-only-input::-webkit-outer-spin-button,
-.number-only-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+    padding: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
 }
 
 .form-group input:focus,
 .form-group select:focus {
     outline: none;
     border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); /* Increased box-shadow */
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
 }
 
 .form-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 16px; /* Increased gap */
-    margin-top: 32px; /* Increased margin */
+    gap: 10px;
+    margin-top: 20px;
 }
 
 .save-btn {
     background-color: #2563eb;
     color: white;
     border: none;
-    border-radius: 6px; /* Increased border-radius */
-    padding: 12px 20px; /* Increased padding */
-    font-size: 16px; /* Increased font size */
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.2s;
@@ -141,9 +133,9 @@
     background-color: #f3f4f6;
     color: #4b5563;
     border: none;
-    border-radius: 6px; /* Increased border-radius */
-    padding: 12px 20px; /* Increased padding */
-    font-size: 16px; /* Increased font size */
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.2s;
@@ -154,7 +146,7 @@
 }
 
 .title-input {
-    font-size: 16px; /* Increased font size */
+    font-size: 14px;
 }
 
 .type-dropdown,
@@ -176,13 +168,12 @@
     cursor: pointer;
 }
 
-/* PDF Uploader Styles */
 .pdf-uploader {
     width: 100%;
-    padding: 12px; /* Increased padding */
+    padding: 8px;
     border: 1px solid #d1d5db;
-    border-radius: 6px; /* Increased border-radius */
-    font-size: 16px; /* Increased font size */
+    border-radius: 4px;
+    font-size: 14px;
     background-color: #f9fafb;
     cursor: pointer;
 }
@@ -194,9 +185,9 @@
 .selected-file-info {
     display: flex;
     align-items: center;
-    gap: 10px; /* Increased gap */
-    margin-top: 10px; /* Increased margin */
-    font-size: 14px; /* Increased font size */
+    gap: 5px;
+    margin-top: 5px;
+    font-size: 12px;
     color: #374151;
 }
 
@@ -212,50 +203,51 @@
     }
 
     .modal-header {
-        padding: 16px 20px;
+        padding: 12px 15px;
     }
 
     .modal-header h2 {
-        font-size: 20px;
+        font-size: 16px;
     }
 
     .close-btn {
-        font-size: 28px;
-        top: 8px;
-        right: 8px;
+        font-size: 20px;
+        top: 3px;
+        right: 3px;
     }
 
     .modal-body {
-        padding: 20px;
+        padding: 15px;
     }
 
     .form-group {
-        margin-bottom: 16px;
+        margin-bottom: 12px;
     }
 
     .form-group label {
-        font-size: 14px;
+        font-size: 12px;
     }
 
     .form-group input,
     .form-group select,
     .capa-id-prefix,
     .pdf-uploader {
-        padding: 10px;
-        font-size: 14px;
+        padding: 6px;
+        margin-right: 6px;
+        font-size: 12px;
     }
 
     .form-actions {
-        margin-top: 24px;
+        margin-top: 18px;
     }
 
     .save-btn,
     .cancel-btn {
-        padding: 10px 16px;
-        font-size: 14px;
+        padding: 6px 12px;
+        font-size: 12px;
     }
 
     .selected-file-info {
-        font-size: 13px;
+        font-size: 11px;
     }
 }
