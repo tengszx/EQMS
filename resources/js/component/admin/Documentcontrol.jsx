@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { PlusCircle } from 'lucide-react';
 import '../../../css/styles/admin/DocumentControl.css';
 import { Document, Page, pdfjs } from 'react-pdf';
@@ -72,7 +72,7 @@ const DocumentControl = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [numPages, setNumPages] = useState(null);
     const [pdfFile, setPdfFile] = useState(null);
-    const [scale, setScale] = useState(0.8);
+    const [scale, setScale] = useState(1); // Start with a scale of 1
     const [pdfDimensions, setPdfDimensions] = useState({ width: 0, height: 0 });
     const [isPortrait, setIsPortrait] = useState(false);
     const [documentInfo, setDocumentInfo] = useState({
@@ -87,6 +87,9 @@ const DocumentControl = () => {
     const [pageMetadata, setPageMetadata] = useState([]);
     const [revisions, setRevisions] = useState([]);
     const [filesList, setFilesList] = useState({});
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const pdfViewerRef = useRef(null); // Ref to the PDF viewer container
 
     useEffect(() => {
         console.log('Updated filesList:', filesList);
@@ -94,7 +97,7 @@ const DocumentControl = () => {
 
     function onDocumentLoadSuccess({ numPages }) {
         setNumPages(numPages);
-        setScale(0.8);
+        adjustScale(); // Adjust scale after document loads
         console.log(`Document loaded with ${numPages} pages`);
     }
 
@@ -103,15 +106,25 @@ const DocumentControl = () => {
         setPdfDimensions({ width, height });
         const isPortraitOrientation = height > width;
         setIsPortrait(isPortraitOrientation);
+        adjustScale(); // Adjust scale after page loads
+        console.log(`Page dimensions: ${width}x${height}, orientation: ${isPortraitOrientation ? 'portrait' : 'landscape'}`);
+    };
 
-        // Adjust scale based on orientation for better initial readability
-        if (isPortraitOrientation) {
-            setScale(0.5); // Smaller initial scale for portrait
+    const adjustScale = () => {
+        if (!pdfViewerRef.current || !pdfDimensions.width || !pdfDimensions.height) return;
+
+        const viewerWidth = pdfViewerRef.current.offsetWidth;
+        const viewerHeight = pdfViewerRef.current.offsetHeight;
+
+        let newScale = 1;
+
+        if (isPortrait) {
+            newScale = Math.min(1, viewerWidth / pdfDimensions.width); // Fit to width for portrait
         } else {
-            setScale(0.8); // Default scale for landscape
+            newScale = Math.min(1, viewerHeight / pdfDimensions.height); // Fit to height for landscape
         }
 
-        console.log(`Page dimensions: ${width}x${height}, orientation: ${isPortraitOrientation ? 'portrait' : 'landscape'}`);
+        setScale(newScale);
     };
 
     const handleManualChange = (e) => {
@@ -185,7 +198,7 @@ const DocumentControl = () => {
 
     const resetZoom = (e) => {
         e.preventDefault();
-        setScale(isPortrait ? 0.9 : 0.8);
+        adjustScale(); // Reset zoom to initial fit
     };
 
     const toggleUploadModal = () => {
@@ -269,7 +282,7 @@ const DocumentControl = () => {
         }
     };
 
-    const handleSetPdfFile = async (file, documentCode, versionCode, effectiveDate, section, subject) => {
+    const handleSetPdfFile = async (file, documentCode, versionCode, effectiveDate, category, subcategory) => {
         if (file) {
             const reader = new FileReader();
             reader.onload = async (e) => {
@@ -277,15 +290,25 @@ const DocumentControl = () => {
 
                 const fileId = Date.now();
 
+                // Check if a file with the same name already exists in the subcategory
+                const existingFileIndex = filesList[subcategory] ? filesList[subcategory].findIndex(f => f.name === file.name) : -1;
+
+                if (existingFileIndex !== -1) {
+                    setErrorMessage('File with the same name already exists in this subcategory.');
+                    return; // Prevent upload
+                } else {
+                    setErrorMessage(''); // Clear any previous error message
+                }
+
                 const newFile = {
                     id: fileId,
                     name: file.name,
                     effectiveDate: effectiveDate,
                     documentCode,
-                    versionCode,
+                    versionCode: versionCode, // Use version code from UploadModal
                     pdfData: fileData,
-                    section,
-                    subject
+                    category,
+                    subcategory
                 };
 
                 console.log('Adding new file:', newFile);
@@ -293,17 +316,17 @@ const DocumentControl = () => {
                 setFilesList(prevFilesList => {
                     const updatedFilesList = { ...prevFilesList };
 
-                    if (!updatedFilesList[subject]) {
-                        updatedFilesList[subject] = [];
+                    if (!updatedFilesList[subcategory]) {
+                        updatedFilesList[subcategory] = [];
                     }
 
-                    updatedFilesList[subject] = [...updatedFilesList[subject], newFile];
+                    updatedFilesList[subcategory] = [...updatedFilesList[subcategory], newFile];
 
                     return updatedFilesList;
                 });
 
-                setSelectedCategory(section);
-                setSelectedSubcategory(subject);
+                setSelectedCategory(category);
+                setSelectedSubcategory(subcategory);
                 setShowDocumentView(false);
             };
             reader.readAsArrayBuffer(file);
@@ -311,10 +334,29 @@ const DocumentControl = () => {
     };
 
     const handleAddFile = async (file) => {
-        if (file && pdfFile) {
+        if (file && selectedFile) { // Ensure selectedFile exists
+
+            // Check if a file with the same name already exists in the subcategory
+            const existingFileIndex = filesList[selectedSubcategory] ? filesList[selectedSubcategory].findIndex(f => f.name === file.name && !f.isPreviousVersion) : -1;
+
+            if (existingFileIndex !== -1) {
+                setErrorMessage('File with the same name already exists in this subcategory. Please rename the file.');
+                setShowAddFileModal(false); // Close the modal
+                return; // Prevent upload
+            } else {
+                setErrorMessage(''); // Clear any previous error message
+            }
+
             const reader = new FileReader();
             reader.onload = async (e) => {
                 const newPdfData = e.target.result;
+
+                // Function to generate a unique version code
+                const generateUniqueVersionCode = () => {
+                    return Date.now().toString(36); // Convert timestamp to base36 string
+                };
+
+                const newVersionCode = generateUniqueVersionCode();
 
                 const newUploadedPdfs = [...uploadedPdfs, newPdfData];
                 setUploadedPdfs(newUploadedPdfs);
@@ -324,54 +366,71 @@ const DocumentControl = () => {
                     setPdfFile(combined);
                 }
 
-                if (selectedFile) {
-                    const updatedFile = {
-                        ...selectedFile,
-                        pdfData: combined
-                    };
+                // Create a copy of the selectedFile for the previous version
+                const previousVersion = { ...selectedFile, isPreviousVersion: true };
 
-                    const startPage = pdfPageRanges.length > 0
-                        ? pdfPageRanges[pdfPageRanges.length - 1].end + 1
-                        : 1;
+                const updatedFile = {
+                    ...selectedFile,
+                    pdfData: combined,
+                    versionCode: newVersionCode // Update the version code
+                };
 
-                    const newRevision = {
-                        id: revisions.length + 1,
-                        subject: selectedSubcategory || 'New Document',
-                        revision: `Additional File: ${file.name}`,
-                        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-                        selected: true,
-                        startPage: startPage,
-                        fileName: file.name
-                    };
+                const startPage = pdfPageRanges.length > 0
+                    ? pdfPageRanges[pdfPageRanges.length - 1].end + 1
+                    : 1;
 
-                    setRevisions(
-                        revisions.map(rev => ({ ...rev, selected: false })).concat(newRevision)
-                    );
+                const newRevision = {
+                    id: Date.now(),
+                    subject: selectedSubcategory || 'New Document',
+                    revision: `Additional File: ${file.name} - Version ${newVersionCode}`, // Include version in revision
+                    date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                    selected: true,
+                    startPage: startPage,
+                    fileName: file.name,
+                    versionCode: selectedFile.versionCode // Store the previous version code
+                };
 
-                    setPdfPageRanges(prevRanges => {
-                        const updatedRanges = [...prevRanges];
-                        if (updatedRanges.length > 0) {
-                            updatedRanges[updatedRanges.length - 1].fileName = file.name;
-                        }
-                        return updatedRanges;
-                    });
+                setRevisions(
+                    revisions.map(rev => ({ ...rev, selected: false })).concat(newRevision)
+                );
 
-                    if (selectedSubcategory) {
-                        setFilesList(prevFilesList => {
-                            const updatedFilesList = { ...prevFilesList };
-
-                            if (updatedFilesList[selectedSubcategory]) {
-                                updatedFilesList[selectedSubcategory] = updatedFilesList[selectedSubcategory].map(f =>
-                                    f.id === selectedFile.id ? updatedFile : f
-                                );
-                            }
-
-                            return updatedFilesList;
-                        });
+                setPdfPageRanges(prevRanges => {
+                    const updatedRanges = [...prevRanges];
+                    if (updatedRanges.length > 0) {
+                        updatedRanges[updatedRanges.length - 1].fileName = file.name;
                     }
+                    return updatedRanges;
+                });
 
-                    setSelectedFile(updatedFile);
+                if (selectedSubcategory) {
+                    setFilesList(prevFilesList => {
+                        const updatedFilesList = { ...prevFilesList };
+
+                        if (updatedFilesList[selectedSubcategory]) {
+                            // Find the index of the selected file
+                            const selectedFileIndex = updatedFilesList[selectedSubcategory].findIndex(f => f.id === selectedFile.id);
+
+                            if (selectedFileIndex !== -1) {
+                                // Insert the previous version before the updated file
+                                updatedFilesList[selectedSubcategory].splice(selectedFileIndex, 0, previousVersion);
+
+                                // Update the selected file
+                                updatedFilesList[selectedSubcategory][selectedFileIndex + 1] = updatedFile;
+                            } else {
+                                // If the selected file is not found, just add the updated file
+                                updatedFilesList[selectedSubcategory] = [...updatedFilesList[selectedSubcategory], updatedFile];
+                            }
+                        }
+
+                        return updatedFilesList;
+                    });
                 }
+
+                setSelectedFile(updatedFile);
+                setDocumentInfo(prevInfo => ({
+                    ...prevInfo,
+                    revisionNumber: newVersionCode // Update the displayed version number
+                }));
             };
             reader.readAsArrayBuffer(file);
         }
@@ -402,34 +461,55 @@ const DocumentControl = () => {
         }
     };
 
-    const getSubcategories = () => {
+    const getCategories = () => {
         if (selectedManual === 'Quality Manual') {
             return ['User Guide', 'Context Organizational', 'Leadership',
                 'Planning', 'Support', 'Operation',
                 'Performance Evaluation', 'Improvement'];
+        } else if (selectedManual === 'Procedure Manual') {
+            return ['Audit', 'User\'s Guide', 'Context Organizational', 'Leadership', 'Planning', 'Support', 'Operation', 'Performance Evaluation', 'Improvement'];
         }
         return [];
     };
 
-    const getSubjects = () => {
+    const getSubcategories = () => {
         switch (selectedCategory) {
             case 'User Guide':
                 return ['Foreword', 'Table of Contents', 'Objectives of the Quality Manual',
                     'Background Info of NRCP', 'Authorization', 'Distribution', 'Coding System'];
             case 'Context Organizational':
-                return ['Overview', 'Organizational Context', 'Stakeholders', 'Scope'];
+                return ['Understanding the NRCP and its Context'];
             case 'Leadership':
-                return ['Leadership and Commitment', 'Policy', 'Organizational Roles, Responsibilities and Authorities'];
+                return ['Leadership and Commitment', 'Research/Technical Policy Review and Development'];
             case 'Planning':
-                return ['Planning', 'Quality Objectives', 'Risk and Opportunities', 'Quality Management System and Processes'];
+                return ['Risk Management Process', 'Strategic Planning', 'Operational Planning'];
             case 'Support':
-                return ['Support', 'Resources', 'Competence', 'Awareness', 'Communication', 'Documented Information'];
+                return ['Control of Maintained Documents', 'Property and Asset Management', 'Utilization of NRCP Vehicle', 'Procurement of Goods and Services', 'Budget Management', 'Procedure for Processing of Disbursement Voucher', 'Payment Process', 'Recruitment, Selection, and Placement', 'Learning and Development', 'Performance Management of Personnel', 'Records Management', 'Preventive Maintenance of ICT Infrastructure', 'Provision of IT Technical Support', 'Performance Monitoring and Evaluation', 'Procedure for Processing of Facilitation and Approval of Documents', 'Procedure for the Facilitation of the Core Management Team (CMT) Meeting'];
             case 'Operation':
-                return ['Operation', 'Operational Planning and Control', 'Design and Development of Products and Services'];
+                return ['Control of Nonconforming Output', 'Handling Client Complaints', 'Research Grants-In-Aid', 'Membership Application Processing', 'Processing of Requests under the NRCP Expert Engagement Program (NEEP)', 'NRCP Achievement Award', 'Library Service', 'Publication of NRCP Research Journal', 'Dissemination Of NRCP Publications', 'Research Information Translation and Promotion'];
             case 'Performance Evaluation':
-                return ['Performance Evaluation', 'Monitoring, Measurement, Analysis and Evaluation', 'Internal Audit', 'Management Review'];
+                return ['Client Satisfaction Measurement', 'Internal Audit', 'Management Review'];
             case 'Improvement':
-                return ['Improvement', 'Nonconformity and Corrective Action', 'Continual Improvement'];
+                return ['Corrective Action'];
+            //Procedure Manual
+            case 'Audit':
+                return ['Table of Contents', 'Objectives of the Procedures Manual', 'Authorization for the Implementation /Updating Responsibility Distribution of the Procedures Manual', 'Coding System for the Procedures Manual'];
+            case 'User\'s Guide':
+                return ['Table of Contents', 'Objectives of the Procedures Manual', 'Authorization for the Implementation /Updating Responsibility Distribution of the Procedures Manual', 'Coding System for the Procedures Manual'];
+            case 'Context Organizational':
+                return ['Understanding the NRCP and its Context'];
+            case 'Leadership':
+                return ['Leadership and Commitment', 'Research/Technical Policy Review and Development'];
+            case 'Planning':
+                return ['Risk Management Process', 'Strategic Planning', 'Operational Planning'];
+            case 'Support':
+                return ['Control of Maintained Documents', 'Property and Asset Management', 'Utilization of NRCP Vehicle', 'Procurement of Goods and Services', 'Budget Management', 'Procedure for Processing of Disbursement Voucher', 'Payment Process', 'Recruitment, Selection, and Placement', 'Learning and Development', 'Performance Management of Personnel', 'Records Management', 'Preventive Maintenance of ICT Infrastructure', 'Provision of IT Technical Support', 'Performance Monitoring and Evaluation', 'Procedure for Processing of Facilitation and Approval of Documents', 'Procedure for the Facilitation of the Core Management Team (CMT) Meeting'];
+            case 'Operation':
+                return ['Control of Nonconforming Output', 'Handling Client Complaints', 'Research Grants-In-Aid', 'Membership Application Processing', 'Processing of Requests under the NRCP Expert Engagement Program (NEEP)', 'NRCP Achievement Award', 'Library Service', 'Publication of NRCP Research Journal', 'Dissemination Of NRCP Publications', 'Research Information Translation and Promotion'];
+            case 'Performance Evaluation':
+                return ['Client Satisfaction Measurement', 'Internal Audit', 'Management Review'];
+            case 'Improvement':
+                return ['Corrective Action'];
             default:
                 return [];
         }
@@ -438,41 +518,29 @@ const DocumentControl = () => {
     const getSubcategoriesWithSubjects = () => {
         const mapping = {};
 
-        mapping['Quality Manual'] = {};
+        mapping['Quality Manual'] = {
+            "User Guide": ['Foreword', 'Table of Contents', 'Objectives of the Quality Manual',
+                'Background Info of NRCP', 'Authorization', 'Distribution', 'Coding System'],
+            "Context Organizational": ['Overview', 'Organizational Context', 'Stakeholders', 'Scope'],
+            "Leadership": ['Leadership and Commitment', 'Policy', 'Organizational Roles, Responsibilities and Authorities'],
+            "Planning": ['Planning', 'Quality Objectives', 'Risk and Opportunities', 'Quality Management System and Processes'],
+            "Support": ['Support', 'Resources', 'Competence', 'Awareness', 'Communication', 'Documented Information'],
+            "Operation": ['Operation', 'Operational Planning and Control', 'Design and Development of Products and Services'],
+            "Performance Evaluation": ['Performance Evaluation', 'Monitoring, Measurement, Analysis and Evaluation', 'Internal Audit', 'Management Review'],
+            "Improvement": ['Improvement', 'Nonconformity and Corrective Action', 'Continual Improvement']
+        };
 
-        mapping['User Guide'] = ['Foreword', 'Table of Contents', 'Objectives of the Quality Manual',
-            'Background Info of NRCP', 'Authorization', 'Distribution', 'Coding System'];
-
-        const otherCategories = ['Context Organizational', 'Leadership', 'Planning', 'Support',
-            'Operation', 'Performance Evaluation', 'Improvement'];
-
-        otherCategories.forEach(category => {
-            switch (category) {
-                case 'Context Organizational':
-                    mapping[category] = ['Overview', 'Organizational Context', 'Stakeholders', 'Scope'];
-                    break;
-                case 'Leadership':
-                    mapping[category] = ['Leadership and Commitment', 'Policy', 'Organizational Roles, Responsibilities and Authorities'];
-                    break;
-                case 'Planning':
-                    mapping[category] = ['Planning', 'Quality Objectives', 'Risk and Opportunities', 'Quality Management System and Processes'];
-                    break;
-                case 'Support':
-                    mapping[category] = ['Support', 'Resources', 'Competence', 'Awareness', 'Communication', 'Documented Information'];
-                    break;
-                case 'Operation':
-                    mapping[category] = ['Operation', 'Operational Planning and Control', 'Design and Development of Products and Services'];
-                    break;
-                case 'Performance Evaluation':
-                    mapping[category] = ['Performance Evaluation', 'Monitoring, Measurement, Analysis and Evaluation', 'Internal Audit', 'Management Review'];
-                    break;
-                case 'Improvement':
-                    mapping[category] = ['Improvement', 'Nonconformity and Corrective Action', 'Continual Improvement'];
-                    break;
-                default:
-                    mapping[category] = [];
-            }
-        });
+        mapping['Procedure Manual'] = {
+            "Audit": ['Table of Contents', 'Objectives of the Procedures Manual', 'Authorization for the Implementation /Updating Responsibility Distribution of the Procedures Manual', 'Coding System for the Procedures Manual'],
+            "User's Guide": ['Table of Contents', 'Objectives of the Procedures Manual', 'Authorization for the Implementation /Updating Responsibility Distribution of the Procedures Manual', 'Coding System for the Procedures Manual'],
+            "Context Organizational": ['Understanding the NRCP and its Context'],
+            "Leadership": ['Leadership and Commitment', 'Research/Technical Policy Review and Development'],
+            "Planning": ['Risk Management Process', 'Strategic Planning', 'Operational Planning'],
+            "Support": ['Control of Maintained Documents', 'Property and Asset Management', 'Utilization of NRCP Vehicle', 'Procurement of Goods and Services', 'Budget Management', 'Procedure for Processing of Disbursement Voucher', 'Payment Process', 'Recruitment, Selection, and Placement', 'Learning and Development', 'Performance Management of Personnel', 'Records Management', 'Preventive Maintenance of ICT Infrastructure', 'Provision of IT Technical Support', 'Performance Monitoring and Evaluation', 'Procedure for Processing of Facilitation and Approval of Documents', 'Procedure for the Facilitation of the Core Management Team (CMT) Meeting'],
+            "Operation": ['Control of Nonconforming Output', 'Handling Client Complaints', 'Research Grants-In-Aid', 'Membership Application Processing', 'Processing of Requests under the NRCP Expert Engagement Program (NEEP)', 'NRCP Achievement Award', 'Library Service', 'Publication of NRCP Research Journal', 'Dissemination Of NRCP Publications', 'Research Information Translation and Promotion'],
+            "Performance Evaluation": ['Client Satisfaction Measurement', 'Internal Audit', 'Management Review'],
+            "Improvement": ['Corrective Action']
+        };
 
         return mapping;
     };
@@ -518,6 +586,9 @@ const DocumentControl = () => {
 
     return (
         <div className="document-control-container">
+            {errorMessage && (
+                <div className="error-message">{errorMessage}</div>
+            )}
             {/* Manual Selection and Buttons */}
             <div className="manual-selection-container">
                 <div className="select-manual-wrapper">
@@ -528,6 +599,7 @@ const DocumentControl = () => {
                     >
                         <option value="">Select Manual</option>
                         <option value="Quality Manual">Quality Manual</option>
+                        <option value="Procedure Manual">Procedure Manual</option>
                     </select>
                 </div>
 
@@ -540,7 +612,7 @@ const DocumentControl = () => {
                         disabled={!selectedManual}
                     >
                         <option value="">Select Category</option>
-                        {getSubcategories().map((category, index) => (
+                        {getCategories().map((category, index) => (
                             <option key={index} value={category}>{category}</option>
                         ))}
                     </select>
@@ -555,7 +627,7 @@ const DocumentControl = () => {
                         disabled={!selectedCategory}
                     >
                         <option value="">Select Subcategory</option>
-                        {getSubjects().map((subcategory, index) => (
+                        {getSubcategories().map((subcategory, index) => (
                             <option key={index} value={subcategory}>{subcategory}</option>
                         ))}
                     </select>
@@ -604,7 +676,7 @@ const DocumentControl = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {(filesList[selectedSubcategory] || []).map(file => (
+                                {(filesList[selectedSubcategory] || []).filter(file => !file.isPreviousVersion).map(file => (
                                     <tr key={file.id}>
                                         <td>{file.name}</td>
                                         <td>{file.effectiveDate}</td>
@@ -621,7 +693,7 @@ const DocumentControl = () => {
                                         </td>
                                     </tr>
                                 ))}
-                                {(!filesList[selectedSubcategory] || filesList[selectedSubcategory].length === 0) && (
+                                {(!filesList[selectedSubcategory] || filesList[selectedSubcategory].filter(file => !file.isPreviousVersion).length === 0) && (
                                     <tr>
                                         <td colSpan="5" style={{ textAlign: 'center' }}>No files available. Upload a file to see it here.</td>
                                     </tr>
@@ -649,7 +721,7 @@ const DocumentControl = () => {
                         {/* PDF Viewer Container */}
                         <div className="pdf-container">
                             {/* PDF Viewer with updated styles */}
-                            <div className="pdf-viewer">
+                            <div className="pdf-viewer" ref={pdfViewerRef}>
                                 {pdfFile ? (
                                     <Document
                                         file={pdfFile}
@@ -665,7 +737,6 @@ const DocumentControl = () => {
                                                 scale={scale}
                                                 onLoadSuccess={onPageLoadSuccess}
                                                 className="pdf-page"
-                                                height={isPortrait ? window.innerHeight * 0.65 : null}
                                             />
                                         </div>
                                     </Document>
@@ -716,25 +787,23 @@ const DocumentControl = () => {
                         {/* Previous Versions Section */}
                         <div className="previous-versions-section">
                             <h3 className="section-title">Previous Versions:</h3>
-                            <div className="revisions-list">
-                                {revisions.length > 0 ? (
-                                    revisions.map(revision => (
+                            <div className="revisions-list" style={{ overflowY: 'auto', maxHeight: '200px' }}>
+                                {(filesList[selectedSubcategory] || [])
+                                    .filter(file => file.isPreviousVersion)
+                                    .sort((a, b) => new Date(b.effectiveDate) - new Date(a.effectiveDate)) // Sort by date descending
+                                    .map(file => (
                                         <div
-                                            key={revision.id}
-                                            className={`revision-item ${revision.selected ? 'selected' : ''}`}
-                                            onClick={() => handleRevisionSelect(revision.id)}
+                                            key={file.id}
+                                            className="revision-item"
                                         >
                                             <div className="revision-details">
-                                                <div className="revision-subject">{revision.subject}</div>
-                                                <div className="revision-text">{revision.revision}</div>
-                                                <div className="revision-date">{revision.date}</div>
-                                                <div className="revision-page-start">
-                                                    Page Start: {revision.startPage || 1}
-                                                </div>
+                                                <div className="revision-subject">{file.name}</div>
+                                                <div className="revision-text">Version: {file.versionCode}</div>
+                                                <div className="revision-date">{file.effectiveDate}</div>
                                             </div>
                                         </div>
-                                    ))
-                                ) : (
+                                    ))}
+                                {((filesList[selectedSubcategory] || []).filter(file => file.isPreviousVersion).length === 0) && (
                                     <div className="no-revisions">No previous versions available.</div>
                                 )}
                             </div>
@@ -775,7 +844,7 @@ const DocumentControl = () => {
             {showUploadModal && (
                 <UploadModal
                     onClose={toggleUploadModal}
-                    categories={['Quality Manual']}
+                    categories={['Quality Manual', 'Procedure Manual']}
                     subcategories={getSubcategoriesWithSubjects()}
                     setPdfFile={handleSetPdfFile}
                     onSaveDraft={handleSaveDraft}
@@ -788,7 +857,7 @@ const DocumentControl = () => {
                     onClose={toggleDraftModal}
                     drafts={drafts}
                     onSaveDraft={handleSaveDraft}
-                    categories={['Quality Manual']}
+                    categories={['Quality Manual', 'Procedure Manual']}
                     subcategories={getSubcategoriesWithSubjects()}
                     setPdfFile={handleSetPdfFile}
                 />
