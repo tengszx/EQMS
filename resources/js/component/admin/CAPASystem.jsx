@@ -1,37 +1,32 @@
-import React, { useState } from 'react';
-import { Search, Edit, Eye, Trash2, Plus, FileText } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Search, Edit, Eye, Trash2, Plus, FileText, ZoomIn, ZoomOut, RotateCw } from 'lucide-react';
 import '../../../css/styles/admin/CAPASystem.css';
 import NewCAPAModal from '../../modal/NewCAPAModal';
+
 const CAPASystem = () => {
     const [capaData, setCAPAData] = useState([
-        {
-            id: 'CAPA001',
-            title: 'Equipment Malfunction',
-            type: 'Corrective',
-            status: 'In Progress',
-            owner: 'John Doe',
-            date: '2025-04-15',
-            category: 'Equipment',
-            pdfFile: null
-        },
-        {
-            id: 'CAPA002',
-            title: 'Process Improvement',
-            type: 'Preventive',
-            status: 'Complete',
-            owner: 'Jane Smith',
-            date: '2025-04-10',
-            category: 'Process',
-            pdfFile: null
-        },
     ]);
     const [showNewModal, setShowNewModal] = useState(false);
     const [showViewModal, setShowViewModal] = useState(false);
-    const [showEditModal, setShowEditModal] = useState(false); // Fixed: Added missing '=' sign
+    const [showEditModal, setShowEditModal] = useState(false);
     const [selectedCAPA, setSelectedCAPA] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
     const [nextId, setNextId] = useState(3);
+    const [pdfZoom, setPdfZoom] = useState(100);
+    const [pdfRotation, setPdfRotation] = useState(0);
+    
+    const searchInputRef = useRef(null);
+
+    // Apply search when Enter key is pressed
+    const handleSearchKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            // The search is already applied reactively through state
+            // Just remove focus from input to indicate search was processed
+            searchInputRef.current.blur();
+        }
+    };
 
     const filteredData = capaData.filter(capa => {
         const matchesSearch = Object.values(capa).some(value =>
@@ -58,6 +53,9 @@ const CAPASystem = () => {
     const handleViewCAPA = (capa) => {
         setSelectedCAPA(capa);
         setShowViewModal(true);
+        // Reset zoom and rotation when opening PDF viewer
+        setPdfZoom(100);
+        setPdfRotation(0);
     };
 
     const handleEditCAPA = (capa) => {
@@ -69,6 +67,22 @@ const CAPASystem = () => {
         if (window.confirm('Are you sure you want to delete this CAPA?')) {
             setCAPAData(capaData.filter(capa => capa.id !== id));
         }
+    };
+
+    const increaseZoom = () => {
+        if (pdfZoom < 150) {
+            setPdfZoom(prevZoom => Math.min(prevZoom + 25, 150));
+        }
+    };
+
+    const decreaseZoom = () => {
+        if (pdfZoom > 50) {
+            setPdfZoom(prevZoom => Math.max(prevZoom - 25, 50));
+        }
+    };
+
+    const rotateDocument = () => {
+        setPdfRotation(prevRotation => (prevRotation + 90) % 360);
     };
 
     return (
@@ -83,10 +97,12 @@ const CAPASystem = () => {
                 <div className="search-container">
                     <Search size={20} className="search-icon" />
                     <input
+                        ref={searchInputRef}
                         type="text"
                         placeholder="Search..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
+                        onKeyPress={handleSearchKeyPress}
                         className="search-input"
                     />
                 </div>
@@ -194,15 +210,41 @@ const CAPASystem = () => {
                                     <span>{selectedCAPA.date}</span>
                                 </div>
                             </div>
-                            <div className="pdf-viewer">
-                                {selectedCAPA.pdfFile ? (
-                                    <iframe src={selectedCAPA.pdfFile} width="100%" height="400px" title="CAPA Document" />
-                                ) : (
-                                    <div className="pdf-placeholder">
-                                        <FileText size={48} />
-                                        <p>No PDF Document Uploaded</p>
-                                    </div>
-                                )}
+                            <div className="pdf-container">
+                                <div className="pdf-toolbar">
+                                    <button className="pdf-btn" onClick={decreaseZoom} disabled={pdfZoom <= 50}>
+                                        <ZoomOut size={16} /> Zoom Out
+                                    </button>
+                                    <span className="pdf-zoom-level">{pdfZoom}%</span>
+                                    <button className="pdf-btn" onClick={increaseZoom} disabled={pdfZoom >= 150}>
+                                        <ZoomIn size={16} /> Zoom In
+                                    </button>
+                                    <button className="pdf-btn" onClick={rotateDocument}>
+                                        <RotateCw size={16} /> Rotate
+                                    </button>
+                                </div>
+                                <div className="pdf-viewer">
+                                    {selectedCAPA.pdfFile ? (
+                                        <div 
+                                            className="pdf-document"
+                                            style={{
+                                                transform: `scale(${pdfZoom / 100}) rotate(${pdfRotation}deg)`,
+                                                transformOrigin: 'center center'
+                                            }}
+                                        >
+                                            <iframe 
+                                                src={selectedCAPA.pdfFile} 
+                                                title="CAPA Document" 
+                                                className="pdf-frame"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="pdf-placeholder">
+                                            <FileText size={48} />
+                                            <p>No PDF Document Uploaded</p>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
                         <div className="modal-footer">

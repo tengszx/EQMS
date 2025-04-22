@@ -66,6 +66,7 @@
 
 .form-group input,
 .form-group select {
+    margin-right: -5px;
     width: 100%;
     margin-right: 6px;
     padding: 8px;
@@ -233,7 +234,7 @@
     .capa-id-prefix,
     .pdf-uploader {
         padding: 6px;
-        margin-right: 6px;
+        margin-right: -6px;
         font-size: 12px;
     }
 
