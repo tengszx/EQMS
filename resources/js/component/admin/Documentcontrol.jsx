@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import '../../../css/styles/admin/DocumentControl.css';
 import UploadModal from '../../modal/UploadModal';
@@ -27,7 +27,7 @@ const DocumentControl = () => {
     const [drafts, setDrafts] = useState([]);
     const [filesList, setFilesList] = useState({});
     const [errorMessage, setErrorMessage] = useState('');
-    
+
     // PDF viewer specific states
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
@@ -35,17 +35,18 @@ const DocumentControl = () => {
     const [allPDFs, setAllPDFs] = useState([]);
     const [pdfCollection, setPdfCollection] = useState([]);
 
+    const [containerHeight, setContainerHeight] = useState('500px'); // Initial height
+
+    const pdfContainerRef = useRef(null); // Ref for the container
+
     useEffect(() => {
         if (selectedFile && selectedFile.pdfData) {
-            // When a file is selected, update the PDF collection if needed
             const blob = new Blob([selectedFile.pdfData], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
             setPdfFileUrl(url);
-            
-            // Check if this PDF is already in the collection
+
             const existingIndex = pdfCollection.findIndex(pdf => pdf.id === selectedFile.id);
             if (existingIndex === -1) {
-                // Add to collection only if it's not already there
                 setPdfCollection(prev => [...prev, {
                     id: selectedFile.id,
                     url: url,
@@ -53,7 +54,6 @@ const DocumentControl = () => {
                     version: selectedFile.versionCode
                 }]);
             } else {
-                // Update the existing entry if needed
                 const updatedCollection = [...pdfCollection];
                 updatedCollection[existingIndex] = {
                     ...updatedCollection[existingIndex],
@@ -63,11 +63,20 @@ const DocumentControl = () => {
                 };
                 setPdfCollection(updatedCollection);
             }
-            
-            // Set to first page when selecting a new file
+
             setPageNumber(1);
         }
     }, [selectedFile]);
+
+    // Update container height based on scale
+    useEffect(() => {
+        if (pdfContainerRef.current) {
+            // Calculate the base height of the PDF
+            const baseHeight = 500; // Adjust this based on your initial PDF size
+            const newHeight = baseHeight * scale;
+            setContainerHeight(`${newHeight}px`);
+        }
+    }, [scale]);
 
     const handleManualChange = (e) => {
         setSelectedManual(e.target.value);
@@ -75,7 +84,6 @@ const DocumentControl = () => {
         setSelectedSubcategory('');
         setShowDocumentView(false);
         setErrorMessage('');
-        // Clear the PDF collection when changing manual
         setPdfCollection([]);
     };
 
@@ -84,7 +92,6 @@ const DocumentControl = () => {
         setSelectedSubcategory('');
         setShowDocumentView(false);
         setErrorMessage('');
-        // Clear the PDF collection when changing category
         setPdfCollection([]);
     };
 
@@ -92,7 +99,6 @@ const DocumentControl = () => {
         setSelectedSubcategory(e.target.value);
         setShowDocumentView(false);
         setErrorMessage('');
-        // Clear the PDF collection when changing subcategory
         setPdfCollection([]);
     };
 
@@ -126,7 +132,6 @@ const DocumentControl = () => {
         setPdfFileUrl(null);
         setDocumentInfo({ documentCode: '', revisionNumber: '', effectiveDate: '' });
         setErrorMessage('');
-        // Don't clear PDF collection when going back to list
     };
 
     const handleSetPdfFile = (file, documentCode, versionCode, effectiveDate, category, subcategory) => {
@@ -169,7 +174,6 @@ const DocumentControl = () => {
                     [subcategory]: [...(prevFilesList[subcategory] || []), newFile]
                 }));
 
-                // Add to PDF collection
                 const blob = new Blob([fileData], { type: 'application/pdf' });
                 const url = URL.createObjectURL(blob);
                 setPdfCollection(prev => [...prev, {
@@ -243,7 +247,6 @@ const DocumentControl = () => {
 
                 setSelectedFile(updatedFile);
 
-                // Add new revision to PDF collection
                 const blob = new Blob([newPdfData], { type: 'application/pdf' });
                 const url = URL.createObjectURL(blob);
                 setPdfCollection(prev => [...prev, {
@@ -321,7 +324,7 @@ const DocumentControl = () => {
     };
 
     const goToNextPage = () => {
-        if (pdfCollection.length > pageNumber) {
+        if (pageNumber < numPages) {
             setPageNumber(pageNumber + 1);
         }
     };
@@ -446,7 +449,7 @@ const DocumentControl = () => {
                         onClick={toggleUploadModal}
                         title="Upload a new document"
                     >
-                        Upload New
+                        Upload File
                     </button>
                     <button
                         className="draft-button secondary-button"
@@ -519,52 +522,51 @@ const DocumentControl = () => {
                                 <span className="header-value">{selectedSubcategory}</span>
                             </div>
                         </div>
-                        <div className="pdf-viewer-container">
-                            <div className="pdf-controls">
-                                <button onClick={zoomOut} className="zoom-button" title="Zoom Out">
-                                    <FaSearchMinus />
-                                </button>
-                                <span className="zoom-level">{Math.round(scale * 100)}%</span>
-                                <button onClick={zoomIn} className="zoom-button" title="Zoom In">
-                                    <FaSearchPlus />
-                                </button>
-                                
-                                <div className="pdf-navigation">
-                                    <button onClick={goToPreviousPage} disabled={pageNumber <= 1} className="page-nav-button">
-                                        <FaAngleLeft />
+                        <div className="pdf-viewer-container" style={{ height: containerHeight }} ref={pdfContainerRef}>
+
+                            <div className="pdf-viewer-header">
+                                <div className="zoom-controls">
+                                    <button onClick={zoomOut} className="zoom-button" title="Zoom Out">
+                                        <FaSearchMinus />
                                     </button>
-                                    <span className="page-info">
-                                        {pageNumber} / {Math.max(1, pdfCollection.length)}
-                                    </span>
-                                    <button onClick={goToNextPage} disabled={pageNumber >= pdfCollection.length} className="page-nav-button">
-                                        <FaAngleRight />
+                                    <span className="zoom-level">{Math.round(scale * 100)}%</span>
+                                    <button onClick={zoomIn} className="zoom-button" title="Zoom In">
+                                        <FaSearchPlus />
                                     </button>
                                 </div>
                             </div>
-                            
-                            <div className="current-pdf-info">
-                                <span className="pdf-filename">File: {getCurrentPdfName()}</span>
-                                <span className="pdf-version">Version: {getCurrentPdfVersion()}</span>
-                            </div>
-                            
+
                             <div className="pdf-document-container" style={{ transform: `scale(${scale})`, transformOrigin: 'top center' }}>
                                 <Document
                                     file={getCurrentPdfUrl()}
                                     onLoadSuccess={onDocumentLoadSuccess}
                                     onLoadError={(error) => console.error("Error loading PDF:", error)}
                                 >
-                                    <Page 
-                                        pageNumber={1} 
+                                    <Page
+                                        pageNumber={pageNumber}
                                         renderTextLayer={false}
                                         renderAnnotationLayer={false}
                                         className="pdf-page"
                                     />
                                 </Document>
                             </div>
-                            
-                            <div className="pdf-pagination">
-                                Page {pageNumber} of {Math.max(1, pdfCollection.length)}
+
+                            <div className="pdf-viewer-footer">
+                                <button onClick={goToPreviousPage} disabled={pageNumber <= 1} className="page-nav-button" title="Previous Page">
+                                    <FaAngleLeft />
+                                </button>
+                                <span className="page-info">
+                                    &lt;   Page {pageNumber} of {numPages || 1}   &gt;
+                                </span>
+                                <button onClick={goToNextPage} disabled={pageNumber >= numPages} className="page-nav-button" title="Next Page">
+                                    <FaAngleRight />
+                                </button>
                             </div>
+
+                            <div className="current-pdf-info">
+                                <span>File: {getCurrentPdfName()} | Version: {getCurrentPdfVersion()}</span>
+                            </div>
+
                         </div>
                         <div className="document-side-panel">
                             <div className="document-info-section">

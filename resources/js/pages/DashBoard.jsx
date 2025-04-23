@@ -1,4 +1,3 @@
-// Dashboard.jsx
 import React, { useState, useEffect } from 'react'; // Import useEffect
 import { createRoot } from 'react-dom/client';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
@@ -7,15 +6,18 @@ import AdminSidebar from '../component/admin/AdminSidebar';
 import Headerboard from '../component/admin/Headerboard';
 import DocumentControl from '../component/admin/DocumentControl';
 import AuditSystem from '../component/admin/AuditSystem';
-import CAPASystem from '../component/admin/CAPASystem'; // New import added
+import CAPASystem from '../component/admin/CAPASystem';
+import UserManagement from '../component/admin/UserManagement';
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState("Dashboard");
   const [isCAPAActive, setIsCAPAActive] = useState(false); // State to track CAPA menu
+  const [isUserManagementActive, setIsUserManagementActive] = useState(false); // State to track UserManagement menu
 
   useEffect(() => {
     setIsCAPAActive(activeMenu === "CAPA"); // Update state when activeMenu changes
+    setIsUserManagementActive(activeMenu === "User Management"); // Update state for User Management
   }, [activeMenu]);
 
   const handleSidebarMouseEnter = () => {
@@ -41,6 +43,8 @@ const Dashboard = () => {
         return <AuditSystem />;
       case "CAPA": // Added case for CAPA System
         return <CAPASystem />;
+      case "User Management": // Added case for User Management
+        return <UserManagement />;
       default:
         return null; // Or some default content
     }
@@ -66,6 +70,10 @@ const Dashboard = () => {
       {/* Conditionally render the CAPA CSS */}
       {isCAPAActive && (
         <link rel="stylesheet" type="text/css" href="../../../css/styles/admin/CAPASystem.css" />
+      )}
+      {/* Conditionally render the UserManagement CSS */}
+      {isUserManagementActive && (
+        <link rel="stylesheet" type="text/css" href="../../../css/styles/admin/UserManagement.css" />
       )}
     </div>
   );
