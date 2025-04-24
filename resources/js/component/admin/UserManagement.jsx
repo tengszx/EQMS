@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import AddNewUserModal from '../../modal/AddNewUserModal';
-import '../../../css/styles/admin/UserMAnagement.css';
 import { Search, Eye, Edit, Trash2 } from 'lucide-react';
 
 const UserManagement = () => {
-  const [users, setUsers] = useState([
-  ]);
-
+  const [users, setUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
   const [showViewModal, setShowViewModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const [editingUser, setEditingUser] = useState({
     firstName: '',
     middleName: '',
@@ -23,8 +21,12 @@ const UserManagement = () => {
     status: 'Active'
   });
 
+  // Items per page set to 15
+  const itemsPerPage = 15;
+
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
+    setCurrentPage(1); // Reset to first page on search
   };
 
   const filteredUsers = users.filter(user => {
@@ -33,6 +35,13 @@ const UserManagement = () => {
            user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
            user.position.toLowerCase().includes(searchQuery.toLowerCase());
   });
+
+  // Calculate pagination
+  const totalUsers = filteredUsers.length;
+  const totalPages = Math.ceil(totalUsers / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, totalUsers);
+  const currentUsers = filteredUsers.slice(startIndex, endIndex);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -89,6 +98,18 @@ const UserManagement = () => {
     });
   };
 
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
   return (
     <div className="user-management-container">
       <div className="user-management-header">
@@ -126,15 +147,11 @@ const UserManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.map(user => (
+            {currentUsers.map(user => (
               <tr key={user.id}>
                 <td>{user.firstName} {user.middleName} {user.lastName}</td>
                 <td>{user.position}</td>
                 <td>{user.email}</td>
-                <td>{user.section}</td>
-                <td>
-                  {user.division && <span className={`division-badge ${user.division}`}>{user.division}</span>}
-                </td>
                 <td>
                   <span className={`status-badge ${user.status.toLowerCase()}`}>
                     {user.status}
@@ -159,10 +176,22 @@ const UserManagement = () => {
         </table>
 
         <div className="pagination">
-          <span>Showing 1-8 of 41 users</span>
+          <span>Showing {startIndex + 1}-{endIndex} of {totalUsers} users</span>
           <div className="pagination-controls">
-            <button disabled className="prev-btn">Previous</button>
-            <button className="next-btn">Next</button>
+            <button 
+              disabled={currentPage === 1} 
+              className="prev-btn" 
+              onClick={handlePrevPage}
+            >
+              Previous
+            </button>
+            <button 
+              disabled={currentPage === totalPages} 
+              className="next-btn" 
+              onClick={handleNextPage}
+            >
+              Next
+            </button>
           </div>
         </div>
       </div>
@@ -203,7 +232,7 @@ const UserManagement = () => {
                   </div>
                   <div className="info-item">
                     <span className="info-label">Division:</span>
-                    <span className="info-value">{selectedUser.division}</span>
+                    <span className="info-value">{selectedUser.division || 'N/A'}</span>
                   </div>
                   <div className="info-item">
                     <span className="info-label">Section:</span>

@@ -79,7 +79,7 @@
   
   .add-user-form-group input,
   .add-user-form-group select {
-    width: 100%;
+    width: 90%;
     padding: 8px 10px;
     border: 1px solid #ddd;
     border-radius: 4px;

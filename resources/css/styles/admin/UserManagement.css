@@ -1,417 +1,427 @@
+/* User Management Layout */
 .user-management-container {
-    background-color: #f7f7f7;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    font-family: Arial, sans-serif;
-  }
-  
-  .user-management-header {
-    margin-bottom: 20px;
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 10px;
-  }
-  
-  .user-management-header h1 {
-    font-size: 24px;
-    color: #333;
-    margin: 0;
-  }
-  
-  .user-management-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .search-container {
-    position: relative;
-    width: 50%;
-  }
-  
-  .search-input {
-    width: 100%;
-    padding: 10px 10px 10px 35px;
-    border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    outline: none; /* Remove focus outline */
-  }
-  
-  .search-icon {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #777;
-  }
-  
-  .add-user-btn {
-    background-color: #0a3b6c;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 15px;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  
-  .add-user-btn:hover {
-    background-color: #072a4e;
-  }
-  
-  .user-table-container {
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
-  
-  .user-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .user-table th,
-  .user-table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .user-table th {
-    background-color: #f8f9fa;
-    color: #555;
-    font-weight: 600;
-    font-size: 14px;
-  }
-  
-  .user-table td {
-    font-size: 14px;
-    color: #333;
-  }
-  
-  .division-badge {
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 500;
-    text-transform: uppercase;
-  }
-  
-  .division-badge.OP {
-    background-color: #e8f4ff;
-    color: #0a66c2;
-  }
-  
-  .division-badge.FAD {
-    background-color: #ffefec;
-    color: #e86a45;
-  }
-  
-  .division-badge.OED {
-    background-color: #edf7ed;
-    color: #34a853;
-  }
-  
-  .division-badge.ROMD {
-    background-color: #f3e8ff;
-    color: #8e44ad;
-  }
-  
-  .status-badge {
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 500;
-  }
-  
-  .status-badge.active {
-    background-color: #e8f5e9;
-    color: #2e7d32;
-  }
-  
-  .status-badge.inactive {
-    background-color: #eceff1;
-    color: #546e7a;
-  }
-  
-  .status-badge.suspended {
-    background-color: #ffebee;
-    color: #c62828;
-  }
-  
-  .action-buttons {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .action-buttons button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-    border-radius: 4px;
-    transition: background-color 0.2s;
-  }
-  
-  .view-btn {
-    color: #4c94ff;
-  }
-  
-  .edit-btn {
-    color: #45b87e;
-  }
-  
-  .delete-btn {
-    color: #ff5252;
-  }
-  
-  .action-buttons button:hover {
-    background-color: #f2f2f2;
-  }
-  
-  .pagination {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    background-color: #fafafa;
-    border-top: 1px solid #eee;
-    font-size: 14px;
-    color: #555;
-  }
-  
-  .pagination-controls {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .pagination button {
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 6px 12px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    color: black; /* Set text color to black */
-  }
-  
-  .pagination button:disabled {
-    background-color: #f2f2f2;
-    color: #aaa;
-    cursor: not-allowed;
-  }
-  
-  .pagination button:not(:disabled):hover {
-    background-color: #f0f0f0;
-  }
-  
-  .next-btn {
-    background-color: #0a3b6c;
-    color: white;
-    border: none;
-  }
-  
-  .next-btn:not(:disabled):hover {
-    background-color: #072a4e;
-    color: white;
-  }
-  
-  /* Modal Styles */
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  .modal-container {
-    background-color: white;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 650px;
-    max-height: 85vh;
-    overflow-y: auto;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
-  
-  .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .modal-header h2 {
-    margin: 0;
-    font-size: 20px;
-    color: #333;
-  }
-  
-  .close-btn {
-    background: transparent;
-    border: none;
-    font-size: 24px;
-    color: #777;
-    cursor: pointer;
-  }
-  
-  .modal-content {
-    padding: 20px;
-  }
-  
-  .modal-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    padding: 15px 20px;
-    border-top: 1px solid #eee;
-  }
-  
-  .cancel-btn, .save-btn, .delete-confirm-btn {
-    padding: 8px 16px;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .cancel-btn {
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    color: #555;
-  }
-  
-  .cancel-btn:hover {
-    background-color: #eaeaea;
-  }
-  
-  .save-btn {
-    background-color: #0a3b6c;
-    border: none;
-    color: white;
-  }
-  
-  .save-btn:hover {
-    background-color: #072a4e;
-  }
-  
-  .delete-confirm-btn {
-    background-color: #ff5252;
-    border: none;
-    color: white;
-  }
-  
-  .delete-confirm-btn:hover {
-    background-color: #d32f2f;
-  }
-  
-  /* View Modal styles */
-  .user-info-section {
-    margin-bottom: 20px;
-  }
-  
-  .user-info-section h3 {
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .info-group {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
-  }
-  
-  .info-item {
-    margin-bottom: 5px;
-  }
-  
-  .info-label {
-    display: block;
-    font-size: 12px;
-    color: #777;
-    margin-bottom: 3px;
-  }
-  
-  .info-value {
-    font-size: 14px;
-    color: #333;
-  }
-  
-  /* Edit Modal styles */
-  .form-section {
-    margin-bottom: 20px;
-  }
-  
-  .form-section h3 {
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .form-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
-    margin-bottom: 15px;
-  }
-  
-  .form-group {
-    margin-bottom: 10px;
-  }
-  
-  .form-group label {
-    display: block;
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 5px;
-  }
-  
-  .form-group input,
-  .form-group select {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-  }
-  
-  .form-group select {
-    background-color: white;
-  }
-  
-  /* Delete Modal styles */
-  .delete-modal {
-    max-width: 450px;
-  }
-  
-  .delete-modal .modal-content p {
-    margin: 10px 0;
-    font-size: 14px;
-    color: #333;
-  }
-  
-  .delete-modal .modal-content strong {
-    color: #d32f2f;
-  }
+  background-color: #f7f7f7;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  font-family: Arial, sans-serif;
+}
+
+.user-management-header {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 10px;
+}
+
+.user-management-header h1 {
+  font-size: 24px;
+  color: #333;
+  margin: 0;
+}
+
+/* Search and Controls */
+.user-management-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-container {
+  position: relative;
+  width: 50%;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 10px 10px 35px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #777;
+}
+
+.add-user-btn {
+  background-color: #0a3b6c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.add-user-btn:hover {
+  background-color: #072a4e;
+}
+
+/* Table Styles */
+.user-table-container {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.user-table th,
+.user-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.user-table th {
+  background-color: #f8f9fa;
+  color: #555;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.user-table td {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Badges and Status Indicators */
+.division-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.division-badge.OP {
+  background-color: #e8f4ff;
+  color: #0a66c2;
+}
+
+.division-badge.FAD {
+  background-color: #ffefec;
+  color: #e86a45;
+}
+
+.division-badge.OED {
+  background-color: #edf7ed;
+  color: #34a853;
+}
+
+.division-badge.ROMD {
+  background-color: #f3e8ff;
+  color: #8e44ad;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-badge.active {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-badge.inactive {
+  background-color: #eceff1;
+  color: #546e7a;
+}
+
+.status-badge.suspended {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.action-buttons button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.view-btn {
+  color: #4c94ff;
+}
+
+.edit-btn {
+  color: #45b87e;
+}
+
+.delete-btn {
+  color: #ff5252;
+}
+
+.action-buttons button:hover {
+  background-color: #f2f2f2;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: #fafafa;
+  border-top: 1px solid #eee;
+  font-size: 14px;
+  color: #555;
+}
+
+.pagination-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.pagination button {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  color: black;
+}
+
+.pagination button:disabled {
+  background-color: #f2f2f2;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.pagination button:not(:disabled):hover {
+  background-color: #f0f0f0;
+}
+
+.prev-btn {
+  border: 1px solid #ddd;
+}
+
+.next-btn {
+  background-color: #0a3b6c !important;
+  color: white !important;
+  border: none !important;
+}
+
+.next-btn:not(:disabled):hover {
+  background-color: #072a4e !important;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-container {
+  background-color: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 650px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #333;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: #777;
+  cursor: pointer;
+}
+
+.modal-content {
+  padding: 20px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 15px 20px;
+  border-top: 1px solid #eee;
+}
+
+/* Modal Button Styles */
+.cancel-btn, .save-btn, .delete-confirm-btn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cancel-btn {
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  color: #555;
+}
+
+.cancel-btn:hover {
+  background-color: #eaeaea;
+}
+
+.save-btn {
+  background-color: #0a3b6c;
+  border: none;
+  color: white;
+}
+
+.save-btn:hover {
+  background-color: #072a4e;
+}
+
+.delete-confirm-btn {
+  background-color: #ff5252;
+  border: none;
+  color: white;
+}
+
+.delete-confirm-btn:hover {
+  background-color: #d32f2f;
+}
+
+/* View Modal Styles */
+.user-info-section {
+  margin-bottom: 20px;
+}
+
+.user-info-section h3 {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #eee;
+}
+
+.info-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.info-item {
+  margin-bottom: 5px;
+}
+
+.info-label {
+  display: block;
+  font-size: 12px;
+  color: #777;
+  margin-bottom: 3px;
+}
+
+.info-value {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Edit Modal Styles */
+.form-section {
+  margin-bottom: 20px;
+}
+
+.form-section h3 {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #eee;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+  width: 90%;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-group select {
+  background-color: white;
+}
+
+/* Delete Modal Styles */
+.delete-modal {
+  max-width: 450px;
+}
+
+.delete-modal .modal-content p {
+  margin: 10px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.delete-modal .modal-content strong {
+  color: #d32f2f;
+}

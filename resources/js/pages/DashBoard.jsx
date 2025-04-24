@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; // Import useEffect
+import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 import '../../css/styles/dash/Dashboard.css';
@@ -8,16 +8,17 @@ import DocumentControl from '../component/admin/DocumentControl';
 import AuditSystem from '../component/admin/AuditSystem';
 import CAPASystem from '../component/admin/CAPASystem';
 import UserManagement from '../component/admin/UserManagement';
+import ChartDashboard from '../component/admin/ChartDashboard';
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState("Dashboard");
-  const [isCAPAActive, setIsCAPAActive] = useState(false); // State to track CAPA menu
-  const [isUserManagementActive, setIsUserManagementActive] = useState(false); // State to track UserManagement menu
+  const [isCAPAActive, setIsCAPAActive] = useState(false);
+  const [isUserManagementActive, setIsUserManagementActive] = useState(false);
 
   useEffect(() => {
-    setIsCAPAActive(activeMenu === "CAPA"); // Update state when activeMenu changes
-    setIsUserManagementActive(activeMenu === "User Management"); // Update state for User Management
+    setIsCAPAActive(activeMenu === "CAPA");
+    setIsUserManagementActive(activeMenu === "User Management");
   }, [activeMenu]);
 
   const handleSidebarMouseEnter = () => {
@@ -36,17 +37,17 @@ const Dashboard = () => {
   const renderContent = () => {
     switch (activeMenu) {
       case "Dashboard":
-        return <div>Dashboard Content</div>; // Placeholder for dashboard content
+        return <ChartDashboard />; // Now rendering ChartDashboard here
       case "Document Control":
         return <DocumentControl />;
-      case "Audits & Inspection": // Added case for Audit System
+      case "Audits & Inspection":
         return <AuditSystem />;
-      case "CAPA": // Added case for CAPA System
+      case "CAPA":
         return <CAPASystem />;
-      case "User Management": // Added case for User Management
+      case "User Management":
         return <UserManagement />;
       default:
-        return null; // Or some default content
+        return null;
     }
   };
 
@@ -74,6 +75,10 @@ const Dashboard = () => {
       {/* Conditionally render the UserManagement CSS */}
       {isUserManagementActive && (
         <link rel="stylesheet" type="text/css" href="../../../css/styles/admin/UserManagement.css" />
+      )}
+      {/* Add CSS for ChartDashboard when Dashboard is active */}
+      {activeMenu === "Dashboard" && (
+        <link rel="stylesheet" type="text/css" href="../../../css/styles/admin/ChartDashboard.css" />
       )}
     </div>
   );
