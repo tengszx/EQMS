@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AddNewUserModal from '../../modal/AddNewUserModal';
 import { Search, Eye, Edit, Trash2 } from 'lucide-react';
+import '../../../css/styles/admin/Usermanagement.css';
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);

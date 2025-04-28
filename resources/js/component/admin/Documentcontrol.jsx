@@ -32,8 +32,8 @@ const DocumentControl = () => {
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
     const [scale, setScale] = useState(1.0);
-    const [allPDFs, setAllPDFs] = useState([]);
-    const [pdfCollection, setPdfCollection] = useState([]);
+    // We'll use a single array to track PDFs
+    const [pdfDocuments, setPdfDocuments] = useState([]);
 
     const [containerHeight, setContainerHeight] = useState('500px'); // Initial height
 
@@ -44,26 +44,8 @@ const DocumentControl = () => {
             const blob = new Blob([selectedFile.pdfData], { type: 'application/pdf' });
             const url = URL.createObjectURL(blob);
             setPdfFileUrl(url);
-
-            const existingIndex = pdfCollection.findIndex(pdf => pdf.id === selectedFile.id);
-            if (existingIndex === -1) {
-                setPdfCollection(prev => [...prev, {
-                    id: selectedFile.id,
-                    url: url,
-                    name: selectedFile.name,
-                    version: selectedFile.versionCode
-                }]);
-            } else {
-                const updatedCollection = [...pdfCollection];
-                updatedCollection[existingIndex] = {
-                    ...updatedCollection[existingIndex],
-                    url: url,
-                    name: selectedFile.name,
-                    version: selectedFile.versionCode
-                };
-                setPdfCollection(updatedCollection);
-            }
-
+            
+            // Reset to page 1 when selecting a new file
             setPageNumber(1);
         }
     }, [selectedFile]);
@@ -84,7 +66,7 @@ const DocumentControl = () => {
         setSelectedSubcategory('');
         setShowDocumentView(false);
         setErrorMessage('');
-        setPdfCollection([]);
+        setPdfDocuments([]);
     };
 
     const handleCategoryChange = (e) => {
@@ -92,14 +74,14 @@ const DocumentControl = () => {
         setSelectedSubcategory('');
         setShowDocumentView(false);
         setErrorMessage('');
-        setPdfCollection([]);
+        setPdfDocuments([]);
     };
 
     const handleSubcategoryChange = (e) => {
         setSelectedSubcategory(e.target.value);
         setShowDocumentView(false);
         setErrorMessage('');
-        setPdfCollection([]);
+        setPdfDocuments([]);
     };
 
     const handleFileClick = (file) => {
@@ -118,6 +100,17 @@ const DocumentControl = () => {
             const url = URL.createObjectURL(blob);
             setPdfFileUrl(url);
             setShowDocumentView(true);
+            
+            // Reset documents array with just this file
+            setPdfDocuments([{
+                id: file.id,
+                url: url,
+                name: file.name,
+                version: file.versionCode
+            }]);
+            
+            // Reset to page 1
+            setPageNumber(1);
         } else {
             console.warn("Selected file has no PDF data.");
             setPdfFileUrl(null);
@@ -132,6 +125,7 @@ const DocumentControl = () => {
         setPdfFileUrl(null);
         setDocumentInfo({ documentCode: '', revisionNumber: '', effectiveDate: '' });
         setErrorMessage('');
+        setPdfDocuments([]);
     };
 
     const handleSetPdfFile = (file, documentCode, versionCode, effectiveDate, category, subcategory) => {
@@ -173,15 +167,6 @@ const DocumentControl = () => {
                     ...prevFilesList,
                     [subcategory]: [...(prevFilesList[subcategory] || []), newFile]
                 }));
-
-                const blob = new Blob([fileData], { type: 'application/pdf' });
-                const url = URL.createObjectURL(blob);
-                setPdfCollection(prev => [...prev, {
-                    id: fileId,
-                    url: url,
-                    name: file.name,
-                    version: versionCode || '1.0'
-                }]);
 
                 setSelectedManual(manual => manual || category);
                 setSelectedCategory(category);
@@ -249,12 +234,23 @@ const DocumentControl = () => {
 
                 const blob = new Blob([newPdfData], { type: 'application/pdf' });
                 const url = URL.createObjectURL(blob);
-                setPdfCollection(prev => [...prev, {
-                    id: updatedFile.id,
-                    url: url,
-                    name: newRevisionFile.name,
-                    version: manualVersionCode
-                }]);
+                
+                // Add the new revision to our PDF documents array
+                setPdfDocuments(prevDocs => {
+                    // Create a new array with both documents
+                    const newDocsArray = [
+                        // Keep the original file
+                        ...prevDocs,
+                        // Add the new revision
+                        {
+                            id: updatedFile.id,
+                            url: url,
+                            name: newRevisionFile.name,
+                            version: manualVersionCode
+                        }
+                    ];
+                    return newDocsArray;
+                });
 
                 setPdfFileUrl(url);
 
@@ -265,6 +261,12 @@ const DocumentControl = () => {
                 });
 
                 console.log(`Revision ${manualVersionCode} (${updatedFile.name}) added successfully.`);
+                
+                // Update numPages after adding a document
+                setNumPages(prevNumPages => {
+                    const newNumPages = prevNumPages ? prevNumPages + 1 : 2;
+                    return newNumPages;
+                });
 
             } catch (error) {
                 console.error("Error processing added revision file:", error);
@@ -284,7 +286,8 @@ const DocumentControl = () => {
             const existingIndex = prevDrafts.findIndex(d => d.id === draftData.id);
             if (existingIndex > -1) {
                 const updatedDrafts = [...prevDrafts];
-                updatedDrafts[existingIndex] = draftData; return updatedDrafts;
+                updatedDrafts[existingIndex] = draftData; 
+                return updatedDrafts;
             } else {
                 const newDraft = { ...draftData, id: draftData.id || `draft_${Date.now()}` };
                 return [...prevDrafts, newDraft];
@@ -305,8 +308,14 @@ const DocumentControl = () => {
     };
 
     // PDF Viewer functions
-    const onDocumentLoadSuccess = ({ numPages }) => {
-        setNumPages(numPages);
+    const onDocumentLoadSuccess = ({ numPages: loadedNumPages }) => {
+        // Only set numPages if we don't already have multiple documents
+        if (pdfDocuments.length <= 1) {
+            setNumPages(loadedNumPages);
+        } else {
+            // For multiple documents, numPages is the number of documents
+            setNumPages(pdfDocuments.length);
+        }
     };
 
     const zoomIn = () => {
@@ -319,35 +328,58 @@ const DocumentControl = () => {
 
     const goToPreviousPage = () => {
         if (pageNumber > 1) {
-            setPageNumber(pageNumber - 1);
+            setPageNumber(prevPage => prevPage - 1);
         }
     };
 
     const goToNextPage = () => {
         if (pageNumber < numPages) {
-            setPageNumber(pageNumber + 1);
+            setPageNumber(prevPage => prevPage + 1);
         }
     };
 
+    // Get the appropriate PDF URL based on page number
     const getCurrentPdfUrl = () => {
-        if (pdfCollection.length === 0 || pageNumber > pdfCollection.length) {
+        if (pdfDocuments.length === 0) {
             return pdfFileUrl;
         }
-        return pdfCollection[pageNumber - 1]?.url || pdfFileUrl;
+        
+        // If we have only one document or the page number is 1, return the first document
+        if (pdfDocuments.length === 1 || pageNumber === 1) {
+            return pdfDocuments[0].url;
+        }
+        
+        // If we have multiple documents, return the document corresponding to the page
+        // We subtract 1 because pages are 1-indexed but arrays are 0-indexed
+        const docIndex = Math.min(pageNumber - 1, pdfDocuments.length - 1);
+        return pdfDocuments[docIndex].url;
     };
 
+    // Similar functions for getting the name and version based on page number
     const getCurrentPdfName = () => {
-        if (pdfCollection.length === 0 || pageNumber > pdfCollection.length) {
+        if (pdfDocuments.length === 0) {
             return selectedFile?.name || '';
         }
-        return pdfCollection[pageNumber - 1]?.name || '';
+        
+        if (pdfDocuments.length === 1 || pageNumber === 1) {
+            return pdfDocuments[0].name;
+        }
+        
+        const docIndex = Math.min(pageNumber - 1, pdfDocuments.length - 1);
+        return pdfDocuments[docIndex].name;
     };
 
     const getCurrentPdfVersion = () => {
-        if (pdfCollection.length === 0 || pageNumber > pdfCollection.length) {
+        if (pdfDocuments.length === 0) {
             return selectedFile?.versionCode || '';
         }
-        return pdfCollection[pageNumber - 1]?.version || '';
+        
+        if (pdfDocuments.length === 1 || pageNumber === 1) {
+            return pdfDocuments[0].version;
+        }
+        
+        const docIndex = Math.min(pageNumber - 1, pdfDocuments.length - 1);
+        return pdfDocuments[docIndex].version;
     };
 
     const getCategories = () => {
@@ -522,7 +554,7 @@ const DocumentControl = () => {
                                 <span className="header-value">{selectedSubcategory}</span>
                             </div>
                         </div>
-                        <div className="pdf-viewer-container" style={{ height: containerHeight }} ref={pdfContainerRef}>
+                        <div className="pdf-viewer-container" style={{ height: containerHeight, position: 'relative' }} ref={pdfContainerRef}>
 
                             <div className="pdf-viewer-header">
                                 <div className="zoom-controls">
@@ -543,7 +575,7 @@ const DocumentControl = () => {
                                     onLoadError={(error) => console.error("Error loading PDF:", error)}
                                 >
                                     <Page
-                                        pageNumber={pageNumber}
+                                        pageNumber={1} // Always show page 1 of each document
                                         renderTextLayer={false}
                                         renderAnnotationLayer={false}
                                         className="pdf-page"
@@ -551,22 +583,35 @@ const DocumentControl = () => {
                                 </Document>
                             </div>
 
-                            <div className="pdf-viewer-footer">
-                                <button onClick={goToPreviousPage} disabled={pageNumber <= 1} className="page-nav-button" title="Previous Page">
-                                    <FaAngleLeft />
-                                </button>
-                                <span className="page-info">
-                                    &lt;   Page {pageNumber} of {numPages || 1}   &gt;
-                                </span>
-                                <button onClick={goToNextPage} disabled={pageNumber >= numPages} className="page-nav-button" title="Next Page">
-                                    <FaAngleRight />
-                                </button>
+                            {/* Fixed position footer at the bottom */}
+                            <div className="pdf-viewer-footer" style={{ position: 'absolute', bottom: '10px', left: '0', right: '0', textAlign: 'center', backgroundColor: 'rgba(255,255,255,0.9)', padding: '8px 0', borderTop: '1px solid #ddd' }}>
+                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '15px' }}>
+                                    <button 
+                                        onClick={goToPreviousPage} 
+                                        disabled={pageNumber <= 1} 
+                                        className="page-nav-button" 
+                                        title="Previous Version"
+                                        style={{ fontSize: '16px', padding: '4px 8px' }}
+                                    >
+                                        <FaAngleLeft />
+                                    </button>
+                                    <span className="page-info" style={{ fontSize: '14px', fontWeight: 'bold' }}>
+                                        Page {pageNumber} of {numPages || 1}
+                                    </span>
+                                    <button 
+                                        onClick={goToNextPage} 
+                                        disabled={pageNumber >= numPages} 
+                                        className="page-nav-button" 
+                                        title="Next Version"
+                                        style={{ fontSize: '16px', padding: '4px 8px' }}
+                                    >
+                                        <FaAngleRight />
+                                    </button>
+                                </div>
+                                <div className="current-pdf-info" style={{ fontSize: '13px', marginTop: '5px' }}>
+                                    <span>File: <strong>{getCurrentPdfName()}</strong> | Version: <strong>{getCurrentPdfVersion()}</strong></span>
+                                </div>
                             </div>
-
-                            <div className="current-pdf-info">
-                                <span>File: {getCurrentPdfName()} | Version: {getCurrentPdfVersion()}</span>
-                            </div>
-
                         </div>
                         <div className="document-side-panel">
                             <div className="document-info-section">
